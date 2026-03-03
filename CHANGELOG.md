@@ -6,6 +6,91 @@
 
 ---
 
+## [2.1.0] - 2026-03-03
+
+### 新增
+
+#### OncoKB Query Skill
+- **`skills/oncokb_query/`** - 完整的 OncoKB 癌症知识库查询 Skill
+- **6 种查询类型**：
+  - `variant` - 基因变异临床意义查询
+  - `drug` - 药物敏感性查询
+  - `biomarker` - 生物标志物查询
+  - `tumor_type` - 癌症类型治疗推荐查询
+  - `evidence` - 证据详情查询
+  - `gene` - 基因基本信息查询
+- **OncoKBClient 类** - API 客户端封装 (`scripts/oncokb_client.py`)
+  - 自动选择公共 API 或认证 API
+  - 请求速率限制处理
+  - 自动重试和错误处理
+  - 批量查询支持
+
+#### 参考资料
+- **`references/api_endpoints.md`** - OncoKB API 端点完整参考
+- **`references/evidence_levels.md`** - 证据等级详解 (Level 1-4, R1-R2)
+
+#### 示例文件
+- **`examples/example_queries.md`** - 7 种查询场景示例
+- **`examples/sample_responses.json`** - 示例响应参考
+
+### 技能设计特点
+
+#### 多样化查询支持
+不同于单一的基因/药物查询，本 Skill 支持：
+- Agent 可根据需要灵活选择查询类型
+- 统一的输入 Schema，不同查询类型共享通用参数
+- 详细的 `description` 包含医疗专业名词解释
+
+#### 三层结构落实 (AgentSkills 规范)
+```
+oncokb_query/
+├── SKILL.md              # YAML frontmatter + 使用说明
+├── README.md             # 快速开始
+├── scripts/
+│   ├── oncokb_client.py  # API 客户端
+│   └── query_variant.py  # Skill 主实现
+├── references/           # 参考资料
+│   ├── api_endpoints.md
+│   └── evidence_levels.md
+└── examples/             # 使用示例
+    ├── example_queries.md
+    └── sample_responses.json
+```
+
+### 新增文件
+
+```
+skills/oncokb_query/SKILL.md
+skills/oncokb_query/README.md
+skills/oncokb_query/scripts/oncokb_client.py
+skills/oncokb_query/scripts/query_variant.py
+skills/oncokb_query/references/api_endpoints.md
+skills/oncokb_query/references/evidence_levels.md
+skills/oncokb_query/examples/example_queries.md
+skills/oncokb_query/examples/sample_responses.json
+```
+
+### 使用示例
+
+```python
+from skills.oncokb_query.scripts.query_variant import OncoKBQuery, OncoKBQueryInput
+from core.skill import SkillContext
+
+skill = OncoKBQuery()
+context = SkillContext(session_id="patient_001")
+
+# 查询 EGFR L858R 突变
+input_args = OncoKBQueryInput(
+    query_type="variant",
+    hugo_symbol="EGFR",
+    variant="L858R",
+    tumor_type="Non-Small Cell Lung Cancer"
+)
+result = skill.execute_with_retry(input_args.model_dump(), context=context)
+```
+
+---
+
 ## [2.0.0] - 2026-03-03
 
 ### 新增

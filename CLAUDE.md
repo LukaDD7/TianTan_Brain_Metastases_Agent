@@ -21,3 +21,8 @@
 * **绝对禁止使用本地无头浏览器（如 Puppeteer）**：由于当前服务器的 Linux 内核版本限制和缺少图形显示组件，本地渲染必定会导致沙盒崩溃。
 * **统一使用 Jina Reader 渲染**：当你需要访问任何网页或 API 文档时，必须使用自带的网络请求工具（如 `curl` 或 `fetch`），请求经过云端渲染的聚合链接。
 * **URL 格式要求**：将目标网址拼接在 `https://r.jina.ai/` 之后。例如，要访问 `https://example.com`，你必须请求 `https://r.jina.ai/https://example.com`。
+
+## 6. 项目状态与版本管理规范 (Project Management Rules)
+* **状态对齐**：在开始任何新的代码编写或重构前，必须先读取 `ROADMAP.md`，确认当前任务在整体规划中的位置。
+* **主动打卡**：每完成一个子任务，必须主动修改 `ROADMAP.md`，将对应的 `[ ]` 改为 `[x]`，并更新 `CHANGELOG.md` 记录本次变动。
+* **原子化提交**：在修改完一批具备逻辑完整性的代码后，必须使用 `git diff` 检查改动，并执行 `git add .` 和 `git commit -m "..."`。Commit Message 必须符合 Conventional Commits 规范（如 `feat:`, `refactor:`, `fix:`）。

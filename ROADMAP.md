@@ -52,11 +52,13 @@
 
 ### 待完成 📋
 
-- [ ] **接入 OncoKB API**
-  - [ ] 创建 `skills/oncokb_query/` Skill
-  - [ ] 实现 `query_gene_variant()` 方法
-  - [ ] 添加 API Key 配置管理
-  - [ ] 编写 OncoKB 响应解析器
+- [x] **接入 OncoKB API** (2026-03-03)
+  - [x] 创建 `skills/oncokb_query/` Skill
+  - [x] 实现多种查询类型 (variant/drug/biomarker/tumor_type/evidence/gene)
+  - [x] 添加 API Key 配置管理 (环境变量 `ONCOKB_API_TOKEN`)
+  - [x] 编写 OncoKB 响应解析器 (`oncokb_client.py`)
+  - [x] 创建参考资料 (`references/api_endpoints.md`, `references/evidence_levels.md`)
+  - [x] 创建查询示例 (`examples/example_queries.md`, `examples/sample_responses.json`)
 
 - [ ] **接入 PubMed API**
   - [ ] 创建 `skills/pubmed_search/` Skill
@@ -152,4 +154,5 @@
 
 | 日期 | 版本 | 更新内容 |
 |------|------|----------|
+| 2026-03-03 | v2.1.0 | 接入 OncoKB API：6 种查询类型、API 客户端封装、完整文档 |
 | 2026-03-03 | v2.0.0 | 基础重构：Pydantic + SkillContext + 重试机制 + 物理三层结构 |
