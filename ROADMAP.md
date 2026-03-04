@@ -61,11 +61,14 @@
   - [x] 创建查询示例 (`examples/example_queries.md`, `examples/sample_responses.json`)
   - [x] 测试验证：EGFR L858R 查询返回 Oncogenic 判定和 11 条治疗推荐
 
-- [ ] **接入 PubMed API**
-  - [ ] 创建 `skills/pubmed_search/` Skill
-  - [ ] 实现 `search_articles()` 方法
-  - [ ] 添加文献摘要提取功能
-  - [ ] 支持 PMC 全文获取 (可选)
+- [x] **接入 PubMed API** (2026-03-04)
+  - [x] 创建 `skills/pubmed_search/` Skill
+  - [x] 实现 4 种查询类型 (search/details/case_reports/clinical_trial)
+  - [x] 添加文献摘要提取功能 (使用 Bio.Entrez 解析)
+  - [x] 编写 PubMedClient API 客户端封装
+  - [x] 创建参考资料 (`references/api_endpoints.md`, `references/search_syntax.md`)
+  - [x] 创建查询示例 (`examples/example_queries.md`)
+  - [x] 测试验证：EGFR L858R NSCLC 搜索返回 3 篇文献并成功获取详情
 
 - [ ] **医疗数据类型 Schema 库**
   - [ ] 完善 `pdf_report_schema()`

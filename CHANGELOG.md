@@ -6,6 +6,45 @@
 
 ---
 
+## [2.2.0] - 2026-03-04
+
+### 新增
+
+#### PubMed Search Skill
+- **`skills/pubmed_search/`** - 完整的 PubMed 生物医学文献查询 Skill
+- **4 种查询类型**：
+  - `search` - 根据关键词搜索文献
+  - `details` - 根据 PMID 获取文献详情 (标题、摘要、期刊、年份、作者)
+  - `case_reports` - 搜索罕见病例报告 (疾病 + 合并症 + 治疗)
+  - `clinical_trial` - 搜索临床试验文献
+- **PubMedClient 类** - API 客户端封装 (`scripts/pubmed_client.py`)
+  - 使用 NCBI E-utilities API
+  - 二进制 XML 解析 (Bio.Entrez)
+  - 自动速率限制处理
+  - 支持结构化摘要解析
+
+#### 参考资料
+- **`references/api_endpoints.md`** - E-utilities API 完整参考
+- **`references/search_syntax.md`** - PubMed 搜索语法详解 (字段限定符、布尔运算符、MeSH 术语)
+
+#### 示例文件
+- **`examples/example_queries.md`** - 7 种查询场景示例
+
+### 技能设计特点
+
+#### 与 OncoKB 配合使用
+- 可先查询 OncoKB 获取治疗推荐和引用 PMID
+- 再使用 PubMed 获取文献详情 (标题、摘要)
+- 为诊疗决策提供循证依据
+
+### 测试验证
+
+- ✅ EGFR L858R NSCLC 搜索返回 3 篇文献
+- ✅ 文献详情提取成功 (PMID、标题、期刊、年份)
+- ✅ SkillContext 调用历史正常记录
+
+---
+
 ## [2.1.1] - 2026-03-04
 
 ### 修复
