@@ -15,7 +15,7 @@ description: |
   3. **生物标志物查询**：查询生物标志物信息 (如 MSI-H、TMB-H)
   4. **癌症类型查询**：查询特定癌症类型的治疗推荐
 
-  注意：需要提供 OncoKB API Token，请在环境变量中设置 `ONCOKB_API_TOKEN`。
+  注意：需要提供 OncoKB API Token，请在环境变量中设置 `ONCOKB_API_KEY`。
 version: 2.1.0
 author: TianTan Brain Metastases Agent Team
 metadata:
@@ -23,7 +23,7 @@ metadata:
     os: ["linux", "darwin", "windows"]
     requires:
       binaries: ["python3"]
-      env: ["ONCOKB_API_TOKEN"]
+      env: ["ONCOKB_API_KEY"]
       config: []
   dependencies:
     - requests>=2.28.0
@@ -120,7 +120,7 @@ OncoKB 使用以下证据等级系统：
 
 - 需要安装 `requests` (pip install requests)
 - 需要 OncoKB API Token (https://www.oncokb.org/account)
-- 环境变量设置：`export ONCOKB_API_TOKEN=your_token_here`
+- 环境变量设置：`export ONCOKB_API_KEY=your_token_here`
 
 ## 目录结构
 

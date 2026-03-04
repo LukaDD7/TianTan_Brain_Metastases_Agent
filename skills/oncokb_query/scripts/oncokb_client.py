@@ -24,9 +24,9 @@ from core.skill import SkillExecutionError
 # 常量定义
 # =============================================================================
 
-# OncoKB API 基础 URL (公共 API 无需认证，但速率有限)
-ONCOKB_PUBLIC_API = "https://public.api.oncokb.org/api/v1"
-ONCOKB_AUTHENTICATED_API = "https://api.oncokb.org/api/v1"
+# OncoKB API 基础 URL
+# 参考现有代码实现，使用 www.oncokb.org 作为认证 API
+ONCOKB_AUTHENTICATED_API = "https://www.oncokb.org/api/v1"
 
 # 默认重试配置
 DEFAULT_MAX_RETRIES = 3
@@ -92,16 +92,14 @@ class OncoKBClient:
 
         Args:
             api_token: OncoKB API Token，可选。如果没有提供，
-                       将使用公共 API (速率受限)
+                       将尝试从环境变量 `ONCOKB_API_KEY` 读取
         """
-        self.api_token = api_token or os.environ.get("ONCOKB_API_TOKEN")
-        self.base_url = (
-            ONCOKB_AUTHENTICATED_API if self.api_token
-            else ONCOKB_PUBLIC_API
-        )
+        # 使用 ONCOKB_API_KEY 环境变量 (与现有代码保持一致)
+        self.api_token = api_token or os.environ.get("ONCOKB_API_KEY")
+        self.base_url = ONCOKB_AUTHENTICATED_API
         self.session = self._create_session()
         self._last_request_time = 0
-        self._min_request_interval = 0.5  # 公共 API 最小请求间隔
+        self._min_request_interval = 0.5  # 认证 API 最小请求间隔
 
     def _create_session(self):
         """创建 HTTP 会话"""
@@ -112,6 +110,7 @@ class OncoKBClient:
                 session.headers["Authorization"] = f"Bearer {self.api_token}"
             session.headers["Content-Type"] = "application/json"
             session.headers["Accept"] = "application/json"
+            session.headers["User-Agent"] = "TianTan-Brain-Metastases-Agent/2.1.0"
             return session
         except ImportError:
             raise SkillExecutionError(
@@ -120,11 +119,10 @@ class OncoKBClient:
 
     def _rate_limit(self):
         """处理请求速率限制"""
-        if not self.api_token:
-            # 公共 API 有更严格的速率限制
-            elapsed = time.time() - self._last_request_time
-            if elapsed < self._min_request_interval:
-                time.sleep(self._min_request_interval - elapsed)
+        # 认证 API 也有速率限制，但更宽松
+        elapsed = time.time() - self._last_request_time
+        if elapsed < self._min_request_interval:
+            time.sleep(self._min_request_interval - elapsed)
         self._last_request_time = time.time()
 
     def _request(
@@ -170,10 +168,11 @@ class OncoKBClient:
                     return response.json()
                 elif response.status_code == 401:
                     raise SkillExecutionError(
-                        "API Token 无效或缺失。请检查 ONCOKB_API_TOKEN 环境变量。"
+                        "API Token 无效或缺失。请检查 ONCOKB_API_KEY 环境变量。"
                     )
                 elif response.status_code == 404:
-                    return {"error": "Not found", "message": "未找到请求的资源"}
+                    # 404 不一定代表错误，可能是该变异未被收录
+                    return {"error": "Not found", "message": "未找到请求的资源", "status": 404}
                 elif response.status_code == 429:
                     # 速率限制，等待后重试
                     retry_after = int(response.headers.get("Retry-After", 5))
@@ -185,15 +184,18 @@ class OncoKBClient:
                     continue
                 else:
                     last_error = SkillExecutionError(
-                        f"API 请求失败：{response.status_code} - {response.text}"
+                        f"API 请求失败：{response.status_code} - {response.text[:200]}"
                     )
 
+            except requests.exceptions.RequestException as e:
+                last_error = e
+                time.sleep(2 ** attempt)  # 指数退避
             except Exception as e:
                 last_error = e
                 time.sleep(2 ** attempt)  # 指数退避
 
         if last_error:
-            raise last_error
+            raise last_error if isinstance(last_error, SkillExecutionError) else SkillExecutionError(f"API 请求失败：{last_error}")
         raise SkillExecutionError("API 请求失败：达到最大重试次数")
 
     # ==================== 变异查询 ====================
@@ -217,13 +219,15 @@ class OncoKBClient:
         Returns:
             变异注释结果
         """
-        endpoint = "/annotate/variants/byProteinChange"
+        # 使用正确的端点：/annotate/mutations/byProteinChange
+        endpoint = "/annotate/mutations/byProteinChange"
         params = {
             "hugoSymbol": hugo_symbol,
             "alteration": variant,
-            "tumorType": tumor_type,
-            "evidenceType": "SUMMARY,EVIDENCE" if include_evidence else "SUMMARY"
+            "tumorType": tumor_type
         }
+        # 移除 evidenceType 参数，因为它可能导致 500 错误
+        # 完整的证据信息会包含在响应中
 
         # 移除 None 值
         params = {k: v for k, v in params.items() if v is not None}

@@ -8,10 +8,10 @@
 
 ```bash
 # Linux/macOS
-export ONCOKB_API_TOKEN=your_token_here
+export ONCOKB_API_KEY=your_token_here
 
 # Windows PowerShell
-$env:ONCOKB_API_TOKEN="your_token_here"
+$env:ONCOKB_API_KEY="your_token_here"
 ```
 
 获取 Token: https://www.oncokb.org/account

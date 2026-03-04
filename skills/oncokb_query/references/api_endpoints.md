@@ -1,14 +1,13 @@
 # OncoKB API 端点参考
 
-> 最后更新：2026-03-03
+> 最后更新：2026-03-04
 > API 版本：v1
 
 ---
 
 ## API 基础 URL
 
-- **公共 API** (无需认证，速率受限): `https://public.api.oncokb.org/api/v1`
-- **认证 API** (需要 Token): `https://api.oncokb.org/api/v1`
+- **认证 API** (需要 Token): `https://www.oncokb.org/api/v1`
 
 获取 API Token: https://www.oncokb.org/account
 
@@ -19,7 +18,7 @@
 ### 1. 按蛋白质改变查询变异
 
 ```
-GET /annotate/variants/byProteinChange
+GET /annotate/mutations/byProteinChange
 ```
 
 **参数：**
@@ -34,7 +33,7 @@ GET /annotate/variants/byProteinChange
 
 **示例：**
 ```bash
-curl "https://public.api.oncokb.org/api/v1/annotate/variants/byProteinChange?hugoSymbol=EGFR&alteration=L858R"
+curl "https://www.oncokb.org/api/v1/annotate/mutations/byProteinChange?hugoSymbol=EGFR&alteration=L858R"
 ```
 
 ---

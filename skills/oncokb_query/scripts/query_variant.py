@@ -19,7 +19,12 @@ import sys
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
 from core.skill import BaseSkill, SkillContext, SkillExecutionError
-from scripts.oncokb_client import OncoKBClient, format_variant_response
+
+# 同目录导入 (使用绝对路径导入)
+import sys
+import os
+sys.path.insert(0, os.path.dirname(__file__))
+from oncokb_client import OncoKBClient
 
 
 # =============================================================================
