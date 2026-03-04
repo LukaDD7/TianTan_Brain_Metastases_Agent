@@ -6,6 +6,29 @@
 
 ---
 
+## [2.1.1] - 2026-03-04
+
+### 修复
+
+#### OncoKB API 配置修复
+- **更正 API 端点**: `/annotate/variants/byProteinChange` → `/annotate/mutations/byProteinChange`
+- **移除 evidenceType 参数**: 该参数导致 500 错误
+- **更新环境变量名**: `ONCOKB_API_TOKEN` → `ONCOKB_API_KEY` (与现有代码一致)
+- **更新 API 基础 URL**: `https://api.oncokb.org` → `https://www.oncokb.org`
+
+### 改进
+
+- 添加 User-Agent 请求头
+- 改进异常处理，区分 requests 异常和通用异常
+- 404 响应不再抛出异常，返回友好的错误信息
+
+### 测试验证
+
+- ✅ EGFR L858R 查询返回 Oncogenic 判定和 11 条治疗推荐
+- ✅ SkillContext 调用历史正常记录
+
+---
+
 ## [2.1.0] - 2026-03-03
 
 ### 新增
