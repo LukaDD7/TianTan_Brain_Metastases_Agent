@@ -6,6 +6,118 @@
 
 ---
 
+## [2.4.0] - 2026-03-04
+
+### 新增
+
+#### Order Sets 模板机制
+- **`skills/clinical_writer/references/asco_nccn_order_set_template.json`** - 基于 NCCN CNS Cancers v3.2024 + ASCO Brain Mets Guideline 2022 的结构化输出模板
+- **5 大核心模块**:
+  - `admission_evaluation` - 入院评估与一般治疗（严禁"术前准备"等暗示性文字）
+  - `primary_plan` - 首选治疗方案（手术/放疗/全身治疗，动态可选）
+  - `systemic_management` - 后续治疗与全身管理
+  - `follow_up` - 全程管理与随访计划
+  - `rejected_alternatives` - 被排除的治疗方案（强制至少 1 项）
+  - `agent_trace` - Agent 推理追踪记录（Skill 调用历史 + 证据来源）
+- **动态可选模板声明**: 不适用的治疗模块必须设为 null，严禁捏造不适用的治疗细节
+
+#### 专家级临床字段约束
+- **激素管理强化**: 类固醇药物（如地塞米松）必须填写 `tapering_schedule`（减量计划）
+- **围手术期停药安全**: 全身治疗药物必须填写 `peri_procedural_holding_parameters`（如"SRS 治疗前后需停用 BRAF 抑制剂 3 天"）
+- **分子病理送检**: 手术方案必须包含 `molecular_pathology_orders`（基因检测医嘱，如 BRAF V600E、NGS panel）
+
+#### Pydantic 输出 Schema
+- **15+ 个子类** 强制约束输出格式
+- `AdmissionEvaluation` - 入院评估
+- `PrimaryPlanSurgery` - 手术治疗（含 surgical_adjuncts、molecular_pathology_orders）
+- `PrimaryPlanRadiotherapy` - 放射治疗
+- `PrimaryPlanSystemic` - 全身治疗（含 dosage/cycle_length/interval/duration）
+- `SystemicManagement` - 后续管理
+- `FollowUpPlan` - 随访计划
+- `RejectedAlternatives` - 排他性分析
+- `AgentTrace` - 推理追踪
+
+### 变更
+
+#### generate_report.py v2.3
+- 新增 `load_order_set_template()` 模板加载器
+- 新增 `generate_template_prompt()` 提示词生成器
+- 验证规则扩展至 7 项
+- `MDTReportGenerator` 类增加模板缓存机制
+
+#### validate_report.py v2.3
+- 同步 Order Sets 模板验证逻辑
+- 新增 10 项验证规则：
+  - 模块完整性（5 大核心模块）
+  - 指南引用格式
+  - 禁忌文字检查（"术前准备"）
+  - 排他性分析至少 1 项
+  - 分子病理送检检查（如包含手术）
+  - 激素减量计划检查（如使用类固醇）
+
+#### main_oncology_agent_v2.py v2.3
+- **整合 OncoKB 和 PubMed API Skill**
+  - `query_variant_oncogenicity()` - 查询基因变异致癌性和药物敏感性
+  - `search_supporting_literature()` - 检索支持性文献证据
+- **从线性流程升级为网状推理**
+  ```
+  解析病历 → OncoKB → PubMed → 指南 → 生成报告 → 验证
+  ```
+- 新增 `evidence_collector` 证据收集器
+- 新增 `_build_agent_trace()` 方法，自动生成 Agent Trace 内容
+- CLI 参数增加 `--gene_symbol`, `--gene_variant`, `--tumor_type`, `--keywords`
+
+### 新增文件
+
+```
+skills/clinical_writer/references/asco_nccn_order_set_template.json
+```
+
+### 工程改进
+
+- **Git 提交**: `feat: inject expert-level clinical constraints to MDT report schema`
+- **ROADMAP.md**: 更新 v2.4.0 状态，标记 Skills 整合为已完成
+- **CHANGELOG.md**: 记录本次重构详情
+
+### 临床影响
+
+- 输出格式达到"主治医师开具真实医嘱"级别
+- 强制排他性分析，避免 AI 过度自信
+- 完整的循证医学证据链（OncoKB + PubMed + NCCN/ESMO）
+- 明确的停药要求和减量计划，提升患者安全性
+
+---
+
+## [2.3.0] - 2026-03-04
+
+### 重构
+
+#### 专家级临床约束注入
+- **Order Sets 模板机制** - 基于 ASCO/NCCN 指南的结构化输出模板
+- **5 大核心模块** - admission_evaluation, primary_plan, systemic_management, follow_up, rejected_alternatives
+- **Agent Trace 模块** - 追踪 Agent 推理过程
+- **动态可选声明** - 不适用的治疗模块设为 null
+- **强化临床字段**:
+  - 激素管理：tapering_schedule（减量计划）
+  - 围手术期停药：peri_procedural_holding_parameters
+  - 分子病理送检：molecular_pathology_orders
+
+#### generate_report.py v2.3
+- 模板加载器和提示词生成器
+- 15+ Pydantic 输出 Schema 子类
+- 验证规则扩展
+
+#### validate_report.py v2.3
+- 同步模板验证逻辑
+- 10 项验证规则
+
+#### main_oncology_agent_v2.py v2.3
+- 整合 OncoKB/PubMed 形成网状推理
+- evidence_collector 证据收集器
+- _build_agent_trace() 自动生成 Agent Trace
+
+---
+
 ## [2.2.0] - 2026-03-04
 
 ### 新增

@@ -1,7 +1,7 @@
 # TianTan Brain Metastases Agent 项目路线图
 
 > 最后更新：2026-03-04
-> 版本：v2.3.0
+> 版本：v2.4.0
 
 ---
 
@@ -61,8 +61,10 @@
 
 - [x] **接入 PubMed API** (2026-03-04)
 
-- [ ] **Skills 整合与端到端调试** (优先级：最高 - 下一阶段核心任务)
-  - [ ] 将全新升级的 Skills 整合进 `main_oncology_agent_v2.py`
+- [x] **Skills 整合与端到端调试** (优先级：最高 - 下一阶段核心任务)
+  - [x] 将全新升级的 Skills 整合进 `main_oncology_agent_v2.py` (2026-03-04)
+  - [x] 引入 Order Sets 模板机制，强制结构化临床输出 (2026-03-04)
+  - [x] 增加排他性分析和 Agent Trace 模块 (2026-03-04)
   - [ ] 端到端流程调试
   - [ ] 结合临床医生反馈优化主 Agent 推理 Prompt
   - [ ] 测试 10 个真实病历 Case
@@ -143,6 +145,7 @@
 | ~~无依赖管理 (requirements.txt)~~ | ~~部署困难~~ | ~~中~~ ✅已解决 |
 | ~~无 `.gitignore` 配置~~ | ~~可能提交敏感文件~~ | ~~中~~ ✅已解决 |
 | ~~OncoKB/PubMed 集成未测试~~ | ~~API 调用风险~~ | ~~高~~ ✅已测试 |
+| Order Sets 模板需要真实病例验证 | 临床适用性待确认 | 高 |
 
 ---
 
@@ -158,6 +161,7 @@
 
 | 日期 | 版本 | 更新内容 |
 |------|------|----------|
+| 2026-03-04 | v2.4.0 | 引入 ASCO/NCCN Order Sets 模板机制：强化激素管理 (tapering_schedule)、围手术期停药 (peri_procedural_holding)、分子病理送检 (molecular_pathology_orders)；重构 main_oncology_agent_v2.py 整合 OncoKB/PubMed 形成网状推理；新增排他性分析和 Agent Trace 模块 |
 | 2026-03-04 | v2.3.0 | 聚焦单模态 MVP：删除多模态影像分析规划；明确下一阶段任务为 Skills 整合与临床验证 (10 个真实病历测试)；单元测试延后 |
 | 2026-03-04 | v2.2.0 | 接入 PubMed API:4 种查询类型、PubMedClient 封装、完整文档；修复 SkillRegistry.from_directory() 适配三层结构；创建 requirements.txt 和 .gitignore |
 | 2026-03-03 | v2.1.0 | 接入 OncoKB API：6 种查询类型、API 客户端封装、完整文档 |
