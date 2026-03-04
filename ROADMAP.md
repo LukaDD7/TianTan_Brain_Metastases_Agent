@@ -1,7 +1,7 @@
 # TianTan Brain Metastases Agent 项目路线图
 
-> 最后更新：2026-03-03
-> 版本：v2.0.0
+> 最后更新：2026-03-04
+> 版本：v2.2.0
 
 ---
 
@@ -48,7 +48,12 @@
   - [x] 移动执行代码到 `scripts/` 子目录
   - [x] 创建 `references/` 存放诊疗指南/表单模板
   - [x] 创建 `examples/` 存放使用示例
-  - [ ] 更新 `SkillRegistry.from_directory()` 适配新结构
+  - [x] 更新 `SkillRegistry.from_directory()` 适配新结构 (2026-03-04)
+
+- [x] **工程文档完善** (2026-03-04)
+  - [x] 创建 `requirements.txt` 依赖管理
+  - [x] 更新 `.gitignore` 配置
+  - [x] 更新 `ROADMAP.md` 和 `CHANGELOG.md`
 
 ### 待完成 📋
 
@@ -139,10 +144,10 @@
 | 债务项 | 影响 | 优先级 |
 |--------|------|--------|
 | 旧 `main_oncology_agent.py` 未迁移 | 代码重复 | 中 |
-| `SkillRegistry.from_directory()` 未适配三层结构 | 无法自动加载 | 高 |
+| ~~`SkillRegistry.from_directory()` 未适配三层结构~~ | ~~无法自动加载~~ | ~~高~~ ✅已解决 |
 | 无单元测试 | 回归风险 | 高 |
-| 无依赖管理 (requirements.txt) | 部署困难 | 中 |
-| 无 `.gitignore` 配置 | 可能提交敏感文件 | 中 |
+| ~~无依赖管理 (requirements.txt)~~ | ~~部署困难~~ | ~~中~~ ✅已解决 |
+| ~~无 `.gitignore` 配置~~ | ~~可能提交敏感文件~~ | ~~中~~ ✅已解决 |
 
 ---
 
@@ -158,5 +163,6 @@
 
 | 日期 | 版本 | 更新内容 |
 |------|------|----------|
+| 2026-03-04 | v2.2.0 | 接入 PubMed API：4 种查询类型、PubMedClient 封装、完整文档；修复 SkillRegistry.from_directory() 适配三层结构；创建 requirements.txt 和 .gitignore |
 | 2026-03-03 | v2.1.0 | 接入 OncoKB API：6 种查询类型、API 客户端封装、完整文档 |
 | 2026-03-03 | v2.0.0 | 基础重构：Pydantic + SkillContext + 重试机制 + 物理三层结构 |

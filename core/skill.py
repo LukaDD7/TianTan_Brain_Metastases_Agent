@@ -559,9 +559,21 @@ class SkillRegistry:
         """
         从目录自动加载所有 Skill。
 
-        约定：
-        - 每个 Skill 放在独立子目录中：skills/<skill_name>/skill.py
-        - 或者扁平放置：skills/<skill_name>_skill.py
+        支持三种目录结构：
+
+        1. 三层结构 (AgentSkills 规范，推荐):
+           skills/<skill_name>/
+           ├── SKILL.md
+           ├── scripts/
+           │   └── xxx.py  # 包含 Skill 类
+           ├── references/
+           └── examples/
+
+        2. 子目录模式 (旧版):
+           skills/<name>/skill.py
+
+        3. 扁平模式 (旧版):
+           skills/<name>_skill.py
 
         Args:
             skills_dir: Skills 目录路径
@@ -581,23 +593,80 @@ class SkillRegistry:
         for item in os.listdir(skills_dir):
             item_path = os.path.join(skills_dir, item)
 
-            # 模式 1: 子目录模式 skills/<name>/skill.py
-            if os.path.isdir(item_path):
-                skill_file = os.path.join(item_path, "skill.py")
-                if os.path.exists(skill_file):
-                    module_name = f"{prefix}{item}.skill" if prefix else f"{item}.skill"
-                    registry._load_from_module(module_name, skill_file)
+            # 跳过非目录项和特殊文件
+            if not os.path.isdir(item_path):
+                if item.endswith("_skill.py"):
+                    # 模式 3: 扁平模式 skills/<name>_skill.py
+                    skill_name = item[:-9]  # 移除 "_skill.py"
+                    module_name = f"{prefix}{item[:-3]}" if prefix else item[:-3]
+                    registry._load_from_module(module_name, item_path)
+                continue
 
-                # 同时尝试加载 SKILL.md 元数据
-                registry.load_skill_metadata(item_path)
+            # 首先尝试加载 SKILL.md 元数据 (所有模式通用)
+            registry.load_skill_metadata(item_path)
 
-            # 模式 2: 扁平模式 skills/<name>_skill.py
-            elif item.endswith("_skill.py"):
-                skill_name = item[:-9]  # 移除 "_skill.py"
-                module_name = f"{prefix}{item[:-3]}" if prefix else item[:-3]
-                registry._load_from_module(module_name, item_path)
+            # 模式 1: 三层结构 (AgentSkills 规范)
+            # skills/<skill_name>/scripts/*.py
+            scripts_dir = os.path.join(item_path, "scripts")
+            if os.path.isdir(scripts_dir):
+                registry._load_from_scripts_directory(scripts_dir, prefix, item)
+                continue
+
+            # 模式 2: 子目录模式 skills/<name>/skill.py
+            skill_file = os.path.join(item_path, "skill.py")
+            if os.path.exists(skill_file):
+                module_name = f"{prefix}{item}.skill" if prefix else f"{item}.skill"
+                registry._load_from_module(module_name, skill_file)
 
         return registry
+
+    def _load_from_scripts_directory(self, scripts_dir: str, prefix: str, skill_name: str) -> None:
+        """
+        从三层结构的 scripts/ 目录加载 Skill。
+
+        扫描 scripts/ 目录下的所有 Python 文件，查找并实例化 BaseSkill 的子类。
+
+        Args:
+            scripts_dir: scripts/ 目录路径
+            prefix: 模块名前缀
+            skill_name: Skill 名称 (用于日志)
+        """
+        import importlib.util
+
+        if not os.path.isdir(scripts_dir):
+            return
+
+        # 扫描 scripts/ 目录下的所有 Python 文件
+        for filename in os.listdir(scripts_dir):
+            if not filename.endswith('.py') or filename.startswith('__'):
+                continue
+
+            file_path = os.path.join(scripts_dir, filename)
+            module_name = f"{prefix}{skill_name}.scripts.{filename[:-3]}" if prefix else f"{skill_name}.scripts.{filename[:-3]}"
+
+            spec = importlib.util.spec_from_file_location(module_name, file_path)
+            if spec is None or spec.loader is None:
+                continue
+
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+
+            # 查找模块中所有 BaseSkill 的子类实例
+            for attr_name in dir(module):
+                attr = getattr(module, attr_name)
+                # 查找 BaseSkill 的子类（不是实例）
+                if (inspect.isclass(attr) and
+                    issubclass(attr, BaseSkill) and
+                    attr is not BaseSkill and
+                    hasattr(attr, 'name') and
+                    attr.name):
+                    try:
+                        # 实例化并注册
+                        skill_instance = attr()
+                        self.register(skill_instance)
+                    except Exception as e:
+                        # 实例化失败（如缺少环境变量）不应阻塞其他 Skill 加载
+                        print(f"Warning: Failed to instantiate {attr_name} from {file_path}: {e}")
 
     def _load_from_module(self, module_name: str, file_path: str) -> None:
         """从模块文件加载 Skill"""

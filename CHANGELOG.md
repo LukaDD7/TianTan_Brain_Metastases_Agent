@@ -43,6 +43,12 @@
 - ✅ 文献详情提取成功 (PMID、标题、期刊、年份)
 - ✅ SkillContext 调用历史正常记录
 
+### 工程改进
+
+- **`SkillRegistry.from_directory()` 适配三层结构** - 支持 AgentSkills 规范的 `skills/<name>/scripts/` 目录结构
+- **`requirements.txt`** - 首次创建，明确核心依赖和可选依赖
+- **`.gitignore` 增强** - 添加敏感文件、测试缓存、类型检查缓存等忽略规则
+
 ---
 
 ## [2.1.1] - 2026-03-04
