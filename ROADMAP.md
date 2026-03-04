@@ -1,7 +1,7 @@
 # TianTan Brain Metastases Agent 项目路线图
 
 > 最后更新：2026-03-04
-> 版本：v2.2.0
+> 版本：v2.3.0
 
 ---
 
@@ -55,51 +55,40 @@
   - [x] 更新 `.gitignore` 配置
   - [x] 更新 `ROADMAP.md` 和 `CHANGELOG.md`
 
-### 待完成 📋
+### 待完成 📋 - 下一阶段重点
 
 - [x] **接入 OncoKB API** (2026-03-04)
-  - [x] 创建 `skills/oncokb_query/` Skill
-  - [x] 实现多种查询类型 (variant/drug/biomarker/tumor_type/evidence/gene)
-  - [x] 添加 API Key 配置管理 (环境变量 `ONCOKB_API_KEY`)
-  - [x] 编写 OncoKB 响应解析器 (`oncokb_client.py`)
-  - [x] 创建参考资料 (`references/api_endpoints.md`, `references/evidence_levels.md`)
-  - [x] 创建查询示例 (`examples/example_queries.md`, `examples/sample_responses.json`)
-  - [x] 测试验证：EGFR L858R 查询返回 Oncogenic 判定和 11 条治疗推荐
 
 - [x] **接入 PubMed API** (2026-03-04)
-  - [x] 创建 `skills/pubmed_search/` Skill
-  - [x] 实现 4 种查询类型 (search/details/case_reports/clinical_trial)
-  - [x] 添加文献摘要提取功能 (使用 Bio.Entrez 解析)
-  - [x] 编写 PubMedClient API 客户端封装
-  - [x] 创建参考资料 (`references/api_endpoints.md`, `references/search_syntax.md`)
-  - [x] 创建查询示例 (`examples/example_queries.md`)
-  - [x] 测试验证：EGFR L858R NSCLC 搜索返回 3 篇文献并成功获取详情
 
-- [ ] **医疗数据类型 Schema 库**
+- [ ] **Skills 整合与端到端调试** (优先级：最高 - 下一阶段核心任务)
+  - [ ] 将全新升级的 Skills 整合进 `main_oncology_agent_v2.py`
+  - [ ] 端到端流程调试
+  - [ ] 结合临床医生反馈优化主 Agent 推理 Prompt
+  - [ ] 测试 10 个真实病历 Case
+
+- [ ] **医疗数据类型 Schema 库** (优先级：中)
   - [ ] 完善 `pdf_report_schema()`
-  - [ ] 实现 `dicom_series_schema()`
+  - [ ] 实现 `dicom_series_schema()` (Cancelled - 超出单模态范围)
   - [ ] 实现 `vcf_file_schema()`
-  - [ ] 实现 `pathology_wsi_schema()`
+  - [ ] 实现 `pathology_wsi_schema()` (Cancelled - 超出单模态范围)
 
-- [ ] **单元测试覆盖**
+- [ ] **单元测试覆盖** (优先级：低 - 延后)
   - [ ] `core/skill.py` 单元测试
   - [ ] `SkillContext` 测试
   - [ ] `PDFInspector` 集成测试
   - [ ] `MDTReportGenerator` 验证测试
 
-- [ ] **CI/CD 集成**
+- [ ] **CI/CD 集成** (优先级：低 - 延后)
   - [ ] GitHub Actions 工作流配置
   - [ ] pytest 自动执行
   - [ ] 代码覆盖率报告
 
 ---
 
-## v2.1 能力扩展 (规划中)
+## v2.1 能力扩展 (规划中) - 单模态文本决策
 
-- [ ] **多模态影像分析**
-  - [ ] 接入视觉模型分析提取的医学影像
-  - [ ] DICOM 序列解析 Skill
-  - [ ] 病理切片 (WSI) 分析 Skill
+> 注：本项目专注于单模态文本决策，不考虑影像等多模态数据。以下"多模态"相关规划已取消。
 
 - [ ] **长文本病历结构化**
   - [ ] 电子病历 (EHR) 解析 Skill
@@ -116,6 +105,11 @@
   - [ ] 关键决策点人工确认
   - [ ] 药物剂量审核流程
   - [ ] 放疗靶区确认流程
+
+~~- [ ] **多模态影像分析** (Cancelled - 超出单模态 MVP 范围)
+  - ~~[ ] 接入视觉模型分析提取的医学影像~~
+  - ~~[ ] DICOM 序列解析 Skill~~
+  - ~~[ ] 病理切片 (WSI) 分析 Skill~~
 
 ---
 
@@ -145,9 +139,10 @@
 |--------|------|--------|
 | 旧 `main_oncology_agent.py` 未迁移 | 代码重复 | 中 |
 | ~~`SkillRegistry.from_directory()` 未适配三层结构~~ | ~~无法自动加载~~ | ~~高~~ ✅已解决 |
-| 无单元测试 | 回归风险 | 高 |
+| ~~无单元测试~~ | ~~回归风险~~ | ~~高~~ (已延后) |
 | ~~无依赖管理 (requirements.txt)~~ | ~~部署困难~~ | ~~中~~ ✅已解决 |
 | ~~无 `.gitignore` 配置~~ | ~~可能提交敏感文件~~ | ~~中~~ ✅已解决 |
+| ~~OncoKB/PubMed 集成未测试~~ | ~~API 调用风险~~ | ~~高~~ ✅已测试 |
 
 ---
 
@@ -163,6 +158,7 @@
 
 | 日期 | 版本 | 更新内容 |
 |------|------|----------|
-| 2026-03-04 | v2.2.0 | 接入 PubMed API：4 种查询类型、PubMedClient 封装、完整文档；修复 SkillRegistry.from_directory() 适配三层结构；创建 requirements.txt 和 .gitignore |
+| 2026-03-04 | v2.3.0 | 聚焦单模态 MVP：删除多模态影像分析规划；明确下一阶段任务为 Skills 整合与临床验证 (10 个真实病历测试)；单元测试延后 |
+| 2026-03-04 | v2.2.0 | 接入 PubMed API:4 种查询类型、PubMedClient 封装、完整文档；修复 SkillRegistry.from_directory() 适配三层结构；创建 requirements.txt 和 .gitignore |
 | 2026-03-03 | v2.1.0 | 接入 OncoKB API：6 种查询类型、API 客户端封装、完整文档 |
 | 2026-03-03 | v2.0.0 | 基础重构：Pydantic + SkillContext + 重试机制 + 物理三层结构 |
