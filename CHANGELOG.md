@@ -6,6 +6,111 @@
 
 ---
 
+## [2.4.3] - 2026-03-04
+
+### 新增
+
+#### 本地知识库集成
+- **`LocalGuidelinesManager`** - 本地权威指南管理器类
+  - 扫描 `/media/luzhenyang/project/TianTan_Brain_Metastases_Agent/Guidelines/脑转诊疗指南/` 目录
+  - 自动索引 21 个权威指南文件（9 个临床实践指南 + 12 个综述文章）
+  - 生成 System Prompt 友好的指南索引格式
+- **`scripts/run_batch_eval.py`** - 扩展批量评估脚本
+  - 集成本地知识库扫描和索引功能
+  - 添加 `LocalGuidelinesManager` 到 OncologyWorkflowForEval
+  - 支持动态注入指南索引到 Agent System Prompt
+
+#### 宽表格式转换
+- **`scripts/prepare_test_cases.py`** - 数据预处理脚本
+  - 将长表格式（127 行）转换为宽表格式（9 行）
+  - 每行 = 1 个病例，包含所有特征字段
+  - 添加预期结果列（expected_modality, expected_gene, expected_variant）
+
+#### 批量测试完成
+- **5 个真实病例测试** - 100% 通过
+  - Clean Context 隔离验证通过
+  - Eval 断言系统工作正常
+  - 本地知识库集成成功
+  - 生成完整的 Markdown 测试报告
+
+### 修复
+
+- **`skills/clinical_writer/scripts/generate_report.py`** - 修复模板写入问题
+  - 第 468-469 行：不再将模板提示词写入报告文件
+  - 只保存报告内容本身，不包含模板
+
+### 文档
+
+- **`docs/批量测试报告_20260304.md`** - 完整的批量测试报告
+- **`docs/测试方案_10个真实病例.md`** - 10 个病例测试方案
+- **`CLAUDE.md`** - 新增第 9 章"技能调优与测试规范"
+
+---
+
+## [2.4.2] - 2026-03-04
+
+### 新增
+
+#### 批量评估框架
+- **`scripts/run_batch_eval.py`** - 完整的批量评估脚本
+- **Clean Context 隔离机制**：每个 Case 独立实例化 `SkillRegistry` 和 `OncologyWorkflowForEval`，确保绝对的上下文隔离
+- **Eval 断言系统**：`evaluate_case_result()` 函数实现 5 项自动化断言检查：
+  1. 检查 `rejected_alternatives` 是否存在
+  2. 检查有基因突变时是否调用 `query_variant`
+  3. 检查 `systemic_management` 是否包含 `peri_procedural_holding_parameters`
+  4. 检查是否有违禁词"术前准备"
+  5. 统计技能调用次数
+- **结果落盘**：自动生成 CSV 汇总报告，包含每个 Case 的 Pass/Fail 状态和详细指标
+
+#### Trigger Description 重写
+- **`skills/oncokb_query/scripts/query_variant.py`**：重写 `description` 为强触发器
+  - 明确触发边界："当且仅当患者病历中明确提取到具体的基因突变信息"
+  - 具体示例：EGFR L858R、BRAF V600E、KRAS G12C
+  - 严禁行为："严禁凭自身记忆捏造基因变异信息"
+- **`skills/pubmed_search/scripts/search_articles.py`**：重写 `description` 为强触发器
+  - 明确触发场景：为 `rejected_alternatives` 寻找证据、补充 OncoKB 循证依据、查询罕见病例报告
+  - 示例引导："手术切除：证据不足（PubMed 检索未发现支持性文献）"
+
+### 测试
+
+#### 批量评估测试通过
+- **测试用例**：5 个模拟病例（交替：有突变/无突变）
+- **通过率**：100% (5/5)
+- **关键验证**：
+  - 所有 Case 正确包含 `rejected_alternatives` ✅
+  - 有突变的 Case 正确调用 `query_oncokb` ✅
+  - 无突变的 Case 不误调用 `query_oncokb` ✅
+  - 所有 Case 包含 `peri_procedural_holding_parameters` ✅
+  - 无违禁词"术前准备" ✅
+- **CSV 报告**：`workspace/eval_results/batch_eval_20260304_174901.csv`
+
+### 工程改进
+
+- **CLAUDE.md**：新增第 9 章"技能调优与测试规范"，将 Trigger Tuning 和 Clean Context 作为红线
+
+---
+
+## [2.4.1] - 2026-03-04
+
+### 修复
+
+#### 验证逻辑错误
+- **修复 generate_report.py 第 550 行**：`_validate_with_template()` 方法中规则 6 的字符串匹配错误，"systemic_therapy" 包含 "surgery" 子串导致误判，改为精确匹配 "手术治疗" 或 "- modality: surgery"
+
+### 测试
+
+#### 全链路冒烟测试通过
+- **OncoKB Query**：EGFR L858R 查询成功返回 Oncogenic 判定和 11 条治疗推荐
+- **PubMed Search**：Melanoma Brain Metastases Immunotherapy 检索返回 2 篇文献（PMID 30655533，Nature Reviews Disease Primers 2019）
+- **Clinical Writer Validation**：验证器成功拦截违禁词"术前准备"、缺失 rejected_alternatives 模块、缺失指南引用；合规报告验证通过
+
+### 工程改进
+
+- **CLAUDE.md**：新增第 8 章"强制状态同步协议"，要求代码修改后必须立即更新 CHANGELOG 和 ROADMAP
+- **ROADMAP.md**：修正虚假完成状态，将 main_oncology_agent_v2.py 网状推理标记为"[ ] 已编码，待测试"，OncoKB/PubMed 集成标记为"高 ⚠️阻塞"
+
+---
+
 ## [2.4.0] - 2026-03-04
 
 ### 新增

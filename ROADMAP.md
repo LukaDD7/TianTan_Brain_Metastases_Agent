@@ -61,13 +61,14 @@
 
 - [x] **接入 PubMed API** (2026-03-04)
 
-- [x] **Skills 整合与端到端调试** (优先级：最高 - 下一阶段核心任务)
-  - [x] 将全新升级的 Skills 整合进 `main_oncology_agent_v2.py` (2026-03-04)
-  - [x] 引入 Order Sets 模板机制，强制结构化临床输出 (2026-03-04)
-  - [x] 增加排他性分析和 Agent Trace 模块 (2026-03-04)
-  - [ ] 端到端流程调试
-  - [ ] 结合临床医生反馈优化主 Agent 推理 Prompt
+- [ ] **批量评估框架** (优先级：高 - 已完成编码，待真实病例测试)
+  - [x] 编写 `scripts/run_batch_eval.py` 批量评估脚本
+  - [x] 实现 Clean Context 隔离（每个 Case 独立实例）
+  - [x] 实现 Eval 断言系统（5 项断言检查）
+  - [x] 实现结果落盘（CSV 汇总报告）
+  - [x] 测试 5 个模拟病例（100% 通过）
   - [ ] 测试 10 个真实病历 Case
+  - [ ] 结合临床医生反馈优化主 Agent 推理 Prompt
 
 - [ ] **医疗数据类型 Schema 库** (优先级：中)
   - [ ] 完善 `pdf_report_schema()`
@@ -144,8 +145,9 @@
 | ~~无单元测试~~ | ~~回归风险~~ | ~~高~~ (已延后) |
 | ~~无依赖管理 (requirements.txt)~~ | ~~部署困难~~ | ~~中~~ ✅已解决 |
 | ~~无 `.gitignore` 配置~~ | ~~可能提交敏感文件~~ | ~~中~~ ✅已解决 |
-| ~~OncoKB/PubMed 集成未测试~~ | ~~API 调用风险~~ | ~~高~~ ✅已测试 |
+| OncoKB/PubMed Trigger Tuning | 触发器敏感度 | 高 ✅已完成 |
 | Order Sets 模板需要真实病例验证 | 临床适用性待确认 | 高 |
+| 批量评估框架已编码 | 待真实病例测试 | 高 |
 
 ---
 
@@ -161,7 +163,9 @@
 
 | 日期 | 版本 | 更新内容 |
 |------|------|----------|
-| 2026-03-04 | v2.4.0 | 引入 ASCO/NCCN Order Sets 模板机制：强化激素管理 (tapering_schedule)、围手术期停药 (peri_procedural_holding)、分子病理送检 (molecular_pathology_orders)；重构 main_oncology_agent_v2.py 整合 OncoKB/PubMed 形成网状推理；新增排他性分析和 Agent Trace 模块 |
+| 2026-03-04 | v2.4.2 | 新增批量评估框架 run_batch_eval.py，Clean Context 隔离 + Eval 断言系统；重写 OncoKB/PubMed Trigger Description 为强触发器；5 个模拟病例测试 100% 通过 |
+| 2026-03-04 | v2.4.1 | 冒烟测试全部通过：OncoKB 返回 11 条治疗、PubMed 检索成功、Clinical Writer 验证器拦截违禁词；修复 generate_report.py 第 550 行字符串误判问题 |
+| 2026-03-04 | v2.4.0 | 修正状态幻觉：main_oncology_agent_v2.py 网状推理未经过测试，标记为"已编码，待冒烟测试"；Order Sets 模板和排他性分析模块均未经过真实验证 |
 | 2026-03-04 | v2.3.0 | 聚焦单模态 MVP：删除多模态影像分析规划；明确下一阶段任务为 Skills 整合与临床验证 (10 个真实病历测试)；单元测试延后 |
 | 2026-03-04 | v2.2.0 | 接入 PubMed API:4 种查询类型、PubMedClient 封装、完整文档；修复 SkillRegistry.from_directory() 适配三层结构；创建 requirements.txt 和 .gitignore |
 | 2026-03-03 | v2.1.0 | 接入 OncoKB API：6 种查询类型、API 客户端封装、完整文档 |

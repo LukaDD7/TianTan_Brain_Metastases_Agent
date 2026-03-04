@@ -13,7 +13,7 @@
           "primary_plan": {
             "modality": "radiotherapy",
             "surgery": null,
-            "radiotherapy": { "technique": "WBRT", ... }
+            "radiotherapy": { "technique": "WBRT", "dose_fractionation": {} }
           },
           "rejected_alternatives": {
             "rejected_options": [

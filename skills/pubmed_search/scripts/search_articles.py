@@ -147,10 +147,11 @@ class PubMedSearch(BaseSkill[PubMedSearchInput]):
 
     name = "search_pubmed"
     description = (
-        "查询 PubMed 生物医学文献数据库，获取文献摘要、详情或搜索特定主题的文献。\n"
-        "PubMed 是美国国立医学图书馆 (NLM) 维护的生物医学文献数据库，包含超过 3500 万篇文献。\n"
-        "支持查询类型：search(文献搜索)、details(文献详情)、case_reports(病例报告)、clinical_trial(临床试验)。\n"
-        "注意：需要设置环境变量 PUBMED_EMAIL 和 E_UTILITIES_API。"
+        "【触发条件】当需要为被排除的治疗方案（rejected_alternatives）寻找文献证据等级支持，或当 OncoKB 未提供足够治疗推荐时补充循证依据，或查询罕见病例报告（如特殊合并症）时触发。\n"
+        "【查询范围】用于查询 PubMed 生物医学文献数据库，获取文献摘要、详情或搜索特定主题的文献。\n"
+        "【支持类型】search(文献搜索)、details(文献详情)、case_reports(罕见病例报告)、clinical_trial(临床试验文献)。\n"
+        "【医疗严谨性】PubMed 包含超过 3500 万篇生物医学文献，可用于验证被排除方案的合理性（如'手术切除：证据不足（PubMed 检索未发现支持性文献）'），或提供罕见病例的治疗参考。\n"
+        "【注意事项】需要设置环境变量 PUBMED_EMAIL 和 E_UTILITIES_API。"
     )
     input_schema_class = PubMedSearchInput
 

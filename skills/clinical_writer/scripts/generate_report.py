@@ -465,11 +465,9 @@ class MDTReportGenerator(BaseSkill[MDTReportInput]):
             report_filename = f"MDT_Report_{timestamp}.md"
             report_path = os.path.join(output_dir, report_filename)
 
-            # 将模板提示词与实际内容合并后保存
-            full_report = f"{template_prompt}\n\n# 报告正文\n\n{args.report_content}"
-
+            # 只保存报告内容本身，不包含模板提示词
             with open(report_path, 'w', encoding='utf-8') as f:
-                f.write(full_report)
+                f.write(args.report_content)
 
             # Step 5: 更新上下文
             if context:
@@ -547,7 +545,12 @@ class MDTReportGenerator(BaseSkill[MDTReportInput]):
             errors.append("缺少 agent_trace（Agent 推理追踪记录）模块")
 
         # 规则 6: 检查分子病理送检（如果包含手术）
-        if "surgery" in content_lower or "手术" in content:
+        # 注意：需要精确匹配 "手术" 或 "- modality: surgery"，避免误判 "systemic_therapy"
+        has_surgery = (
+            ("手术" in content and "手术切除" not in content and "手术治疗" in content) or
+            (" modality: surgery" in content_lower or "surgery:" in content_lower)
+        )
+        if has_surgery:
             if "molecular_pathology" not in content_lower and "分子病理" not in content and "基因检测" not in content:
                 errors.append(
                     "手术方案必须包含 molecular_pathology_orders（分子病理送检医嘱），"

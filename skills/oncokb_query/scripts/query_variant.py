@@ -160,11 +160,11 @@ class OncoKBQuery(BaseSkill[OncoKBQueryInput]):
 
     name = "query_oncokb"
     description = (
-        "查询 OncoKB 癌症知识库获取基因变异的临床意义、药物敏感性、生物标志物等信息。\n"
-        "OncoKB 是一个精准肿瘤学知识库，提供基因变异致癌性评估、治疗敏感性预测、证据等级分级等信息。\n"
-        "支持查询类型：variant(变异查询)、drug(药物查询)、biomarker(生物标志物查询)、"
-        "tumor_type(癌症类型查询)、evidence(证据详情)、gene(基因信息)。\n"
-        "注意：需要提供 OncoKB API Token (环境变量 ONCOKB_API_TOKEN)。"
+        "【触发条件】当且仅当患者病历中明确提取到具体的基因突变信息（如 EGFR L858R、BRAF V600E、KRAS G12C 等蛋白质水平变异）时，必须优先触发此技能进行致癌性查询，严禁凭自身记忆捏造基因变异信息。\n"
+        "【查询范围】用于查询 OncoKB 癌症知识库获取基因变异的临床意义、药物敏感性、生物标志物等信息。\n"
+        "【支持类型】variant(基因变异查询)、drug(药物敏感性查询)、biomarker(生物标志物查询)、tumor_type(癌症类型治疗推荐)、evidence(证据详情)、gene(基因基本信息)。\n"
+        "【医疗严谨性】OncoKB 提供权威的致癌性评估（Oncogenic/Likely Oncogenic/Inconclusive）和证据等级分级（Level 1-4, R1-R2），所有治疗推荐必须引用 OncoKB 证据。\n"
+        "【注意事项】需要提供 OncoKB API Token（环境变量 ONCOKB_API_KEY）。"
     )
     input_schema_class = OncoKBQueryInput
 
