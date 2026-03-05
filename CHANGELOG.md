@@ -6,6 +6,64 @@
 
 ---
 
+## [2.4.4] - 2026-03-05
+
+### 修复
+
+#### 致命医学架构问题：指南优先级倒置
+- **问题**：`parse_pdf`（本地 NCCN 指南）和 `pubmed_search`（零星文献）平行执行，导致 Agent 偷懒只查 PubMed
+- **解决方案**：
+  - 新增 `LocalGuidelinesManager` 智能路由管理器，自动匹配肿瘤类型与指南文件
+  - 新增 `query_guideline_mandatory()` 强制指南查询（不可跳过）
+  - 新增 `_analyze_guideline_coverage()` 防幻觉覆盖判定
+  - 新增 `should_degrade_to_pubmed()` 降级触发器（仅当指南未覆盖或需反面证据时）
+- **效果**：
+  - ✅ 指南作为顶级证据（基石），强制执行
+  - ✅ OncoKB 与指南并行作为顶级证据
+  - ✅ PubMed 降级为补充证据（仅在必要时调用）
+  - ✅ 打印明确警告日志，防止幻觉覆盖判定
+
+### 新增
+
+#### 智能指南路由（Smart Guideline Routing）
+- 根据肿瘤类型（NSCLC、Melanoma、Breast 等）自动匹配最相关的 1-2 个指南文件
+- 支持中英文肿瘤类型映射
+- 优先返回 Practice Guidelines，其次返回 Review Articles
+- 未匹配时使用 CNS 指南兜底
+
+### 变更
+
+#### `main_oncology_agent_v2.py` v2.4
+- **参数变更**：移除 `guideline_pdf_path`，由 `LocalGuidelinesManager` 自动路由
+- **证据层级**：
+  ```
+  顶级证据：OncoKB + 指南（并行）
+  降级证据：PubMed（条件性调用）
+  ```
+- **强制流程**：
+  1. 解析患者病历
+  2. 【并行】查询 OncoKB + 强制查询指南
+  3. 【条件】判定是否降级调用 PubMed
+  4. 生成报告 + 验证
+
+#### `run_full_workflow()` 函数
+- **新签名**：`run_full_workflow(case_id, patient_pdf_path, gene_symbol, gene_variant, tumor_type, literature_keywords)`
+- **智能路由**：根据 `tumor_type` 自动匹配指南
+- **降级触发**：仅在指南未覆盖或需反面证据时调用 PubMed
+- **日志增强**：打印明确的证据优先级和降级原因
+
+### 文档
+
+- **`ROADMAP.md`**：标记指南优先级重构为已完成
+- **`CHANGELOG.md`**：记录本次致命修复详情
+
+### 工程改进
+
+- **Git 提交**：`fix: enforce guideline priority, PubMed as degraded evidence only`
+- **版本号**：v2.3 → v2.4（重大架构变更）
+
+---
+
 ## [2.4.3] - 2026-03-04
 
 ### 新增
