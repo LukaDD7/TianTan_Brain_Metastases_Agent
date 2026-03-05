@@ -1,14 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Medical PDF Inspector Skill
+Medical PDF Inspector Skill - 拟人化层级阅读版
 
-从医疗 PDF 文档中提取文本和高分辨率医学影像。
+支持三层阅读模式：
+1. Phase 1 (看目录): mode="toc" - 返回 PDF 目录结构和章节页码
+2. Phase 2 (做决策): Agent 根据临床问题决定阅读范围
+3. Phase 3 (精读): mode="read_pages" - 仅返回指定页码内容
 """
 
 import os
 import json
-from typing import Optional, Any, List, Dict
+import re
+from typing import Optional, Any, List, Dict, Union
 
 # Pydantic v2
 from pydantic import BaseModel, Field
@@ -26,22 +30,31 @@ from core.skill import BaseSkill, SkillContext, SkillExecutionError
 # =============================================================================
 
 class PDFInspectorInput(BaseModel):
-    """PDF Inspector 的输入参数"""
+    """PDF Inspector 的输入参数 - 支持拟人化层级阅读"""
 
     file_path: str = Field(
         ...,
         description="PDF 文件的绝对或相对路径",
         examples=["workspace/cases/Case1/patient_record.pdf"]
     )
+    mode: str = Field(
+        default="full",
+        description="阅读模式: full=全部解析, toc=获取目录, read_pages=精读指定页码",
+        pattern="^(full|toc|read_pages)$"
+    )
     page_start: int = Field(
         default=1,
-        description="起始页码 (1-indexed)",
+        description="起始页码 (1-indexed, 仅 mode=full/read_pages 时有效)",
         ge=1
     )
     page_end: Optional[int] = Field(
         default=None,
-        description="结束页码 (可选，默认为全部)",
+        description="结束页码 (可选，仅 mode=full/read_pages 时有效)",
         ge=1
+    )
+    pages: Optional[List[int]] = Field(
+        default=None,
+        description="精读模式专用：指定要读取的页码列表，如 [45, 67] 表示读 45-67 页",
     )
     extract_images: bool = Field(
         default=False,
@@ -51,6 +64,18 @@ class PDFInspectorInput(BaseModel):
     class Config:
         json_schema_extra = {
             "examples": [
+                # Phase 1: 看目录
+                {
+                    "file_path": "Guidelines/脑转诊疗指南/Practice_Guideline_metastases/NCCN_CNS.pdf",
+                    "mode": "toc"
+                },
+                # Phase 3: 精读
+                {
+                    "file_path": "Guidelines/脑转诊疗指南/Practice_Guideline_metastases/NCCN_CNS.pdf",
+                    "mode": "read_pages",
+                    "pages": [45, 67]
+                },
+                # 传统模式
                 {
                     "file_path": "workspace/cases/Case1/patient_record.pdf",
                     "page_start": 1,
@@ -67,31 +92,93 @@ class PDFInspectorInput(BaseModel):
 
 class PDFInspector(BaseSkill[PDFInspectorInput]):
     """
-    医疗 PDF 解析器 - 提取文本和高分辨率医学影像。
+    医疗 PDF 解析器 - 拟人化层级阅读版
+
+    支持三层阅读模式，模拟真实医生翻阅指南的行为：
+    - Phase 1 (toc): 先看目录结构，了解有哪些章节
+    - Phase 2 (决策): Agent 根据临床问题决定要读哪些章节
+    - Phase 3 (read_pages): 只读取需要的页面，节省 Token
     """
 
     name = "parse_medical_pdf"
     description = (
-        "从医疗 PDF 文档中提取文本和高分辨率医学影像。"
-        "适用于：解析患者电子病历 (EHR)、提取肿瘤诊疗指南 (NCCN/ESMO/CSCO)、"
-        "识别 CT/MRI 影像图片或 NCCN 决策树流程图。"
-        "注意：提取的图片会保存到 workspace/temp_visuals/ 目录。"
+        "【拟人化层级阅读】从医疗 PDF 文档中提取信息。"
+        "支持三种模式：(1) mode='toc' 获取目录和章节页码；(2) mode='read_pages' 精读指定页码；(3) mode='full' 全部解析。"
+        "适用于：Phase 1 先看指南目录定位目标章节，Phase 3 精读具体内容。"
     )
     input_schema_class = PDFInspectorInput
 
     def __init__(self):
         super().__init__()
-        # 配置重试策略：PDF 解析通常是本地 I/O，不需要重试
         self.retry_config.max_retries = 1
 
     @property
     def input_schema(self) -> Dict[str, Any]:
-        """获取 JSON Schema (用于 LLM Tool 调用)"""
         return self.input_schema_class.model_json_schema()
+
+    def _extract_toc_fallback(self, doc) -> List[Dict[str, Any]]:
+        """
+        Fallback 机制：当 PDF 没有内置书签时，读取前 5 页尝试提取目录
+        使用正则表达式匹配常见的目录格式
+        """
+        toc_entries = []
+        max_pages = min(5, len(doc))
+
+        for p_idx in range(max_pages):
+            page = doc[p_idx]
+            text = page.get_text()
+
+            # 匹配目录格式：章节标题 + 页码
+            # 常见格式：1. Principles of Surgery ............ 12
+            #          1.1 Systemic Therapy ................. 45
+            #          Chapter 2: Radiation Therapy ........ 67
+            patterns = [
+                r'^(\d+(?:\.\d+)*)\.?\s*([^.]+?)\s*\.{5,}\s*(\d+)$',  # 1. Title ....... 12
+                r'^Chapter\s*(\d+):?\s*([^.]+?)\s*\.{5,}\s*(\d+)$',   # Chapter 1: Title .... 12
+                r'^([A-Z])\.?\s*([^.]+?)\s*\.{5,}\s*(\d+)$',           # A. Title ....... 12
+                r'^第(\d+)章[：:]?\s*([^。]+?)\s*\.{5,}\s*(\d+)$',      # 第1章：标题 ....... 12
+                r'^(\d+)[、.]([^。]+?)\s*\.{5,}\s*(\d+)$',            # 1、标题 ....... 12
+            ]
+
+            for line in text.split('\n'):
+                line = line.strip()
+                if not line:
+                    continue
+
+                matched = False
+                for pattern in patterns:
+                    match = re.match(pattern, line, re.MULTILINE)
+                    if match:
+                        groups = match.groups()
+                        if len(groups) >= 3:
+                            try:
+                                page_num = int(groups[-1])
+                                title = ' - '.join(groups[:-1])
+                                toc_entries.append({
+                                    "title": title.strip(),
+                                    "page": page_num,
+                                    "source": "text_analysis"
+                                })
+                                matched = True
+                                break
+                            except ValueError:
+                                continue
+
+        # 去重并按页码排序
+        seen = set()
+        unique_toc = []
+        for entry in toc_entries:
+            key = (entry["title"], entry["page"])
+            if key not in seen:
+                seen.add(key)
+                unique_toc.append(entry)
+
+        unique_toc.sort(key=lambda x: x["page"])
+        return unique_toc
 
     def execute(self, args: PDFInspectorInput, context: Optional[SkillContext] = None) -> str:
         """
-        执行 PDF 解析。
+        执行 PDF 解析 - 支持拟人化层级阅读
 
         Args:
             args: 已验证的输入参数
@@ -99,32 +186,94 @@ class PDFInspector(BaseSkill[PDFInspectorInput]):
 
         Returns:
             JSON 格式的解析结果
-
-        Raises:
-            SkillExecutionError: 执行失败时抛出
         """
         try:
-            # 延迟导入 PyMuPDF (避免模块未安装时的导入错误)
             try:
                 import fitz  # PyMuPDF
             except ImportError:
-                raise SkillExecutionError(
-                    "PyMuPDF 未安装。请运行：pip install pymupdf"
-                )
+                raise SkillExecutionError("PyMuPDF 未安装。请运行：pip install pymupdf")
 
-            # 检查文件是否存在
             if not os.path.exists(args.file_path):
                 raise SkillExecutionError(f"文件不存在：{args.file_path}")
 
-            # 打开 PDF
             doc = fitz.open(args.file_path)
             total_pages = len(doc)
 
-            # 计算页码范围
+            # ==================== Phase 1: 看目录 ====================
+            if args.mode == "toc":
+                # 尝试获取内置书签
+                toc = doc.get_toc()
+
+                if toc:
+                    # 有内置书签，直接使用
+                    chapters = []
+                    for level, title, page_num in toc:
+                        # PyMuPDF 返回的页码是 1-indexed
+                        chapters.append({
+                            "level": level,
+                            "title": title,
+                            "page": page_num
+                        })
+                else:
+                    # Fallback: 使用正则提取前 5 页的目录
+                    chapters = self._extract_toc_fallback(doc)
+
+                doc.close()
+
+                return json.dumps({
+                    "mode": "toc",
+                    "file_path": args.file_path,
+                    "total_pages": total_pages,
+                    "chapters": chapters,
+                    "chapter_count": len(chapters),
+                    "note": "如果没有内置书签，将尝试从文本中提取目录"
+                }, ensure_ascii=False, indent=2)
+
+            # ==================== Phase 2 & 3: 精读指定页码 ====================
+            if args.mode == "read_pages":
+                if not args.pages or len(args.pages) < 2:
+                    raise SkillExecutionError("精读模式需要指定 pages 参数，如 pages=[45, 67]")
+
+                start_page = args.pages[0]
+                end_page = args.pages[1]
+
+                # 边界检查
+                if start_page < 1:
+                    start_page = 1
+                if end_page > total_pages:
+                    end_page = total_pages
+                if start_page > end_page:
+                    start_page, end_page = end_page, start_page
+
+                extracted_pages = []
+                for p_idx in range(start_page - 1, end_page):
+                    page = doc[p_idx]
+                    blocks = page.get_text("blocks")
+                    blocks.sort(key=lambda b: (b[1], b[0]))
+                    page_text = "\n".join(
+                        [b[4].replace("\n", " ").strip() for b in blocks if b[6] == 0]
+                    )
+
+                    extracted_pages.append({
+                        "page_num": p_idx + 1,
+                        "text": page_text
+                    })
+
+                doc.close()
+
+                return json.dumps({
+                    "mode": "read_pages",
+                    "file_path": args.file_path,
+                    "pages_requested": args.pages,
+                    "pages_returned": [p["page_num"] for p in extracted_pages],
+                    "extracted_pages": extracted_pages,
+                    "total_pages_read": len(extracted_pages)
+                }, ensure_ascii=False, indent=2)
+
+            # ==================== 传统模式: 全部解析 ====================
             start_idx = max(0, args.page_start - 1)
             end_idx = min(total_pages, args.page_end) if args.page_end else total_pages
 
-            # 结果容器
             result = {
                 "metadata": doc.metadata,
                 "total_pages": total_pages,
@@ -132,18 +281,13 @@ class PDFInspector(BaseSkill[PDFInspectorInput]):
                 "extracted_visuals": []
             }
 
-            # 确保图片存放目录存在
             vis_dir = os.path.abspath("workspace/temp_visuals")
             if args.extract_images:
                 os.makedirs(vis_dir, exist_ok=True)
 
-            # 逐页解析
             for p_idx in range(start_idx, end_idx):
                 page = doc[p_idx]
-
-                # 1. 文本提取：使用 "blocks" 模式处理双栏排版
                 blocks = page.get_text("blocks")
-                # 按垂直位置 (y0) 和水平位置 (x0) 排序，还原阅读顺序
                 blocks.sort(key=lambda b: (b[1], b[0]))
                 page_text = "\n".join(
                     [b[4].replace("\n", " ").strip() for b in blocks if b[6] == 0]
@@ -157,7 +301,6 @@ class PDFInspector(BaseSkill[PDFInspectorInput]):
                     )
                 })
 
-                # 2. 医学影像提取
                 if args.extract_images:
                     image_list = page.get_images(full=True)
                     for img_idx, img in enumerate(image_list):
@@ -166,7 +309,6 @@ class PDFInspector(BaseSkill[PDFInspectorInput]):
                         image_bytes = base_image["image"]
                         ext = base_image["ext"]
 
-                        # 医学阈值过滤：过滤掉小于 30KB 的页眉页脚 Logo
                         if len(image_bytes) > 30720:
                             img_filename = f"med_vis_p{p_idx + 1}_{img_idx}.{ext}"
                             img_path = os.path.join(vis_dir, img_filename)
@@ -177,15 +319,10 @@ class PDFInspector(BaseSkill[PDFInspectorInput]):
                             result["extracted_visuals"].append({
                                 "page_num": p_idx + 1,
                                 "local_path": img_path,
-                                "hint": (
-                                    "This is a large clinical image. "
-                                    "Recommend using Vision capabilities to read this flowchart or scan."
-                                )
+                                "hint": "This is a large clinical image."
                             })
 
             doc.close()
-
-            # 返回标准 JSON
             return json.dumps(result, ensure_ascii=False, indent=2)
 
         except SkillExecutionError:
@@ -195,29 +332,41 @@ class PDFInspector(BaseSkill[PDFInspectorInput]):
 
 
 # =============================================================================
-# CLI 入口 (向后兼容)
+# CLI 入口
 # =============================================================================
 
 def main():
-    """命令行入口 (向后兼容旧用法)"""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Medical PDF Inspector for Agents")
+    parser = argparse.ArgumentParser(description="Medical PDF Inspector - Hierarchical Reading")
     parser.add_argument("--file_path", required=True, help="Path to the PDF file")
+    parser.add_argument("--mode", default="full", choices=["full", "toc", "read_pages"],
+                        help="Reading mode: full, toc, or read_pages")
+    parser.add_argument("--pages", type=int, nargs=2, default=None,
+                        help="Pages range for read_pages mode, e.g., --pages 45 67")
     parser.add_argument("--page_start", type=int, default=1)
     parser.add_argument("--page_end", type=int, default=None)
     parser.add_argument("--extract_images", action="store_true")
 
     args = parser.parse_args()
 
-    # 使用 Skill 类执行
     inspector = PDFInspector()
-    input_args = PDFInspectorInput(
-        file_path=args.file_path,
-        page_start=args.page_start,
-        page_end=args.page_end,
-        extract_images=args.extract_images
-    )
+
+    if args.mode == "read_pages" and args.pages:
+        input_args = PDFInspectorInput(
+            file_path=args.file_path,
+            mode=args.mode,
+            pages=args.pages,
+            extract_images=args.extract_images
+        )
+    else:
+        input_args = PDFInspectorInput(
+            file_path=args.file_path,
+            mode=args.mode,
+            page_start=args.page_start,
+            page_end=args.page_end,
+            extract_images=args.extract_images
+        )
 
     try:
         result = inspector.execute(input_args)
