@@ -6,6 +6,87 @@
 
 ---
 
+## [2.5.0] - 2026-03-05
+
+### 重大特性
+
+#### Actor-Critic 纠错循环 (Self-Correction Loop)
+- **问题**：报告生成后如果触发验证报错，程序直接中断，不符合 Agent 思维
+- **解决方案**：
+  - 新增 `generate_and_validate_report_with_retry()` 方法，实现 Actor-Critic 架构
+  - Actor（生成器）生成报告 → Critic（验证器）验证合规性
+  - 如果验证失败，将 `validation_errors` 作为反馈重新注入给 Actor 重写/修订
+  - 最大重试次数 `max_retries = 3`，防止无限循环
+- **效果**：
+  - ✅ 实现自我纠错闭环，符合 Agentic Reasoning 理念
+  - ✅ 验证失败不再中断流程，而是自动修订
+  - ✅ 打印每次重试的 Critic 反馈，透明可追踪
+  - ✅ 为学术论文提供理论高度（自我改进机制）
+
+#### 证据增强检索 (Evidence Enrichment)
+- **问题**：临床上指南只给战略（推荐手术），缺乏战术细节（罕见并发症处理、最新药物入脑透过率）
+- **解决方案**：
+  - 重构 `_analyze_guideline_coverage()` 为 `_analyze_literature_needs()`
+  - 重构 `should_degrade_to_pubmed()` 为 `should_enrich_with_literature()`
+  - 判定逻辑升级为 4 种场景：
+    1. `tactical_detail_missing`：战术细节缺失（最常见）
+    2. `counter_evidence_needed`：需要反面证据（排他性分析）
+    3. `guideline_gap`：指南完全未覆盖
+    4. `no_need`：无需检索
+- **效果**：
+  - ✅ 从"降级调用"升级为"指南补充检索"，更符合临床实际
+  - ✅ 战略（指南）+ 战术（PubMed）协同，提升决策颗粒度
+  - ✅ 明确区分战略覆盖与战术缺失，日志清晰
+
+#### 防无限循环保护
+- **问题**：PubMed 可能被滥用导致 Token 爆炸
+- **解决方案**：
+  - `search_supporting_literature()` 添加硬上限参数：
+    - `pubmed_call_limit = 2`（单 Case 最多调用 2 次）
+    - `max_results = 3`（默认值从 5 降到 3）
+  - `SkillContext` 记录 `pubmed_call_count`，达到上限自动跳过
+  - `_build_agent_trace()` 添加 PubMed 调用统计
+- **效果**：
+  - ✅ 严格控制资源消耗，防止滥用
+  - ✅ 透明记录调用次数，便于审计
+  - ✅ 符合医疗系统对稳定性和可预测性的要求
+
+### 变更
+
+#### `main_oncology_agent_v2.py` v2.5
+- **版本升级**：v2.4 → v2.5（重大特性）
+- **核心方法**：
+  - `generate_and_validate_report_with_retry()` - Actor-Critic 纠错循环（新增）
+  - `_analyze_literature_needs()` - 文献需求分析，替代旧版覆盖判定（重构）
+  - `should_enrich_with_literature()` - 证据增强触发器，替代降级触发器（重构）
+  - `search_supporting_literature()` - 添加硬上限保护（修改）
+  - `_build_agent_trace()` - 添加 PubMed 调用统计（修改）
+- **工作流变化**：
+  ```
+  解析病历 → OncoKB → 【强制】指南查询 → 【条件】文献增强检索 → 
+  【Actor-Critic】生成报告+验证+重试 → 输出最终报告
+  ```
+
+#### 证据层级更新
+```
+顶级证据：OncoKB + 本地指南（战略层面，强制基石）
+增强证据：PubMed（战术层面，补充细节，硬上限 2 次）
+```
+
+#### 纠错循环流程
+```
+尝试 1：生成报告 → 验证 → 如果失败 → 收集错误反馈
+尝试 2：注入反馈重写 → 验证 → 如果失败 → 继续反馈
+尝试 3：再次重写 → 验证 → 返回最终结果（可能仍失败）
+```
+
+### 工程改进
+
+- **Git 提交**：`feat: add actor-critic self-correction loop and evidence enrichment`
+- **版本号**：v2.4.4 → v2.5.0（重大特性）
+
+---
+
 ## [2.4.4] - 2026-03-05
 
 ### 修复

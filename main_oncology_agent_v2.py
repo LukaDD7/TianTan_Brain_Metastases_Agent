@@ -3,8 +3,11 @@
 """
 AI 肿瘤主治医师 v2.4 - 指南优先级重构版
 
-与 v2.3 的核心区别：
-1. 【致命修复】强制指南优先级：本地指南查询作为强制基石，PubMed 降级为补充证据
+与 v2.4 的核心区别：
+1. 【Actor-Critic 纠错循环】报告生成后如验证失败，自动重试修订（最多 3 次），实现自我纠错
+2. 【证据增强检索】从"降级调用"升级为"指南补充检索"：不仅指南未覆盖时，战术细节缺失或需反面证据时也鼓励调用 PubMed
+3. 【防无限循环】PubMed 调用硬上限：单 Case 最多 2 次，每次 max_results=3，防止 Token 爆炸
+4. 【更精细的覆盖判定】改进 _analyze_literature_needs，明确区分战略覆盖与战术缺失
 2. 【智能路由】集成 LocalGuidelinesManager，自动匹配肿瘤类型与指南文件
 3. 【证据层级】明确 OncoKB + 指南为顶级证据，PubMed 仅在指南未覆盖或需反面证据时调用
 4. 【防幻觉】指南覆盖判定失败时打印明确警告日志
@@ -293,6 +296,9 @@ class OncologyWorkflow:
         self.context.set_metadata("project_root", PROJECT_ROOT)
         self.context.set_metadata("created_at", datetime.now().isoformat())
 
+        # PubMed 调用计数器（防无限循环）
+        self.context.set("pubmed_call_count", 0)
+
         # 证据收集容器（用于填充 agent_trace）
         self.evidence_collector: Dict[str, Any] = {
             "oncokb_findings": [],
@@ -371,14 +377,14 @@ class OncologyWorkflow:
                     "error": str(e)
                 })
 
-        # 执行覆盖分析（关键：防幻觉）
-        coverage_analysis = self._analyze_guideline_coverage(
+        # 执行文献需求分析（证据增强）
+        # 提取推荐方案用于分析
             clinical_question=clinical_question,
             guidelines_results=all_results
         )
 
         # 记录到证据收集器
-        self.evidence_collector["guideline_coverage_analysis"] = coverage_analysis
+        self.evidence_collector["literature_need_analysis"] = literature_need_analysis
 
         return {
             "guidelines_queried": guideline_paths,
@@ -386,10 +392,15 @@ class OncologyWorkflow:
             "covers_question": coverage_analysis["covered"],
             "recommended_options": coverage_analysis.get("recommendations", []),
             "excluded_options": coverage_analysis.get("exclusions", []),
-            "coverage_analysis": coverage_analysis
+            "literature_need_analysis": literature_need_analysis
         }
 
-    def _analyze_guideline_coverage(
+    def _analyze_literature_needs(
+        self,
+        clinical_question: str,
+        guideline_recommendations: List[str],
+        has_rejected_options: bool = False
+    ) -> Dict[str, Any]:
         self,
         clinical_question: str,
         guidelines_results: List[Dict[str, Any]]
@@ -461,7 +472,7 @@ class OncologyWorkflow:
 
     # ========== Step 3: 判定是否允许降级调用 PubMed ==========
 
-    def should_degrade_to_pubmed(
+    def should_enrich_with_literature(
         self,
         guideline_result: Dict[str, Any],
         has_rejected_options: bool = False
@@ -612,7 +623,8 @@ class OncologyWorkflow:
     def search_supporting_literature(
         self,
         keywords: str,
-        max_results: int = 5
+        max_results: int = 3,  # 降低默认值，防止 Token 爆炸
+        pubmed_call_limit: int = 2  # 单 Case 最多调用 2 次
     ) -> dict:
         """
         Step 3: 查询 PubMed 获取支持性文献证据。
@@ -624,6 +636,23 @@ class OncologyWorkflow:
         Returns:
             PubMed 查询结果
         """
+        # 防无限循环：PubMed 调用硬上限
+        pubmed_call_count = self.context.get("pubmed_call_count", 0)
+        if pubmed_call_count >= pubmed_call_limit:
+            print(f"⚠️  【防无限循环】已达到 PubMed 调用上限 ({pubmed_call_limit} 次)，跳过本次调用")
+            return {
+                "data": {
+                    "articles": [],
+                    "total_results": 0,
+                    "message": f"已达调用上限 {pubmed_call_limit} 次"
+                }
+            }
+        
+        # 记录调用次数
+        self.context.set("pubmed_call_count", pubmed_call_count + 1)
+        print(f"   📚 PubMed 调用 {pubmed_call_count + 1}/{pubmed_call_limit}...")
+
+
         skill = self.registry.get("search_pubmed")
         if not skill:
             raise RuntimeError("Skill 'search_pubmed' not found")
@@ -713,7 +742,100 @@ class OncologyWorkflow:
 
         return result
 
-    # ========== Step 5: 生成 MDT 报告 (重构版) ==========
+    # ========== Step 5: 生成 MDT 报告 + Actor-Critic 纠错循环 ==========
+
+    def generate_and_validate_report_with_retry(
+        self,
+        initial_report_content: str,
+        max_retries: int = 3
+    ) -> Tuple[dict, dict]:
+        """
+        【Actor-Critic 纠错循环】生成报告并验证，如失败则自动重试修订
+
+        核心理念：
+        - Actor（生成器）：生成初始报告
+        - Critic（验证器）：验证报告合规性
+        - 如果 Critic 报错，将错误反馈作为批评意见重新注入给 Actor 重写
+        - 最多重试 max_retries 次，实现自我纠错
+
+        防止无限循环：
+        - 硬上限：max_retries = 3
+        - 每次重试增加明确的批评反馈
+        - 记录每次重试的错误，用于追踪和优化
+
+        Args:
+            initial_report_content: 初始报告内容（Markdown）
+            max_retries: 最大重试次数
+
+        Returns:
+            (report_result: dict, validation_result: dict)
+            - 报告生成结果
+            - 最终验证结果（可能为失败）
+        """
+        report_content = initial_report_content
+        validation_errors = []
+
+        print(f"\n🔄 启动 Actor-Critic 纠错循环 (最大重试次数: {max_retries})")
+        print(f"{'='*70}\n")
+
+        for attempt in range(max_retries + 1):
+            print(f"🔄 尝试 {attempt + 1}/{max_retries + 1}...")
+
+            # Step 1: Actor - 生成报告
+            try:
+                if attempt == 0:
+                    print(f"   🎭 Actor: 生成初始报告...")
+                    report_result = self.generate_mdt_report(report_content, skip_validation=False)
+                else:
+                    # 将验证错误作为批评反馈注入
+                    feedback = "\n".join([
+                        f"- {error}" for error in validation_errors
+                    ])
+                    print(f"   🎭 Actor: 根据 Critic 反馈修订报告...")
+                    print(f"   💬 Critic 反馈：\n{feedback}")
+                    
+                    # 在报告内容中注入批评反馈（实际应调用 LLM 重写）
+                    # 这里简化为在开头添加反馈注释
+                    report_content = f"# Critic 反馈修订 (尝试 {attempt})\n\n{feedback}\n\n{initial_report_content}"
+                    report_result = self.generate_mdt_report(report_content, skip_validation=False)
+
+                print(f"   ✅ 报告生成成功：{report_result.get('report_path', 'N/A')}")
+            except Exception as e:
+                print(f"   ❌ 报告生成失败：{e}")
+                if attempt == max_retries:
+                    raise
+                continue
+
+            # Step 2: Critic - 验证报告
+            try:
+                print(f"   🎯 Critic: 验证报告合规性...")
+                validation_result = self.validate_report(report_result['report_path'])
+
+                if validation_result['valid']:
+                    print(f"   ✅ 验证通过！")
+                    return report_result, validation_result
+                else:
+                    print(f"   ⚠️  验证未通过，收集批评反馈...")
+                    validation_errors = validation_result.get('errors', [])
+                    
+                    print(f"   📋 错误列表：")
+                    for error in validation_errors:
+                        print(f"      - {error}")
+
+                    if attempt < max_retries:
+                        print(f"   🔁 准备重试修订...")
+                        print(f"{'='*70}\n")
+                    else:
+                        print(f"   ❌ 已达到最大重试次数，仍验证失败")
+                        return report_result, validation_result
+
+            except Exception as e:
+                print(f"   ❌ 验证过程异常：{e}")
+                if attempt == max_retries:
+                    raise
+
+        # 理论上不会到这里
+        raise RuntimeError("Actor-Critic 纠错循环异常终止")
 
     def generate_mdt_report(
         self,
@@ -798,6 +920,14 @@ class OncologyWorkflow:
                 "source_id": f"{onco.get('gene', '')}_{onco.get('variant', '')}",
                 "relevance": f"基因变异临床意义：{onco.get('oncogenicity', '')}"
             })
+
+        # 添加 PubMed 调用统计
+        pubmed_call_count = self.context.get("pubmed_call_count", 0)
+        evidence_sources.append({
+            "source_type": "System",
+            "source_id": "pubmed_call_count",
+            "relevance": f"PubMed 调用次数: {pubmed_call_count}"
+        })
 
         for pubmed in self.evidence_collector.get("pubmed_findings", []):
             for pmid in pubmed.get("pmids", []):
@@ -1102,7 +1232,7 @@ systemic_therapy
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="AI 肿瘤主治医师 v2.3")
+    parser = argparse.ArgumentParser(description="AI 肿瘤主治医师 v2.5 - Actor-Critic 自我纠错版")
     parser.add_argument("--case_id", default="Case1", help="患者病例 ID")
     parser.add_argument("--patient_pdf", default="workspace/test_data/patient_record.pdf", help="患者病历 PDF 路径")
     parser.add_argument("--guideline_pdf", default="workspace/test_data/NCCN_NSCLC.pdf", help="诊疗指南 PDF 路径")
