@@ -1,101 +1,139 @@
-# TianTan Brain Metastases Agent 项目指南
+# TianTan Brain Metastases Agent - AI 协作与开发协议 (Claude Code Protocol)
 
-## 1. 项目背景与目标
-本项目是一个用于肿瘤脑转移辅助决策的医疗多智能体系统。核心任务是处理长文本电子病历、多模态医疗数据，并进行严谨的循证推理。
+## 1. 核心宣言 (Manifesto)
+**"We build intellectual Agent, not LLM with skill."**
+本项目致力于打造具备高度自主规划能力（Autonomous Planning）的医疗多智能体系统，而非被死板代码限制的执行器。
 
-## 2. 架构核心 (Architecture Core)
+## 2. 最高协作铁律 (The Iron Laws of AI Collaboration)
 
-### 2.1 Deep Agent 框架（核心框架）
-* **使用 `deepagents.create_deep_agent`** 作为核心入口
-* 框架基于 LangGraph runtime，提供内置的：
-  - Skills 支持（SKILL.md 目录结构）
-  - File System 工具
-  - Human-in-the-loop (interrupt_on)
-  - Long-term memory (checkpointer)
+### 2.1 严禁无头测试 (No Headless Execution)
+本系统（特别是 `interactive_main.py`）包含流式输出与人机交互 (HITL) 环节。
+**未经人类显式授权，AI 助手严禁在后台使用 `Bash` 自动运行或测试本系统的主程序。**
+所有的系统测试、Bug 复现，必须由人类在独立的交互式终端中手动执行，并将相关日志反馈给 AI。
 
-### 2.2 BaseSkill 范式
-* 所有工具必须继承自 `core/skill.py` 中的 `BaseSkill`
-* 每个 Skill 必须显式定义 Pydantic Input Schema
-* Skill 的 `description` 必须极其详尽（这是给 Agent 大脑看的说明书）
+### 2.2 严禁引用伪造 (No Citation Fabrication)
+医疗报告中的所有引用必须是**物理可追溯**的真实证据：
+- **OncoKB 引用**：必须通过 API 查询验证 `LEVEL` 和 `oncogenic` 字段
+- **PubMed 引用**：必须通过 E-utilities API 验证 PMID 真实存在且摘要支持声称
+- **指南引用**：必须通过 `grep`/`cat` 实际检索，严禁使用预训练知识脑补
+- **格式红线**：指南引用必须使用 `[Local: <文件>, Line <行号>]` 或 `[Local: <文件>, Section: <章节>]`，严禁使用 `[Local: ..., Page X]`（除非使用 Visual Probe 渲染）
 
-### 2.3 工具分层
-| 层级 | 说明 |
-|------|------|
-| Deep Agent | 核心框架 (create_deep_agent) |
-| BaseSkill | 原子化工具 (PDF Inspector, OncoKB, PubMed) |
-| LangChain @tool | 封装 BaseSkill 为 LangChain Tool |
+违反此铁律将导致严重的医疗安全风险。
 
-### 2.4 医疗严谨性
-* 在处理诊断、用药建议时，必须调用 `OncoKB` 或 `PubMed` 寻找依据
-* 禁止凭空捏造基因变异信息或药物剂量
+### 2.3 文件级审批流 (File-by-file Approval Pipeline)
+针对任何新功能开发、重构或 Bug 修复，必须严格遵循以下”停-等-行”协议：
+- **Phase 1 (方案)**：AI 输出修改方案或架构思路。等待人类回复 `Approve`。
+- **Phase 2 (认知合约)**：如果涉及新 Skill，AI 仅输出 `metadata.json` 和 `SKILL.md`。等待人类 `Approve`。
+- **Phase 3 (代码)**：AI 输出具体的 `.py` 代码修改。
+**严禁 AI 越级执行，严禁一次性擅自修改多个关键文件。**
 
-## 3. Claude Code 与项目的关系
+### 2.4 架构守护者原则
+在阅读或修改代码前，AI 必须理解当前**扁平化架构**：
+- **单一主控 Agent**：无 Subagents，所有逻辑由主 Agent 直接处理
+- **4 个挂载 Skills**：pdf-inspector、universal_bm_mdt_skill、oncokb_query_skill、pubmed_search_skill
+- **CompositeBackend**：FilesystemBackend (sandbox) + StoreBackend (/memories/ 持久化)
+- **Execute 工具**：自定义 shell 执行能力，带白名单安全机制
 
-### 3.1 角色定位
-* **Claude Code** 是本项目的**开发助手**和**代码审查者**
-* **Deep Agent (qwen3.5-plus)** 是运行时的**推理引擎**
+任何试图添加 Subagents 或恢复旧三层架构的改动都将被驳回。
 
-### 3.2 协作模式
-1. Claude Code 负责：编写代码、调试、代码审查、提交
-2. Deep Agent 负责：运行时推理、Tool-calling、报告生成
+## 3. 架构核心与入口 (Architecture & Entrypoint)
 
-### 3.3 调试时的分工
-* **代码逻辑错误** → Claude Code 修复
-* **Agent 行为异常** → 调整 System Prompt 或 Tool 定义
-* **验证失败** → 检查 validate_report.py 的检查规则
+### 3.1 主入口声明
+目前系统的唯一合法主入口为：**`interactive_main.py`**。
+它是基于 DeepAgents 和 LangGraph 构建的**扁平化架构**单一 Agent 系统，无 Subagents。
 
-## 4. 代码规范 (Coding Standards)
-* 所有 Python 代码使用 Type Hints
-* 使用 Pydantic v2 进行输入验证
+### 3.2 运行时架构
 
-## 5. 虚拟环境 (Virtual Environment)
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    interactive_main.py                      │
+│              (单一 Agent 扁平化架构 v5.0)                     │
+├─────────────────────────────────────────────────────────────┤
+│  L3 System Prompt (主控智能体认知协议)                        │
+│  ├── 证据主权准则                                           │
+│  ├── 深钻机制 (Deep Drill Protocol)                         │
+│  └── 物理溯源引用协议                                        │
+├─────────────────────────────────────────────────────────────┤
+│  Tools: execute (shell 执行，带白名单)                       │
+├─────────────────────────────────────────────────────────────┤
+│  Skills (4个挂载技能):                                       │
+│  ├── /skills/pdf-inspector          (PDF 视觉探针)          │
+│  ├── /skills/universal_bm_mdt_skill (MDT 报告生成协议)       │
+│  ├── /skills/oncokb_query_skill     (OncoKB 基因查询)        │
+│  └── /skills/pubmed_search_skill    (PubMed 文献检索)        │
+├─────────────────────────────────────────────────────────────┤
+│  Backend: CompositeBackend                                   │
+│  ├── FilesystemBackend (sandbox 隔离)                       │
+│  └── StoreBackend (/memories/ 跨会话持久化)                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**注意：** 无 L2 Subagents，无三层架构。主 Agent 直接调度 Skills 执行任务。
+
+### 3.3 角色分工
+* **Claude Code**：本项目的**开发助手**和**架构审查者**。
+* **L3 主控 Agent (Qwen)**：运行时的**单一智能体**，直接读取 Skills 并执行。
+* **Skills**：原子化能力单元，通过 `execute` 工具被主 Agent 调用。
+
+## 4. 环境与测试规范 (Environment & Commands)
+
+### 4.1 虚拟环境
 * **项目专用环境**：`tiantanBM_agent`
-* **启动命令**：`conda run -n tiantanBM_agent python <script.py>`
-* **依赖安装**：`conda run -n tiantanBM_agent pip install pandas openpyxl`
+* **底层沙盒目录**：`workspace/sandbox/`（所有 L1 抓取的大型 JSON/PDF 必须写入此目录）
 
-## 6. 常用调试命令 (Commands)
-* 运行批量评估：`conda run -n tiantanBM_agent python scripts/run_batch_eval.py --max_cases 1`
-* 运行全量测试：`pytest tests/`
-* 测试单个 Skill：`python -m core.skill_tester [skill_name]`
+### 4.2 常用命令 (仅供人类在独立终端执行)
+* **交互式查房测试**：`conda run -n tiantanBM_agent python interactive_main.py`
+* **运行批量评估**：`conda run -n tiantanBM_agent python scripts/run_batch_eval.py --max_cases 1`
+* **依赖安装**：`conda run -n tiantanBM_agent pip install <package>`
 
-## 7. 联网与检索规范 (Web Access Rules)
-* **绝对禁止使用本地无头浏览器（如 Puppeteer）**
-* **统一使用 Jina Reader 渲染**：将目标网址拼接在 `https://r.jina.ai/` 之后
+## 5. 联网与检索规范 (Web Access Rules)
+* **绝对禁止使用本地无头浏览器（如 Puppeteer）**。
+* **统一使用 Jina Reader 渲染**：如果需要 AI 助手读取网页，请将目标网址拼接在 `https://r.jina.ai/` 之后。
 
-## 8. 项目状态与版本管理规范 (Project Management Rules)
-* **状态对齐**：在开始任何新的代码编写或重构前，必须先读取 `ROADMAP.md`
-* **主动打卡**：每完成一个子任务，必须主动修改 `ROADMAP.md`
-* **原子化提交**：使用 `git add .` 和 `git commit -m "..."`
+## 6. 项目状态与版本管理 (Project Management Rules)
+* **状态对齐**：在开始任何新的代码编写或重构前，必须先读取 `ROADMAP.md` 和 `CHANGELOG.md`。
+* **主动打卡**：每完成一个子任务，必须主动修改 `ROADMAP.md`。
+* **原子化提交**：功能确认后，使用 `git add .` 和 `git commit -m "..."`，保持 Git Log 纯净。
 
-## 9. Agent 启动序列 (Boot Sequence)
-每次新会话启动或发生记忆压缩后，在回答用户任何问题前，你**必须**：
-1. 运行 `tree skills/` 获取所有可用的原子技能清单
-2. 检查 main_oncology_agent_v2.py 是否使用 Deep Agent 架构
-3. 确认代码与文档一致
+## 7. 技能调优与 Eval 规范 (Skill Tuning & Eval)
 
-## 10. 技能调优与测试规范 (Skill Tuning & Testing Rules)
+### 7.1 触发器调优 (Trigger Tuning)
+每个 Skill 在 `metadata.json` 和 `SKILL.md` 中的 `description` 必须被写成**强触发器**：明确说明”输入什么、输出什么、什么时候必须调用它”。
 
-### 10.1 Trigger Tuning
-每个 Skill 的 `description` 必须重写为**强触发器**：
-- **【触发条件】**：当且仅当...（明确的触发边界）
-- **【查询范围】**：用于...
-- **【医疗严谨性】**：领域特定约束
-
-### 10.2 Clean Context
-批量测试时必须遵守**上下文隔离原则**：
-- **每个 Case 必须重新实例化** Agent
-- **每个 Case 必须创建全新的** `SkillContext(session_id=case_id)`
-- **使用不同的 thread_id** 避免状态污染
-
-### 10.3 Eval 断言系统
-批量评估必须包含自动化断言检查：
-- 检查报告中是否包含 `rejected_alternatives`
+### 7.2 Eval 断言系统 (Assertion System)
+批量评估 (`run_batch_eval.py`) 必须包含自动化断言检查，以验证 `tiantan_mdt_report_skill` 的执行效果：
+- 检查报告中是否包含 `rejected_alternatives` (排他性论证)
 - 检查 `systemic_management` 是否包含 `peri_procedural_holding_parameters`
-- 检查是否有违禁词"术前准备"
-- 检查是否有 NCCN/EANO citation
+- 检查是否存在违禁词（如含糊的”术前准备”）
+- 检查是否严格遵循 `[Citation: xxx, Page y]` 格式红线
 
-### 10.4 结果落盘
-评估结果必须自动生成结构化报告：
-- **CSV 格式**：包含每个 Case 的 Pass/Fail 状态
-- **时间戳**：记录测试时间和耗时
-- **报告路径**：保存生成的报告文件路径
+### 7.3 引用验证规范 (Citation Validation)
+所有临床报告必须经过引用验证，确保无证据伪造：
+
+**OncoKB 引用验证：**
+- 格式：`[OncoKB: Level X]` 或 `[OncoKB: Oncogenic]`
+- 必须验证 `highestSensitiveLevel` 与报告声称一致
+- 必须验证 `oncogenic` 字段与报告声称一致
+- 引用验证 Skill 位置：`~/.claude/skills/citation_validator_oncokb/`
+
+**PubMed 引用验证：**
+- 格式：`[PubMed: PMID XXXXXXXX]`
+- 必须验证 PMID 真实存在且可检索
+- 必须验证摘要内容支持报告声称
+- 引用验证 Skill 位置：`~/.claude/skills/citation_validator_pubmed/`
+
+**本地指南引用验证：**
+- 格式：`[Local: <文件名>, Line <行号>]` 或 `[Local: <文件名>, Section: <章节标题>]`
+- 严禁使用 `[Local: ..., Page X]` 格式（除非使用 Visual Probe）
+- 必须通过 `grep -n` 或 `cat` 实际检索验证
+
+**验证失败处理：**
+- 发现伪造/错误引用 → 标记为 ❌ FAIL
+- 必须提供修正建议
+- 严重错误必须阻止报告生成
+
+## 8. 启动序列 (Boot Sequence)
+每次新会话启动，在回答用户任何问题前，Claude Code 你**必须静默执行以下思考**：
+1. 读取并理解 `ARCHITECTURE.md`。
+2. 读取 `CHANGELOG.md` 确认最新进度。
+3. 牢记绝不能在后台运行 `interactive_main.py` 或测试脚本。
