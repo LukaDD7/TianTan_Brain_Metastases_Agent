@@ -1,0 +1,33 @@
+{
+  "name": "oncokb_query_skill",
+  "version": "1.0.0",
+  "description": "OncoKB基因突变临床注释查询技能 - 查询基因突变的靶向治疗敏感性、耐药信息和证据等级",
+  "category": "clinical_decision_support",
+  "author": "TianTan Brain Metastases Agent",
+  "entry_point": "SKILL.md",
+  "tools": [
+    "oncokb_annotate_mutation",
+    "oncokb_annotate_structural_variant",
+    "oncokb_annotate_cna"
+  ],
+  "triggers": [
+    "基因突变",
+    "V600E",
+    "L858R",
+    "融合基因",
+    "fusion",
+    "扩增",
+    "amplification",
+    "缺失",
+    "deletion",
+    "靶向治疗",
+    " OncoKB"
+  ],
+  "permissions": [
+    "read:patients",
+    "read:genomics"
+  ],
+  "required_env": [
+    "ONCOKB_API_KEY"
+  ]
+}

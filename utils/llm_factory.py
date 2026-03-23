@@ -16,15 +16,13 @@ def get_brain_client_langchain():
         raise ValueError("❌ MISSING: DEEPSEEK_API_KEY in env.")
     
     return ChatOpenAI(
-        model=config.BRAIN_MODEL_NAME, # e.g. "deepseek-reasoner" or "deepseek-v3.2"
+        model=config.BRAIN_MODEL_NAME,
         api_key=config.BRAIN_API_KEY,
         base_url=config.BRAIN_BASE_URL,
-        temperature=0.6, # 推理模型通常建议稍微高一点的 temp 以激发思维链，或者保持 0
-        model_kwargs={
-            "extra_body": {
-                "enable_thinking": True  # 🔥 关键：开启阿里云/DeepSeek 的推理模式
-            }
-        }
+        temperature=0.6,
+        extra_body={  # 直接传递，不要在 model_kwargs 中包装
+            "enable_thinking": True
+        },
     )
 
 def get_vlm_client():

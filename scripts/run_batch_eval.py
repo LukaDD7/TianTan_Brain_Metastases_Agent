@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-批量评估脚本 (Batch Evaluation Script) - 真实调用版
+批量评估脚本 (Batch Evaluation Script) - V3 三层架构版
 
 运行：conda run -n tiantanBM_agent python scripts/run_batch_eval.py --max_cases 1
 """
@@ -41,117 +41,94 @@ print("  GUIDELINES:   %s" % GUIDELINES_DIR)
 print("=" * 80 + "\n")
 
 
-def build_raw_clinical_text(row) -> str:
-    """从 Excel 行构建完整的原始临床病历文本"""
-    fields = []
+def build_patient_data(row, gene_symbol: Optional[str], gene_variant: Optional[str]) -> Dict[str, Any]:
+    """从 Excel 行构建患者数据字典"""
+    patient_data = {
+        "chief_complaint": "脑转移",
+        "tumor_type": "",
+        "gene_variants": [],
+        "prior_treatments": [],
+        "question": "请提供脑转移诊疗的多学科会诊意见"
+    }
 
-    field_names = [
-        "主诉", "现病史", "入院诊断", "出院诊断",
-        "头部MRI", "胸部CT", "腰椎MRI", "腹盆CT", "颈椎MRI",
-        "既往史", "诊疗经过", "病理诊断", "年龄", "性别", "住院号", "入院时间", "出院时间"
-    ]
-
-    for field in field_names:
-        val = row.get(field)
-        if pd.notna(val) and str(val).strip():
-            fields.append("【%s】\n%s" % (field, val))
-
-    return "\n\n".join(fields)
-
-
-def save_text_as_pdf(raw_text: str, case_id: str, output_dir: Path) -> Path:
-    """将原始临床文本转换为 PDF"""
-    from reportlab.lib.pagesizes import A4
-    from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-    from reportlab.lib.styles import getSampleStyleSheet
-    from reportlab.lib.units import inch
-
-    case_dir = output_dir / case_id
-    case_dir.mkdir(parents=True, exist_ok=True)
-
-    pdf_path = case_dir / "patient_record_raw.pdf"
-
-    doc = SimpleDocTemplate(str(pdf_path), pagesize=A4)
-    story = []
-    styles = getSampleStyleSheet()
-
-    # 分段添加
-    lines = raw_text.split('\n')
-    for line in lines:
-        if line.strip():
-            p = Paragraph(line, styles['Normal'])
-            story.append(p)
-            story.append(Spacer(1, 0.05 * inch))
-
-    doc.build(story)
-    print("  [D] 原始病历已转换为 PDF: %s" % pdf_path)
-    return pdf_path
-
-
-def select_guideline_for_tumor_type(row) -> str:
-    """根据病历中的肿瘤类型选择合适的指南"""
-    diagnosis_fields = ["出院诊断", "入院诊断", "病理诊断", "既往史"]
-    diagnosis_text = ""
-
+    # 提取肿瘤类型
+    diagnosis_fields = ["出院诊断", "入院诊断", "病理诊断"]
     for field in diagnosis_fields:
         val = row.get(field)
         if pd.notna(val):
-            diagnosis_text += str(val) + " "
+            diagnosis_text = str(val)
+            if "黑色素" in diagnosis_text:
+                patient_data["tumor_type"] = "黑色素瘤"
+                break
+            elif "肺" in diagnosis_text:
+                patient_data["tumor_type"] = "肺癌"
+                break
 
-    # 黑色素瘤优先
-    if "黑色素" in diagnosis_text:
-        for pdf in GUIDELINES_DIR.rglob("*.pdf"):
-            if "EANO" in pdf.name:
-                return str(pdf)
+    # 基因信息
+    if gene_symbol and gene_variant:
+        patient_data["gene_variants"] = [{"gene": gene_symbol, "variant": gene_variant}]
 
-    # 默认选择第一个指南
-    pdfs = list(GUIDELINES_DIR.rglob("*.pdf"))
-    if pdfs:
-        return str(pdfs[0])
+    # 既往治疗
+    prior_tx = row.get("既往治疗", "")
+    if pd.notna(prior_tx) and str(prior_tx).strip():
+        patient_data["prior_treatments"] = [str(prior_tx)]
 
-    raise RuntimeError("未找到任何指南文件")
+    return patient_data
 
 
-def run_real_workflow(case_id: str, patient_pdf_path: str, guideline_path: str,
-                       gene_symbol: Optional[str], gene_variant: Optional[str]) -> Dict[str, Any]:
-    """真实调用 main_oncology_agent_v2.py"""
+def run_real_workflow(
+    case_id: str,
+    patient_data: Dict[str, Any],
+    model_name: str = "qwen3.5-plus"
+) -> Dict[str, Any]:
+    """
+    真实调用 main_oncology_agent_v3.py (三层架构)
+
+    Args:
+        case_id: 病例 ID
+        patient_data: 患者数据字典
+        model_name: 模型名称
+
+    Returns:
+        执行结果
+    """
     print("\n" + "=" * 80)
-    print("  [W] 真实调用 main_oncology_agent_v2.py 主控大脑")
+    print("  [W] 真实调用 main_oncology_agent_v3.py 主控大脑 (三层架构)")
     print("=" * 80)
 
     # 读取配置
-    import config
-    print("  [M] 使用模型: %s" % config.BRAIN_MODEL_NAME)
-    print("  [M] API Key 已配置: %s" % ("是" if config.BRAIN_API_KEY else "否"))
+    try:
+        import config
+        print("  [M] 使用模型：%s" % (model_name or config.BRAIN_MODEL_NAME))
+        print("  [M] API Key 已配置：%s" % ("是" if getattr(config, 'BRAIN_API_KEY', None) else "否"))
+    except ImportError:
+        print("  [W] config 模块未找到，使用默认模型")
 
-    # 导入主工作流
-    from main_oncology_agent_v2 import run_full_workflow
+    # 导入 v3 主工作流
+    from main_oncology_agent_v3 import run_mdt_consultation
 
-    print("\n  [I] 准备调用工作流...")
-    print("     患者病历: %s" % patient_pdf_path)
-    print("     指南文件: %s" % guideline_path)
+    print("\n  [I] 准备调用 MDT 会诊...")
+    print("     患者肿瘤类型：%s" % patient_data.get("tumor_type", "未知"))
+    print("     基因变异：%s" % patient_data.get("gene_variants", []))
 
     start_time = time.time()
 
     try:
-        result = run_full_workflow(
-            case_id=case_id,
-            patient_pdf_path=patient_pdf_path,
-            guideline_pdf_path=guideline_path,
-            gene_symbol=gene_symbol,
-            gene_variant=gene_variant,
-            tumor_type=None,
-            literature_keywords=None
+        # 调用 v3 入口函数
+        result = run_mdt_consultation(
+            patient_data=patient_data,
+            sandbox_root=str(WORKSPACE_DIR / "sandbox"),
+            model=model_name or "qwen3.5-plus"
         )
 
         elapsed_time = time.time() - start_time
-        print("\n  [T] 工作流执行完成，耗时: %.2f 秒" % elapsed_time)
+        print("\n  [T] 工作流执行完成，耗时：%.2f 秒" % elapsed_time)
 
         return {"success": True, "elapsed_time": elapsed_time, "result": result}
 
     except Exception as e:
         elapsed_time = time.time() - start_time
-        print("\n  [X] 工作流执行失败: %s" % str(e))
+        print("\n  [X] 工作流执行失败：%s" % str(e))
         import traceback
         traceback.print_exc()
 
@@ -163,8 +140,8 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
     import pandas as pd
 
     print("\n" + "=" * 80)
-    print("  [H] TianTan Brain Metastases Agent - 真实调用批量评估")
-    print("  全量原始文本 | 真实 LLM 调用 | 严格判定")
+    print("  [H] TianTan Brain Metastases Agent V3 - 真实调用批量评估")
+    print("  三层架构 | 双 Subagent 协同 | Actor-Critic 审查")
     print("=" * 80 + "\n")
 
     try:
@@ -178,6 +155,13 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
     cases_to_test = min(max_cases, len(df))
     print("  [I] 计划测试 %d 个病例...\n" % cases_to_test)
 
+    # 尝试读取 config 获取模型名
+    try:
+        import config
+        model_name = getattr(config, 'BRAIN_MODEL_NAME', 'qwen3.5-plus')
+    except ImportError:
+        model_name = 'qwen3.5-plus'
+
     for idx in range(cases_to_test):
         row = df.iloc[idx]
         case_id = row.get("id", "Case%d" % (idx + 1))
@@ -188,34 +172,6 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
 
         start_time = time.time()
 
-        # 构建原始临床病历
-        print("\n" + "=" * 80)
-        print("  [P0] 构建原始临床病历文本")
-        print("=" * 80)
-
-        raw_clinical_text = build_raw_clinical_text(row)
-
-        print("\n  [C] 【原始临床病历文本前 500 字符】")
-        print("  " + "-" * 60)
-        print("  %s" % raw_clinical_text[:500])
-        print("  ..." if len(raw_clinical_text) > 500 else "")
-        print("  总长度: %d 字符" % len(raw_clinical_text))
-
-        # 转换为 PDF
-        patient_pdf_path = save_text_as_pdf(raw_clinical_text, case_id, WORKSPACE_DIR)
-
-        # 选择指南
-        print("\n" + "=" * 80)
-        print("  [P1] 选择合适的指南")
-        print("=" * 80)
-
-        try:
-            guideline_path = select_guideline_for_tumor_type(row)
-            print("  [OK] 选择的指南: %s" % Path(guideline_path).name)
-        except Exception as e:
-            print("  [X] 选择指南失败: %s" % e)
-            continue
-
         # 提取基因信息
         gene_symbol = None
         gene_variant = None
@@ -225,15 +181,19 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
         if pd.notna(expected_gene) and pd.notna(expected_variant):
             gene_symbol = str(expected_gene)
             gene_variant = str(expected_variant)
-            print("\n  [G] 基因信息: %s %s" % (gene_symbol, gene_variant))
+            print("\n  [G] 基因信息：%s %s" % (gene_symbol, gene_variant))
+
+        # 构建患者数据
+        print("\n  [P] 构建患者数据...")
+        patient_data = build_patient_data(row, gene_symbol, gene_variant)
+        print("     肿瘤类型：%s" % patient_data.get("tumor_type"))
+        print("     基因变异：%s" % patient_data.get("gene_variants"))
 
         # 真实调用
         workflow_result = run_real_workflow(
             case_id=case_id,
-            patient_pdf_path=str(patient_pdf_path),
-            guideline_path=guideline_path,
-            gene_symbol=gene_symbol,
-            gene_variant=gene_variant
+            patient_data=patient_data,
+            model_name=model_name
         )
 
         elapsed_time = time.time() - start_time
@@ -249,27 +209,29 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
             overall_pass = False
             report_path = "FAILED"
             failure_reason = workflow_result.get("error", "Unknown")
-            print("  [X] 工作流执行失败: %s" % failure_reason)
+            print("  [X] 工作流执行失败：%s" % failure_reason)
         else:
-            # 查找报告
-            case_report_dir = CASES_DIR / case_id
+            # 查找报告 (在 sandbox 目录中)
+            sandbox_dir = WORKSPACE_DIR / "sandbox"
             report_path = "FAILED"
 
-            if case_report_dir.exists():
-                report_files = list(case_report_dir.glob("MDT_Report_*.md"))
+            if sandbox_dir.exists():
+                report_files = list(sandbox_dir.glob("mdt_consultation_*.md"))
                 if report_files:
                     report_path = str(sorted(report_files)[-1])
-                    print("  [OK] 报告已生成: %s" % report_path)
+                    print("  [OK] 报告已生成：%s" % report_path)
 
                     # 验证报告内容
                     with open(report_path, 'r', encoding='utf-8') as f:
                         report_content = f.read()
 
                     checks = {
-                        "rejected_alternatives": "被排除" in report_content or "rejected_alternatives" in report_content.lower(),
-                        "peri_procedural_holding": "停药" in report_content or "peri_procedural" in report_content.lower(),
-                        "no_forbidden_words": "术前准备" not in report_content,
-                        "has_citation": "Citation:" in report_content or "[Citation" in report_content
+                        "has_admission_evaluation": "admission_evaluation" in report_content.lower() or "入院评估" in report_content,
+                        "has_primary_plan": "primary_plan" in report_content.lower() or "首选方案" in report_content,
+                        "has_rejected_alternatives": "rejected_alternatives" in report_content.lower() or "排他性" in report_content or "被否决" in report_content,
+                        "has_peri_procedural": "peri_procedural" in report_content.lower() or "围手术期" in report_content or "停药" in report_content,
+                        "has_citation_format": "[Citation:" in report_content,
+                        "no_forbidden_words": "术前准备" not in report_content
                     }
 
                     print("\n  [CHECK] 报告内容检查:")
@@ -285,7 +247,7 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
                     print("  [X] 未找到生成的报告文件")
                     overall_pass = False
             else:
-                print("  [X] 病例目录不存在")
+                print("  [X] Sandbox 目录不存在")
                 overall_pass = False
 
         status = "[OK] PASS" if overall_pass else "[X] FAIL"
@@ -317,7 +279,7 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
     print("  失败：%d 个" % (total_cases - passed_cases))
 
     timestamp_str = datetime.now().strftime('%Y%m%d_%H%M%S')
-    output_csv = OUTPUT_DIR / ("batch_eval_%s.csv" % timestamp_str)
+    output_csv = OUTPUT_DIR / ("batch_eval_v3_%s.csv" % timestamp_str)
 
     df_results = pd.DataFrame(all_eval_results)
     df_results.to_csv(output_csv, index=False, encoding="utf-8-sig")
@@ -332,7 +294,7 @@ def run_batch_evaluation(input_excel: str, output_dir: str, max_cases: int = 1):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="TianTan Brain Metastases Agent - 真实调用")
+    parser = argparse.ArgumentParser(description="TianTan Brain Metastases Agent V3 - 真实调用")
     parser.add_argument("--input", default=str(INPUT_EXCEL))
     parser.add_argument("--output", default=str(OUTPUT_DIR))
     parser.add_argument("--max_cases", type=int, default=1)
