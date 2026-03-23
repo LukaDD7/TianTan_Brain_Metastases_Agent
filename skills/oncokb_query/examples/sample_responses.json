@@ -1,0 +1,187 @@
+{
+  "_description": "OncoKB API 示例响应 - 用于测试和参考",
+  "_note": "这些是模拟响应，实际 API 返回可能有所不同",
+
+  "variant_query_response": {
+    "query_type": "variant",
+    "description": "EGFR L858R 变异查询响应",
+    "data": {
+      "gene": {
+        "hugoSymbol": "EGFR",
+        "entrezGeneId": 1956,
+        "chromosome": "7",
+        "location": "7p11.2"
+      },
+      "variant": "L858R",
+      "oncogenic": "Oncogenic",
+      "oncogenicity": "Oncogenic",
+      "variantSummary": "EGFR L858R is a well-characterized oncogenic mutation in the kinase domain of EGFR.",
+      "tumorTypes": [
+        {
+          "tumorType": "Non-Small Cell Lung Cancer",
+          "treatments": {
+            "sensitive": [
+              {
+                "drug": {
+                  "drugName": "Osimertinib",
+                  "ncitCode": "C95293"
+                },
+                "level": "LEVEL_1",
+                "description": "FDA approved for EGFR L858R positive NSCLC"
+              },
+              {
+                "drug": {
+                  "drugName": "Gefitinib",
+                  "ncitCode": "C170624"
+                },
+                "level": "LEVEL_1",
+                "description": "FDA approved for EGFR mutation positive NSCLC"
+              },
+              {
+                "drug": {
+                  "drugName": "Erlotinib",
+                  "ncitCode": "C170547"
+                },
+                "level": "LEVEL_1",
+                "description": "FDA approved for EGFR mutation positive NSCLC"
+              }
+            ],
+            "resistant": []
+          }
+        }
+      ],
+      "evidence": [
+        {
+          "uuid": "evidence-uuid-001",
+          "level": "LEVEL_1",
+          "description": "FDA approved for treatment of EGFR L858R positive NSCLC",
+          "references": [
+            {
+              "pmid": "26864588",
+              "title": "Osimertinib or Platinum-Pemetrexed in EGFR T790M-Positive Lung Cancer"
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  "drug_query_response": {
+    "query_type": "drug",
+    "description": "BRAF V600E 对 Vemurafenib 敏感性查询响应",
+    "data": {
+      "gene": {
+        "hugoSymbol": "BRAF",
+        "entrezGeneId": 673
+      },
+      "variant": "V600E",
+      "drug": {
+        "drugName": "Vemurafenib"
+      },
+      "sensitivity": "Sensitive",
+      "level": "LEVEL_1",
+      "tumorTypes": [
+        {
+          "tumorType": "Melanoma",
+          "description": "FDA approved for BRAF V600E positive melanoma"
+        }
+      ]
+    }
+  },
+
+  "biomarker_query_response": {
+    "query_type": "biomarker",
+    "description": "MSI-H 生物标志物查询响应",
+    "data": {
+      "biomarker": {
+        "name": "MSI-H",
+        "fullName": "Microsatellite Instability-High"
+      },
+      "tumorTypes": [
+        {
+          "tumorType": "Colorectal Cancer",
+          "treatments": [
+            {
+              "drug": {
+                "drugName": "Pembrolizumab"
+              },
+              "level": "LEVEL_1",
+              "description": "FDA approved for MSI-H solid tumors"
+            },
+            {
+              "drug": {
+                "drugName": "Nivolumab"
+              },
+              "level": "LEVEL_1",
+              "description": "FDA approved for MSI-H colorectal cancer"
+            }
+          ]
+        }
+      ]
+    }
+  },
+
+  "tumor_type_query_response": {
+    "query_type": "tumor_type",
+    "description": "非小细胞肺癌 Level 1 治疗推荐",
+    "data": {
+      "tumorType": "Non-Small Cell Lung Cancer",
+      "evidenceLevel": "LEVEL_1",
+      "treatments": [
+        {
+          "gene": "EGFR",
+          "variant": "L858R",
+          "drug": "Osimertinib",
+          "level": "LEVEL_1"
+        },
+        {
+          "gene": "EGFR",
+          "variant": "exon 19 deletion",
+          "drug": "Osimertinib",
+          "level": "LEVEL_1"
+        },
+        {
+          "gene": "ALK",
+          "variant": "fusion",
+          "drug": "Alectinib",
+          "level": "LEVEL_1"
+        },
+        {
+          "gene": "ROS1",
+          "variant": "fusion",
+          "drug": "Entrectinib",
+          "level": "LEVEL_1"
+        },
+        {
+          "gene": "BRAF",
+          "variant": "V600E",
+          "drug": "Dabrafenib + Trametinib",
+          "level": "LEVEL_1"
+        },
+        {
+          "gene": "KRAS",
+          "variant": "G12C",
+          "drug": "Sotorasib",
+          "level": "LEVEL_2"
+        }
+      ]
+    }
+  },
+
+  "gene_query_response": {
+    "query_type": "gene",
+    "description": "EGFR 基因基本信息",
+    "data": {
+      "gene": {
+        "hugoSymbol": "EGFR",
+        "entrezGeneId": 1956,
+        "geneName": "Epidermal Growth Factor Receptor",
+        "chromosome": "7",
+        "location": "7p11.2",
+        "oncogene": true,
+        "tsg": false,
+        "summary": "EGFR is a receptor tyrosine kinase that is frequently altered in cancer."
+      }
+    }
+  }
+}

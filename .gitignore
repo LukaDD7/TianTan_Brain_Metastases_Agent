@@ -1,0 +1,93 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Workspace generated files
+workspace/
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+temp_visuals/
+
+# =============================================================================
+# 敏感文件 - 绝不能提交！
+# =============================================================================
+
+# API Keys 和凭据
+*.key
+*.pem
+*.crt
+credentials.json
+service_account.json
+*-credentials.json
+config.local.py
+secrets.py
+
+# =============================================================================
+# 测试和覆盖率
+# =============================================================================
+
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# 类型检查
+.mypy_cache/
+
+# =============================================================================
+# 项目特定
+# =============================================================================
+
+# 日志文件
+*.log
+logs/
+
+# 临时备份
+*.bak
+tmp/
+temp/
+
+# 测试脚本（临时）
+test_*.py
+!tests/
