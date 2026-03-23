@@ -31,8 +31,10 @@
 在阅读或修改代码前，AI 必须理解当前**扁平化架构**：
 - **单一主控 Agent**：无 Subagents，所有逻辑由主 Agent 直接处理
 - **4 个挂载 Skills**：pdf-inspector、universal_bm_mdt_skill、oncokb_query_skill、pubmed_search_skill
+- **3 个核心 Tools**：execute (shell 执行)、read_file (文件读取)、submit_mdt_report (报告提交)
 - **CompositeBackend**：FilesystemBackend (sandbox) + StoreBackend (/memories/ 持久化)
 - **Execute 工具**：自定义 shell 执行能力，带白名单安全机制
+- **Read_file 工具**：绕过 Backend `virtual_mode` 限制，直接读取 `/skills/`、`/memories/` 等虚拟路径文件
 
 任何试图添加 Subagents 或恢复旧三层架构的改动都将被驳回。
 
@@ -47,14 +49,23 @@
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    interactive_main.py                      │
-│              (单一 Agent 扁平化架构 v5.0)                     │
+│              (单一 Agent 扁平化架构 v5.1)                     │
 ├─────────────────────────────────────────────────────────────┤
 │  L3 System Prompt (主控智能体认知协议)                        │
+│  ├── 5个强制检查点 (5 MANDATORY CHECKPOINTS)                │
+│  │   ├── Checkpoint 1: 治疗线动态判定                       │
+│  │   ├── Checkpoint 2: 模块适用性动态判断                    │
+│  │   ├── Checkpoint 3: 排他性方案论证                       │
+│  │   ├── Checkpoint 4: 引用物理溯源验证                     │
+│  │   └── Checkpoint 5: 剂量参数强制验证                     │
 │  ├── 证据主权准则                                           │
 │  ├── 深钻机制 (Deep Drill Protocol)                         │
 │  └── 物理溯源引用协议                                        │
 ├─────────────────────────────────────────────────────────────┤
-│  Tools: execute (shell 执行，带白名单)                       │
+│  Tools (3个核心工具):                                        │
+│  ├── execute (shell 执行，带白名单)                          │
+│  ├── read_file (文件读取，绕过 Backend 虚拟路径限制)          │
+│  └── submit_mdt_report (报告提交，内置引用审计)               │
 ├─────────────────────────────────────────────────────────────┤
 │  Skills (4个挂载技能):                                       │
 │  ├── /skills/pdf-inspector          (PDF 视觉探针)          │
@@ -80,6 +91,7 @@
 ### 4.1 虚拟环境
 * **项目专用环境**：`tiantanBM_agent`
 * **底层沙盒目录**：`workspace/sandbox/`（所有 L1 抓取的大型 JSON/PDF 必须写入此目录）
+* **Skill 备份**：`workspace/sandbox/skills/`（SKILL.md 的隔离备份，防止原文件被误删）
 
 ### 4.2 常用命令 (仅供人类在独立终端执行)
 * **交互式查房测试**：`conda run -n tiantanBM_agent python interactive_main.py`

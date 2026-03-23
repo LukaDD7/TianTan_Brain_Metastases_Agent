@@ -6,6 +6,147 @@
 
 ---
 
+## [Unreleased] - 2026-03-24
+
+### 重大架构升级 (Major Architecture Upgrade)
+
+#### 动态决策架构 v5.1 - 消除"填空选手"行为
+- **问题**: Agent机械填充8个模块，忽略疾病进展判断，Module 6围手术期管理不适配实际治疗方式
+- **根源**: System Prompt缺少治疗决策检查点和模块适用性判断逻辑
+- **解决方案**:
+  - 新增**治疗决策强制检查点 (MANDATORY CHECKPOINTS)**
+    - Checkpoint 1: 既往治疗史审查
+    - Checkpoint 2: 疾病状态判定（新发转移=PD）
+    - Checkpoint 3: 治疗线确定（初治/经治/PD→二线）
+    - Checkpoint 4: 局部治疗方式判定（手术vs放疗）
+    - **Checkpoint 5: 剂量参数强制验证**（新增）
+      - 步骤1: 指南检索 `grep -i "dose\|mg\|Gy"`
+      - 步骤2: PubMed检索 `"{Drug} AND dose AND Phase III"`
+      - 步骤3: 验证每个剂量都有物理引用
+      - 失败处理: 标记为"[具体剂量未在检索证据中明确，需临床医师决定]"
+  - 新增**模块适用性动态判断 (DYNAMIC MODULE ADAPTATION)**
+    - Module 6仅当计划手术时详细填写
+    - 仅放疗患者→Module 6标记为"N/A"或改为"放疗期间管理"
+  - 更新System Prompt强调"严禁机械填充所有8个模块"
+- **影响**: Agent不再是死流程执行器，而是具备临床决策能力的智能体
+
+### 重大架构升级 (Major Architecture Upgrade)
+
+#### 确定性引用拦截器 (Deterministic Citation Guardrail) - 已修复
+- **问题**: Agent可能伪造PubMed PMID或Local指南引用，导致医疗安全风险
+- **解决方案**:
+  - **Phase 1**: 在 `execute` 工具中自动记录所有命令执行历史到 `execution_audit_log.txt`
+  - **Phase 2**: 实现 `validate_citations_against_audit()` 纯Python正则校验函数
+    - 扫描报告中的 `[PubMed: PMID XXXX]` 和 `[Local: ...]` 格式
+    - 与审计日志对比，零Token损耗拦截幻觉引用
+  - **Phase 3**: 创建 `submit_mdt_report()` 专属提交工具
+    - 内置引用真实性审计，伪造引用将被强制打回
+    - 替代普通 `write_file`，成为报告提交的唯一合法入口
+  - **Phase 4**: 更新 `L3_SYSTEM_PROMPT` 和 `SKILL.md`
+    - **修复**: 更新 `universal_bm_mdt_skill/SKILL.md` Phase 5，强制使用 `submit_mdt_report` (原版本仍指示使用 `write_file`)
+    - **新增**: 在 Phase 2.3 增加引用格式强制要求，明确禁止引用未检索的PMID
+    - 明确警告伪造引用将被系统拦截
+- **独立验证发现**: 患者868183报告中 PMID 34606337 (KEYNOTE-189) 为虚假引用，从未在审计日志中出现
+- **效果**:
+  - ✅ Zero-Token Guardrail: 纯正则匹配，100%准确率，无LLM调用成本
+  - ✅ Ground Truth审计: 所有引用必须物理可追溯
+  - ✅ 强制重试机制: 拦截后Agent必须重新检索或修改报告
+
+### 修复 (Fixed)
+- **Backend virtual_mode 路径解析问题**: 添加 `read_file` 工具到 `create_deep_agent` 工具列表
+  - **问题**: `virtual_mode=True` 导致 Backend 对 `/skills/` 路径返回 null，`SKILL.md` 无法读取
+  - **根因**: `CompositeBackend` 的 `virtual_mode` 与虚拟路径解析冲突
+  - **解决**: 自定义 `read_file` 工具手动映射虚拟路径到实际文件系统路径，并添加到 Agent 工具列表
+  - **影响**: Agent 现在可以正确读取 `SKILL.md`，确保遵循标准 8-module MDT 报告结构
+- **Baseline输入数据清理**: 移除 `入院诊断、出院诊断、病理诊断、入院时间` 等标签字段，确保测试公平性
+  - 只保留输入特征：主诉、现病史、既往史、头部MRI、胸部CT等
+  - 诊断信息作为Ground Truth保留在原始Excel中，用于后续评估对比
+- **Embedding模型更新**: 从 `text-embedding-v3` 切换到 `qwen3-vl-embedding` (DashScope)
+  - 解决OpenAI兼容API的500错误
+  - 自定义 `DashScopeEmbeddings` 类适配LangChain FAISS
+- **NumPy版本修复**: 降级到 `numpy<2` 解决faiss兼容性错误
+
+### 安全修复 (Security Fix)
+
+#### 阻止Agent跳过当前患者输入 (CRITICAL)
+- **问题**: System Prompt 告诉 Agent "遇到已知患者：先读取 `/memories/personas/<Patient_ID>.md` 了解背景"
+- **风险**: Agent 可能跳过当前患者输入文件，直接读取历史画像，使用过时的患者信息
+- **修复**:
+  - 修改为"【只写不读】"协议
+  - **【强制】当前患者**: 必须通过 `execute` 工具读取患者输入文件
+  - **【禁止】历史画像**: 严禁在报告生成前读取 `/memories/personas/<Patient_ID>.md`
+  - **【允许】写入更新**: 报告生成后可写入患者画像供未来参考
+- **影响**: 确保 Agent 始终基于最新输入生成报告，避免数据过时
+
+#### 支持从文件读取患者信息
+- **问题**: 终端输入有缓冲区限制（约4096字符），无法输入完整病历
+- **解决方案**:
+  - 添加自动文件检测逻辑
+  - 输入文件路径时自动读取文件内容
+  - 支持多种路径格式（相对路径、绝对路径、自动补全.txt后缀）
+  - 添加提示信息引导用户使用文件输入
+- **使用方法**:
+  1. 将患者信息保存到文件（如 `patient_868183_input.txt`）
+  2. 启动BM Agent后，输入文件名（如 `patient_868183_input.txt`）
+  3. Agent自动检测并读取文件内容
+- **影响**: 解决超长输入问题，支持完整病历录入
+
+#### 完整执行历史记录系统 (Complete Execution Logger)
+- **问题**: 之前的审计日志只记录`execute`工具，无法追踪`read_file`、Agent思考过程、用户输入等
+- **解决方案**: 实现`ExecutionLogger`类，记录完整的Agent执行历史
+  - 用户输入 (包括患者ID提取)
+  - 所有工具调用 (execute, submit_mdt_report等) 及参数、结果、耗时
+  - Agent思考过程 (thinking/reasoning/planning)
+  - LLM响应 (包括深度思考内容)
+  - Skill调用记录
+  - 错误和异常
+- **输出格式**:
+  - 可读文本日志: `session_{id}_complete.log`
+  - 结构化JSONL: `session_{id}_structured.jsonl` (便于后续分析)
+  - 向后兼容审计日志: `execution_audit_log.txt`
+- **用途**:
+  - 审计追踪: 验证Agent是否遵循"先读取SKILL"的指令
+  - 行为分析: 分析Agent的决策过程和思考模式
+  - 故障排查: 快速定位问题根源
+  - 模型改进: 用于微调数据收集
+
+#### SKILL.md Phase 2.3 检索策略升级
+- **问题**: 原策略过于防御性，仅要求"gap-filling"检索，导致PubMed查询不够充分
+- **改进**: 重构Phase 2.3 "The Deep Drill"，从被动"gap-filling"改为主动"proactive retrieval"
+  - 新增**Mandatory Multi-Angle Search Strategy**要求
+  - 每个主要治疗决策必须执行**至少2-3个不同角度的PubMed查询**
+  - 提供4种标准查询模板：
+    1. Population + Intervention + Outcome (Mesh terms)
+    2. Specific Clinical Scenario + Management
+    3. Molecular Profile + Drug Response
+    4. Perioperative Parameters
+  - 扩展触发条件：除Parameter Gap外，新增Therapeutic Justification、Comparative Evidence等场景
+- **效果**: Agent现在会主动、多角度检索证据，而非仅填补缺失参数
+- **Baseline对比实验完成**: 使用 `qwen3.5-plus` 模型完成9例患者的RAG vs Direct LLM对比
+  - 结果保存在 `baseline/results/Case{1-10}_result.json`
+  - 每例包含：患者信息、RAG报告（带检索）、Direct LLM报告（纯预训练知识）
+
+#### Baseline对比实验框架
+- **目的**：建立RAG临床指南 vs 直接LLM的apple-to-apple对比基线
+- **实现**：
+  - 从 `TT_BM_test.xlsx` 提取9例患者数据，生成 `baseline/test_patients.csv`
+  - CSV包含：patient_id, 住院号, 入院时间, 年龄, 性别, 主诉, 现病史, 既往史, 头部MRI, 入院诊断, 出院诊断, 病理诊断, 胸部CT, 颈椎MRI, 腰椎MRI, 腹盆CT
+  - 创建 `baseline/run_baseline_eval.py` 统一评估框架
+  - 8模块对齐的系统提示词（与MDT Skill结构一致）
+    - 入院评估 (Admission Evaluation)
+    - 原发灶处理方案 (Primary Tumor Management Plan)
+    - 系统性管理 (Systemic Management)
+    - 随访方案 (Follow-up Strategy)
+    - 被拒绝的替代方案及排他性论证 (Rejected Alternatives)
+    - 围手术期管理 (Peri-procedural Management)
+    - 分子病理与基因检测 (Molecular Pathology)
+    - 执行路径与决策轨迹 (Execution Trajectory)
+- **更新**：
+  - `rag_baseline.py`: 支持system_prompt参数注入，返回标准格式
+  - `direct_llm_baseline.py`: 支持system_prompt参数，移除context依赖
+
+---
+
 ## [2.5.0] - 2026-03-05
 
 ### 重大特性
