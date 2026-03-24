@@ -1,0 +1,20 @@
+{
+  "total_patients": 9,
+  "methods": [
+    "direct_llm",
+    "rag",
+    "websearch"
+  ],
+  "evaluation_date": "2026-03-24T16:21:50.308399",
+  "patients": [
+    "Case1",
+    "Case10",
+    "Case2",
+    "Case3",
+    "Case4",
+    "Case6",
+    "Case7",
+    "Case8",
+    "Case9"
+  ]
+}
