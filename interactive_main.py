@@ -191,14 +191,15 @@ Session ID: {self.session_id}
         }
         self._write_log(entry)
 
-    def log_llm_response(self, content: str, role: str = "assistant", model: str = "brain_model"):
-        """记录LLM响应"""
+    def log_llm_response(self, content: str, role: str = "assistant", model: str = "brain_model", usage: Dict = None):
+        """记录LLM响应，包含token使用量"""
         entry = {
             "timestamp": datetime.now().isoformat(),
             "type": "llm_response",
             "content": content,
             "role": role,
-            "model": model
+            "model": model,
+            "usage": usage or {}  # token使用量：{"input_tokens": int, "output_tokens": int, "total_tokens": int}
         }
         self._write_log(entry)
 
@@ -982,7 +983,17 @@ if __name__ == "__main__":
                 content = getattr(last_msg, 'content', '')
                 if content:
                     print(f"\n🤖 Agent:\n{content}")
-                    execution_logger.log_llm_response(content, role="assistant", model="brain_model")
+                    # 提取token使用量
+                    usage = {}
+                    if hasattr(last_msg, 'response_metadata') and last_msg.response_metadata:
+                        token_usage = last_msg.response_metadata.get('token_usage', {})
+                        if token_usage:
+                            usage = {
+                                "input_tokens": token_usage.get('prompt_tokens', 0),
+                                "output_tokens": token_usage.get('completion_tokens', 0),
+                                "total_tokens": token_usage.get('total_tokens', 0)
+                            }
+                    execution_logger.log_llm_response(content, role="assistant", model="brain_model", usage=usage)
 
                 # 深度思考内容
                 if hasattr(last_msg, 'additional_kwargs') and 'reasoning_content' in last_msg.additional_kwargs:
