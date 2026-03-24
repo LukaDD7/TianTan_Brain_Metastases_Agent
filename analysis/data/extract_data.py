@@ -113,39 +113,57 @@ class BMAgentDataExtractor:
         """
         从execution_log提取执行数据
 
-        需要提取的字段：
+        提取字段：
         - tool_calls: 工具调用列表
         - latency: 各步骤耗时（从duration_ms累加）
+        - tokens: 从llm_response的usage提取
         - timestamp: 时间戳
         """
-        print(f"⚠️ [PLACEHOLDER] Extracting from {log_file}")
-
-        # TODO: 实现实际提取
-        # 示例结构：
         tool_calls = []
         total_duration_ms = 0
+        total_tokens = {"input": 0, "output": 0, "total": 0}
+        reasoning_parts = []
 
         try:
             with open(log_file, 'r', encoding='utf-8') as f:
                 for line in f:
                     try:
                         entry = json.loads(line.strip())
-                        if entry.get("type") == "tool_call":
+                        entry_type = entry.get("type")
+
+                        if entry_type == "tool_call":
                             tool_calls.append({
                                 "tool_name": entry.get("tool_name"),
                                 "duration_ms": entry.get("duration_ms", 0),
                                 "timestamp": entry.get("timestamp")
                             })
                             total_duration_ms += entry.get("duration_ms", 0)
+
+                        elif entry_type == "llm_response":
+                            # 提取token使用量
+                            usage = entry.get("usage", {})
+                            if usage:
+                                total_tokens["input"] += usage.get("input_tokens", 0)
+                                total_tokens["output"] += usage.get("output_tokens", 0)
+                                total_tokens["total"] += usage.get("total_tokens", 0)
+
+                        elif entry_type == "agent_thinking":
+                            # 收集推理过程
+                            thinking = entry.get("content", "")
+                            if thinking:
+                                reasoning_parts.append(thinking)
+
                     except json.JSONDecodeError:
                         continue
         except Exception as e:
-            print(f"Error reading log: {e}")
+            print(f"Error reading log {log_file}: {e}")
 
         return {
             "tool_calls": tool_calls,
+            "num_tool_calls": len(tool_calls),
             "total_duration_ms": total_duration_ms,
-            "num_tool_calls": len(tool_calls)
+            "tokens": total_tokens,
+            "reasoning": "\n".join(reasoning_parts[:5])  # 前5个思考片段
         }
 
     @staticmethod
