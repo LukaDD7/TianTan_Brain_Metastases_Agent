@@ -7,6 +7,7 @@ Baseline 实验 - RAG 临床指南版本 (简化版)
 
 import os
 import sys
+import time
 from pathlib import Path
 from typing import List
 
@@ -215,13 +216,15 @@ class SimpleRAGBaseline:
                 "reasoning": "推理过程（DeepSeek thinking）",
                 "sources": ["来源1", "来源2"...],
                 "retrieved_docs": [...],
-                "full_output": "完整原始输出（当save_full_output=True时）"
+                "full_output": "完整原始输出（当save_full_output=True时）",
+                "latency_ms": 响应时间毫秒
             }
         """
         if not self.vector_store:
             raise ValueError("RAG系统未初始化")
 
         print(f"\n🔍 查询: {question[:50]}...")
+        start_time = time.time()
 
         # 检索相关文档
         docs = self.vector_store.similarity_search(question, k=3)
@@ -244,6 +247,9 @@ class SimpleRAGBaseline:
         # 调用LLM
         response = self.llm.invoke([{"role": "user", "content": prompt}])
 
+        # 计算延迟
+        latency_ms = int((time.time() - start_time) * 1000)
+
         # 提取推理过程（DeepSeek thinking）
         reasoning_text = ""
         if hasattr(response, 'additional_kwargs') and response.additional_kwargs:
@@ -255,7 +261,7 @@ class SimpleRAGBaseline:
         # 构建完整输出
         full_output = None
         if save_full_output:
-            full_output = self._build_full_output(response, prompt, docs)
+            full_output = self._build_full_output(response, prompt, docs, latency_ms)
 
         result = {
             "response": response.content,
@@ -264,7 +270,8 @@ class SimpleRAGBaseline:
             "retrieved_docs": [{
                 "content": d.page_content[:200] + "...",
                 "source": d.metadata.get('source', 'unknown')
-            } for d in docs]
+            } for d in docs],
+            "latency_ms": latency_ms
         }
 
         if save_full_output:
@@ -272,10 +279,12 @@ class SimpleRAGBaseline:
 
         return result
 
-    def _build_full_output(self, response, prompt, docs) -> dict:
+    def _build_full_output(self, response, prompt, docs, latency_ms: int = 0) -> dict:
         """构建完整输出结构（用于后续分析）"""
         output = {
             "model": getattr(response, 'response_metadata', {}).get('model_name', 'unknown'),
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            "latency_ms": latency_ms,
             "input_prompt": prompt,
             "retrieved_documents": [{
                 "content": d.page_content,

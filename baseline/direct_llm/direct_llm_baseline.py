@@ -8,6 +8,7 @@ Baseline 实验 - 直接LLM回答版本
 
 import os
 import sys
+import time
 
 # 添加项目根目录到路径
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -104,10 +105,12 @@ class DirectLLMBaseline:
             dict: {
                 "response": "最终报告内容",
                 "reasoning": "推理过程（DeepSeek thinking）",
-                "full_output": "完整原始输出（当save_full_output=True时）"
+                "full_output": "完整原始输出（当save_full_output=True时）",
+                "latency_ms": 响应时间毫秒
             }
         """
         print(f"\n🔍 问题: {question[:50]}...")
+        start_time = time.time()
 
         # 使用传入的system_prompt或默认prompt
         prompt_to_use = system_prompt or self.system_prompt
@@ -121,6 +124,9 @@ class DirectLLMBaseline:
         # 直接调用LLM
         response = self.llm.invoke(messages)
 
+        # 计算延迟
+        latency_ms = int((time.time() - start_time) * 1000)
+
         # 提取推理过程（DeepSeek thinking）
         reasoning_text = ""
         if hasattr(response, 'additional_kwargs') and response.additional_kwargs:
@@ -132,11 +138,12 @@ class DirectLLMBaseline:
         # 构建完整输出（用于后续分析）
         full_output = None
         if save_full_output:
-            full_output = self._build_full_output(response, messages)
+            full_output = self._build_full_output(response, messages, latency_ms)
 
         result = {
             "response": response.content,
-            "reasoning": reasoning_text
+            "reasoning": reasoning_text,
+            "latency_ms": latency_ms
         }
 
         if save_full_output:
@@ -144,10 +151,12 @@ class DirectLLMBaseline:
 
         return result
 
-    def _build_full_output(self, response, messages) -> dict:
+    def _build_full_output(self, response, messages, latency_ms: int = 0) -> dict:
         """构建完整输出结构（用于后续分析）"""
         output = {
             "model": getattr(response, 'response_metadata', {}).get('model_name', 'unknown'),
+            "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
+            "latency_ms": latency_ms,
             "input_messages": messages,
             "output": {
                 "content": response.content,
