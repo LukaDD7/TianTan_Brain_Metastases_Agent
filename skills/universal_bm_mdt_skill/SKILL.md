@@ -60,15 +60,60 @@ If critical data (e.g., KPS, specific gene status, extracranial disease burden) 
 * `LEVEL_R1` / `LEVEL_R2`: Resistance -> **Strict Contraindication**.
 * `oncogenic: "Unknown"` -> Variant of Uncertain Significance (VUS).
 
+**OncoKB PMID Citation Rule (IMPORTANT):**
+OncoKB returns curated evidence with associated PMIDs in the `treatments[].pmids` field. These PMIDs are pre-validated evidence sources:
+
+1. **Direct Citation Allowed**: PMIDs appearing in OncoKB response (under `treatments[].pmids` or `mutationEffect.citations.pmids`) may be cited directly as `[PubMed: PMID XXXXXX]` without executing separate `search_pubmed.py` queries.
+   - Example: OncoKB returns `"pmids": ["20921465", "21228335"]` for Cetuximab resistance → you may cite `[PubMed: PMID 20921465]` directly.
+
+2. **Citation Source Distinction**: When citing OncoKB-derived PMIDs, the citation is grounded in OncoKB's curated evidence, not independent PubMed retrieval. Both are valid, but they have different provenance:
+   - **OncoKB-derived PMID**: Curated evidence from precision oncology database
+   - **Search-derived PMID**: Independently retrieved from PubMed via `search_pubmed.py`
+
+3. **Evidence Hierarchy**: OncoKB-curated PMIDs are considered Tier 1 evidence for molecular claims (e.g., "KRAS G12V confers resistance to EGFR inhibitors"). They do NOT require additional PubMed validation.
+
+4. **Citation Format**: Use standard format `[PubMed: PMID XXXXXX]` regardless of source (OncoKB-derived or search-derived). The `submit_mdt_report` Citation Guardrail accepts both as valid citations.
+
 ### 2.3 The Deep Drill: Frontier Literature Search (PubMed Integration)
-**Execute this LAST as a gap-filler.** You **MUST** trigger a PubMed search ONLY under these conditions:
-1.  **Parameter Gap:** The guidelines recommend a treatment (e.g., SRS, Osimertinib) but the exact dosage (Gy/mg) or holding window is missing after your grep search.
-2.  **Evidence Gap:** The clinical scenario is an edge case not covered by NCCN/ASCO guidelines.
-3.  **VUS/Low-Level:** OncoKB returns a VUS or only low-level (Level 3/4) evidence, and you need off-label or clinical trial justification.
+
+**Mission:** You are the **Clinical Evidence Specialist**. Your goal is to build a **comprehensive evidence base**, not just fill gaps. You MUST proactively search for evidence to support every treatment recommendation.
+
+#### **Mandatory Multi-Angle Search Strategy (Proactive Retrieval)**
+
+For each major treatment decision (e.g., SRS vs WBRT, Drug A vs Drug B), you **MUST execute at least 2-3 different PubMed queries** from different angles:
+
+1.  **Population + Intervention + Outcome**: `"{Cancer Type}"[Mesh] AND ({Treatment}) AND ({Outcome})`
+    - Example: `"Non-Small Cell Lung Cancer"[Mesh] AND "stereotactic radiosurgery" AND "brain metastases"`
+
+2.  **Specific Clinical Scenario + Management**: `"{Clinical Scenario}" AND "{Management Approach}"`
+    - Example: `"spinal cord compression" AND "decompressive surgery"`
+
+3.  **Molecular Profile + Drug Response**: `{Gene} AND {Alteration} AND "brain metastases" AND "drug response"`
+    - Example: `STK11 AND "non-small cell lung cancer" AND "immunotherapy"`
+
+4.  **Perioperative Parameters**: `{Drug} AND "perioperative management" AND "surgery"`
+    - Example: `pembrolizumab AND "perioperative management" AND "neurosurgery"`
+
+#### **When to Search (Expanded Triggers)**
+
+While **Parameter Gap** and **Evidence Gap** remain primary triggers, you should ALSO search when:
+
+- **Therapeutic Justification**: You need landmark trial evidence to support a recommendation
+- **Comparative Evidence**: You need to compare multiple treatment options (e.g., "surgery vs radiosurgery")
+- **Toxicity/Dosing**: Specific parameters (dose, schedule, holding windows) are mentioned
+- **Off-label/Novel**: Using treatments outside standard indication
+- **VUS/Low-Level**: OncoKB returns Level 3/4 evidence or VUS
 
 **Execution Method (Use your native `execute` tool):**
 * `/home/luzhenyang/anaconda3/envs/tiantanBM_agent/bin/python /media/luzhenyang/project/TianTan_Brain_Metastases_Agent/skills/pubmed_search_skill/scripts/search_pubmed.py --query "{STRICT_BOOLEAN_QUERY}" --max-results 5`
 * *Query Constraint:* You must use strict Boolean logic and MeSH terms (e.g., `"Non-Small Cell Lung Cancer"[Mesh] AND Osimertinib AND Resistance`).
+
+**⚠️ CITATION FORMAT MANDATE:**
+After executing a PubMed search, you **MUST ONLY cite PMIDs that were returned in the search results**.
+- ✅ **CORRECT**: `[PubMed: PMID 25499636]` (this PMID appeared in your search results)
+- ❌ **FORBIDDEN**: `[PubMed: PMID 34606337]` (this PMID never appeared in any search result; citing it constitutes hallucination)
+- **VIOLATION**: Citing a PMID not retrieved through the `pubmed_search_skill` will cause `submit_mdt_report` to fail with a Citation Guardrail error.
+- **FALLBACK**: If you cannot find the specific study, use: `"[PubMed: 未检索到相关文献, 需临床医师评估]"` or `"[Reference: 需临床医师补充关键文献]"`
 
 ### 2.4 Perioperative & Pathology Mandatory Search (Module 6 & 7 Evidence Acquisition)
 
@@ -148,25 +193,37 @@ All clinical claims must be backed by a physical citation in one of these format
 
 ---
 
-## Phase 5: Output Execution (Final Action)
+## Phase 5: Output Execution (Final Action - Citation Guardrail Enforced)
 
 **⚠️ CRITICAL ACTION DIRECTIVE:**
-Once the 8-module report is fully formulated in your context window, **DO NOT print the full report into the chat output.** You **MUST** save the report to the local filesystem using the following steps:
+Once the 8-module report is fully formulated in your context window, **DO NOT print the full report into the chat output.**
+
+**You MUST use the `submit_mdt_report` tool to submit the final report.** This tool has a built-in Citation Guardrail that will:
+- Scan all [PubMed: PMID XXX] and [Local: ...] citations in your report
+- Verify they exist in the execution audit log
+- **REJECT the submission if fake citations are detected**
 
 **Step 1: Create patient directory structure**
 ```python
 execute(command="mkdir -p patients/<Patient_ID>/reports/")
 ```
 
-**Step 2: Write the report file**
+**Step 2: Submit the report via Citation Guardrail (REQUIRED)**
 ```python
-write_file(
-    file_path="patients/<Patient_ID>/reports/MDT_Report_<Patient_ID>.md",
-    content="# TianTan Hospital Brain Metastases MDT Report\n\n[Full 8-module content here]"
+submit_mdt_report(
+    patient_id="<Patient_ID>",
+    report_content="# TianTan Hospital Brain Metastases MDT Report\n\n[Full 8-module content here]"
 )
 ```
 
-**Directory Structure:**
+**⚠️ WARNING:**
+- Using `write_file` directly is **STRICTLY PROHIBITED** - it bypasses the citation audit
+- If `submit_mdt_report` returns an error about fake citations, you MUST:
+  1. Return to Phase 2 to execute the missing searches
+  2. OR remove the unsupported citations and replace with "需临床医师评估"
+  3. Then re-submit
+
+**Directory Structure (after successful submission):**
 ```
 <current_working_directory>/
 ├── patients/
@@ -182,5 +239,4 @@ write_file(
 - Use RELATIVE paths only: `patients/<Patient_ID>/reports/...`
 - Do NOT use absolute paths like `/workspace/sandbox/...`
 - The system automatically maps relative paths to the sandbox directory
-- Always use `mkdir -p` before writing to ensure directories exist
-- Verify the directory was created before writing the file
+- Always use `mkdir -p` before submitting to ensure directories exist

@@ -1,0 +1,10 @@
+patient_id,hospital_id,age,gender,primary_tumor,has_mri,has_ct,rag_tokens,direct_tokens,rag_guideline_citations,direct_guideline_citations,rag_retrieved_docs
+Case1,648772,49,Male,Melanoma,1,0,3580,3933,2,1,3
+Case2,640880,54,Female,Lung,1,0,3623,3885,3,0,3
+Case3,868183,50,Male,Lung,1,0,3933,3988,2,1,3
+Case4,665548,57,Male,Gastric,1,0,3945,4113,1,0,3
+Case6,638114,57,Male,Lung,1,0,3921,3575,3,1,3
+Case7,612908,53,Female,Lung,1,1,3977,3800,2,0,3
+Case8,605525,61,Male,Colorectal,1,1,4763,4048,2,1,3
+Case9,708387,55,Male,Lung,1,1,3975,4202,1,0,3
+Case10,747724,45,Female,Breast,1,1,3892,3786,2,1,3

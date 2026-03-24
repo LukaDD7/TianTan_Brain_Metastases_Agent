@@ -8,6 +8,56 @@
 
 ## [Unreleased] - 2026-03-24
 
+### 审计与验证 (Audit & Validation)
+
+#### 患者605525完整审计报告 (v5.1)
+- **审计日期**: 2026-03-24
+- **审计员**: Claude Code (via citation_validator_pubmed & citation_validator_oncokb skills)
+- **审计范围**:
+  - 基础规范检查（8模块完整性、5个强制检查点）
+  - 执行日志分析（JSON结构化日志完整追踪）
+  - OncoKB独立验证（KRAS G12V突变注释）
+  - PubMed独立验证（7个PMID存在性与匹配度）
+  - 临床推理质量评估（治疗线判定、排他性论证）
+
+**关键发现**:
+1. **OncoKB引用**: 100%准确 ✅
+   - KRAS G12V致癌性、LEVEL_R1耐药、LEVEL_4敏感全部验证通过
+   - OncoKB返回的5个EGFR抑制剂耐药PMID与报告引用完全匹配
+
+2. **PubMed验证**: 7/7 PMID真实存在 ✅
+   - PMID 20921465, 21228335, 20619739, 24024839, 18316791 (EGFR抑制剂耐药)
+   - PMID 30857956 (HER2靶向治疗)
+   - PMID 26541403 (脑转移支持治疗)
+
+3. **引用来源分析**:
+   - 6个PMID来自OncoKB curated evidence（`treatments[].pmids`字段）
+   - 1个PMID来自独立PubMed检索（search_pubmed.py执行记录）
+   - **结论**: OncoKB-derived PMIDs无需重复验证，可直接引用
+
+4. **执行轨迹验证**:
+   - ✅ Agent正确读取SKILL.md
+   - ✅ OncoKB查询执行正确
+   - ✅ 指南检索（EANO-ESMO）执行正确
+   - ⚠️ VLM视觉探针未使用（本次不涉及复杂表格）
+
+**临床推理评估**:
+- 治疗线判定: 七线BSC判定准确 ✅
+- 模块适用性: Module 6正确标记N/A ✅
+- 排他性论证: 4项排除方案理由充分 ✅
+
+**审计报告存档**:
+- `/workspace/sandbox/patients/605525/reports/Audit_Report_605525_v5.1.md`
+- `/workspace/sandbox/patients/605525/reports/PMID_Validation_Report_605525.md`
+
+### 文档更新
+
+#### SKILL.md Phase 2.2 - OncoKB PMID Citation Rule
+- 新增OncoKB PMID引用规则说明
+- 明确区分OncoKB-derived PMIDs与Search-derived PMIDs
+- 规定OncoKB curated evidence中的PMIDs可直接引用，无需重复检索
+- 统一引用格式：`[PubMed: PMID XXXXXX]`
+
 ### 重大架构升级 (Major Architecture Upgrade)
 
 #### 动态决策架构 v5.1 - 消除"填空选手"行为

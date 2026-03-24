@@ -4,14 +4,14 @@ version: 3.0.0
 category: document_analysis
 description: |
   [FUNCTION]: Multi-track PDF analysis engine for complex clinical guidelines (NCCN, ESMO, ASCO).
-  [VALUE]: Provides global text extraction (MinerU Markdown), local visual probing (PyMuPDF rendering), and VLM-powered analysis via analyze_image tool for any uncertain content.
+  [VALUE]: Provides global text extraction (MinerU Markdown), local visual probing (PyMuPDF rendering), and VLM-powered analysis for any uncertain content.
   [TRIGGER_HOOK]: Read this Skill BEFORE accessing any clinical guideline PDF. Use for text extraction, visual inspection of flowcharts/tables, or when markdown is garbled/OCR-failed.
 ---
 
 # PDF-Inspector: Cognitive Execution Protocol
 
 ## Identity & Core Mechanism
-This is a Multi-Track PDF analysis skill. It does NOT use API tools. You must use your native `execute` tool to run isolated Python scripts in the terminal, and the `analyze_image` tool for VLM-powered visual analysis.
+This is a Multi-Track PDF analysis skill. It does NOT use API tools. You must use your native `execute` tool to run isolated Python scripts in the terminal.
 
 ---
 
@@ -81,35 +81,30 @@ conda run -n mineru_env python \
 **Step 1: Render the Target Page(s)**
 Use Track 2 to render the uncertain page(s) to JPEG.
 
-**Step 2: VLM Analysis via `analyze_image` Tool**
-You MUST use your `analyze_image` tool to analyze the rendered JPEG image. This tool will:
-- Encode the image to base64
-- Send it to the VLM (qwen3.5-plus)
-- Return structured analysis results
+**Step 2: VLM Analysis via Native Multimodal Capability**
+The system has built-in VLM infrastructure. When you `read_file` on a JPEG image, your multimodal capabilities are automatically activated.
 
-**Execution Command:**
-```python
-analyze_image(
-    image_path="/workspace/sandbox/pdf_images_<BASENAME>_<TIMESTAMP>/page_<XXXX>.jpg",
-    query="Extract all SRS dose information from this table. Include dose ranges in Gy, number of fractions, and any size-based conditions."
-)
-```
+**Analysis Prompt Template (Internal Guidance):**
+When analyzing a rendered guideline page, structure your analysis as follows:
 
-**Analysis Query Templates:**
+```
+1. CONTENT TYPE IDENTIFICATION:
+   - Is this a dose table? Flowchart? Text paragraph? Diagram?
+   - What is the clinical context (e.g., "Principles of Radiation Therapy")?
 
-For **dose tables**:
-```
-"Extract all radiation therapy dose information from this table. Include: dose ranges in Gy, number of fractions, tumor size conditions, and any qualifying criteria. Format as structured data."
-```
+2. KEY INFORMATION EXTRACTION:
+   - Extract ALL specific values (doses, fractions, drug names, schedules)
+   - For flowcharts: trace decision paths and identify branch conditions
+   - For tables: preserve row/column relationships
 
-For **decision flowcharts**:
-```
-"Analyze this NCCN decision flowchart. Trace the decision path for [specific condition]. Identify: branch conditions, recommended treatments, and footnote references. List all superscript letters and their corresponding footnotes."
-```
+3. FOOTNOTE HANDLING (CRITICAL):
+   - Identify superscript letters (e.g., Surgery^c, WBRT^e,f)
+   - Cross-reference with footnotes at the bottom of the page
+   - Preserve both term AND footnote reference separately
 
-For **general unclear content**:
-```
-"This page appears garbled or unclear in text extraction. Please describe what content is visible: section headers, tables, paragraphs, or diagrams. Extract any specific numerical values or medical parameters."
+4. UNCERTAINTY FLAGGING:
+   - If any content is unclear or ambiguous, explicitly state it
+   - Do NOT guess or hallucinate values
 ```
 
 **Step 3: Citation Format for Visual Analysis**
@@ -206,15 +201,8 @@ conda run -n mineru_env python \
     --pages <LOCKED_PAGE_NUMBER>
 ```
 
-**Step 2: VLM Analysis via analyze_image Tool**
-Once you have the rendered JPEG path, use the `analyze_image` tool:
-
-```python
-analyze_image(
-    image_path="/workspace/sandbox/pdf_images_<BASENAME>_<TIMESTAMP>/page_<XXXX>.jpg",
-    query="Extract specific clinical parameters from this page. [Customize based on what you need: dose values, treatment regimens, decision criteria, etc.]"
-)
-```
+**Step 2: VLM Analysis**
+Use Track 3 VLM analysis on the rendered image to extract specific parameters.
 
 **Step 3: Cross-Validation**
 - Compare VLM-extracted values with any available Markdown text
@@ -283,7 +271,7 @@ Example:
 # Phase 1: Context → NCCN CNS, brain-c chapter, dose table
 # Phase 2: grep -n "brain-c\|Principles of Radiation" NCCN_CNS.md
 # Phase 3: Search raw JSON for "15-24 Gy" or "SRS"
-# Phase 4: Render page, then analyze_image with query about SRS doses
+# Phase 4: Render page, VLM analysis for dose table
 ```
 
 ### Scenario B: Find Chemotherapy Regimen
@@ -291,7 +279,7 @@ Example:
 # Phase 1: Context → NCCN [TumorType], Systemic Therapy chapter
 # Phase 2: grep -n "Systemic Therapy\|Chemotherapy Regimens" <GUIDE>.md
 # Phase 3: Search raw JSON for drug name (e.g., "pemetrexed")
-# Phase 4: Render page, then analyze_image with query about chemotherapy regimens
+# Phase 4: Render page, VLM analysis for regimen table
 ```
 
 ### Scenario C: Resolve Garbled Markdown (e.g., "1524 gY")
@@ -300,5 +288,5 @@ Example:
 # grep -n "1524\|dose" <GUIDE>.md  # Find line number
 # Check nearest <!-- Page X --> comment
 # Render that page + adjacent pages
-# analyze_image with query: "This page had OCR errors. What are the correct dose values?"
+# VLM analysis to extract correct value ("15-24 Gy")
 ```

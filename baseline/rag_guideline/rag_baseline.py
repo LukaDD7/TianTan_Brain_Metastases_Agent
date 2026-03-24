@@ -2,25 +2,142 @@
 # -*- coding: utf-8 -*-
 """
 Baseline 实验 - RAG 临床指南版本 (简化版)
+使用 qwen3-vl-embedding 通过 dashscope
 """
 
 import os
 import sys
 from pathlib import Path
+from typing import List
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
 import numpy as np
 from langchain_community.vectorstores import FAISS
-from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.embeddings import Embeddings
 
 from utils.llm_factory import get_brain_client_langchain
 
 
+class DashScopeEmbeddings(Embeddings):
+    """Custom Embeddings class using DashScope qwen3-vl-embedding"""
+
+    def __init__(self, api_key: str = None):
+        import dashscope
+        self.api_key = api_key or os.getenv("DASHSCOPE_API_KEY")
+        dashscope.api_key = self.api_key
+        self.model = "qwen3-vl-embedding"
+
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        """Embed a list of documents"""
+        import dashscope
+        embeddings = []
+        for text in texts:
+            resp = dashscope.MultiModalEmbedding.call(
+                model=self.model,
+                input=[{'text': text}]
+            )
+            if resp.status_code == 200:
+                embeddings.append(resp.output['embeddings'][0]['embedding'])
+            else:
+                print(f"⚠️ Embedding failed: {resp.message}")
+                # Return zero vector as fallback
+                embeddings.append([0.0] * 3072)  # qwen3-vl-embedding is 3072 dims
+        return embeddings
+
+    def embed_query(self, text: str) -> List[float]:
+        """Embed a single query"""
+        import dashscope
+        resp = dashscope.MultiModalEmbedding.call(
+            model=self.model,
+            input=[{'text': text}]
+        )
+        if resp.status_code == 200:
+            return resp.output['embeddings'][0]['embedding']
+        else:
+            print(f"⚠️ Query embedding failed: {resp.message}")
+            return [0.0] * 3072
+
+
 class SimpleRAGBaseline:
     """简化版RAG"""
+
+    # 8模块MDT报告默认Prompt（根据患者实际情况灵活适配，不强制填充）
+    DEFAULT_SYSTEM_PROMPT = """你是一位资深的脑转移瘤多学科诊疗（MDT）专家。请基于提供的患者信息和临床指南，生成一份结构化的MDT诊疗报告。
+
+报告应根据患者实际情况，考虑以下8个核心模块（不适用的模块可标记为N/A或简要说明原因）：
+
+## 1. 入院评估 (Admission Evaluation)
+- 患者基本信息与入院情况
+- 临床症状评估（主诉、现病史）
+- 既往病史与合并症分析
+- 影像学初步印象
+
+## 2. 原发灶处理方案 (Primary Tumor Management Plan)
+- 基于病理诊断的原发肿瘤特征
+- 分子分型与靶向治疗敏感性评估
+- 原发灶治疗策略建议
+
+## 3. 系统性管理 (Systemic Management)
+- 全身治疗方案
+- 药物选择与剂量考量
+- 围手术期用药参数（如适用）
+
+## 4. 随访方案 (Follow-up Strategy)
+- 影像学复查时间窗
+- 肿瘤标志物监测
+- 神经系统功能评估
+
+## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)
+- 其他可行但未被选择的方案
+- 选择当前方案而非替代方案的循证依据
+
+## 6. 围手术期管理 (Peri-procedural Management)
+- 术前准备要点（如计划手术）
+- 术后护理注意事项
+- 并发症预防策略
+
+## 7. 分子病理与基因检测 (Molecular Pathology)
+- 关键基因突变分析
+- 靶向治疗指导意义
+- 预后分子标志物
+
+## 8. 执行路径与决策轨迹 (Execution Trajectory)
+- 推荐的治疗时间线
+- 关键决策节点
+- 多学科协作流程
+
+【患者信息】
+{patient_info}
+
+【参考指南内容】
+{context}
+
+请基于临床指南和循证医学证据，生成一份专业、完整的MDT诊疗报告。
+- 根据患者实际情况动态判断各模块的适用性
+- 不适用的治疗模块标记为"N/A"或简要说明原因
+- 引用指南时需标注具体来源
+
+【引用格式规范 - 强制】
+
+你基于检索到的指南片段，必须精准引用：
+
+1. **指南引用**：`[Local: <文件名>, Section: <章节标题>]`
+   - 示例：`[Local: NCCN_CNS.md, Section: Brain Metastases - Systemic Therapy]`
+   - 示例：`[Local: ESMO_Breast_Cancer.md, Line: 245-250]`
+
+2. **知识推断**：`[Inference from Local: <文件名>]`
+   - 当基于指南内容进行合理推断时使用
+   - 示例：`[Inference from Local: NCCN_CNS.md]`
+
+**禁止：**
+- ❌ 将指南内容错误标注为 `[PubMed: ...]`
+- ❌ 不提供具体的章节或行号信息
+
+**不确定性声明：**
+- 如果检索到的指南片段不足以支持结论，标注：`[Evidence: Insufficient in Retrieved Guidelines]`"""
 
     def __init__(self, guidelines_dir: str = None):
         # 使用绝对路径
@@ -68,13 +185,9 @@ class SimpleRAGBaseline:
         return all_splits
 
     def create_vector_store(self, splits):
-        """创建向量存储"""
-        print("🔍 正在创建向量存储...")
-        embeddings = OpenAIEmbeddings(
-            model="text-embedding-v3",
-            api_key=os.getenv("DASHSCOPE_API_KEY"),
-            base_url="https://dashscope.aliyuncs.com/compatible-mode/v1",
-        )
+        """创建向量存储 - 使用 qwen3-vl-embedding"""
+        print("🔍 正在创建向量存储 (qwen3-vl-embedding)...")
+        embeddings = DashScopeEmbeddings()
         self.vector_store = FAISS.from_documents(splits, embeddings)
         print("✅ 向量存储创建完成")
 
@@ -87,8 +200,24 @@ class SimpleRAGBaseline:
         self.create_vector_store(splits)
         print("\n🎉 RAG系统初始化完成！")
 
-    def query(self, question: str) -> dict:
-        """查询"""
+    def query(self, question: str, system_prompt: str = None, save_full_output: bool = False) -> dict:
+        """
+        查询
+
+        Args:
+            question: 患者问题/病历信息
+            system_prompt: 可选的系统提示词
+            save_full_output: 是否保存完整原始输出（包含所有tokens、reasoning）
+
+        Returns:
+            dict: {
+                "response": "最终报告内容",
+                "reasoning": "推理过程（DeepSeek thinking）",
+                "sources": ["来源1", "来源2"...],
+                "retrieved_docs": [...],
+                "full_output": "完整原始输出（当save_full_output=True时）"
+            }
+        """
         if not self.vector_store:
             raise ValueError("RAG系统未初始化")
 
@@ -98,24 +227,91 @@ class SimpleRAGBaseline:
         docs = self.vector_store.similarity_search(question, k=3)
         context = "\n\n".join([d.page_content for d in docs])
 
-        # 构造Prompt
-        prompt = f"""基于以下临床指南内容回答医生的问题。
-
-【指南内容】
-{context}
-
-【医生问题】
-{question}
-
-请根据指南内容提供专业的诊疗建议，并引用指南来源。"""
+        # 使用传入的system_prompt或默认prompt
+        if system_prompt:
+            # 替换模板变量
+            prompt = system_prompt.format(
+                patient_info=question,
+                context=context
+            )
+        else:
+            # 使用默认8模块Prompt
+            prompt = self.DEFAULT_SYSTEM_PROMPT.format(
+                patient_info=question,
+                context=context
+            )
 
         # 调用LLM
         response = self.llm.invoke([{"role": "user", "content": prompt}])
 
-        return {
-            "answer": response.content,
-            "sources": [d.metadata.get('source', 'unknown') for d in docs]
+        # 提取推理过程（DeepSeek thinking）
+        reasoning_text = ""
+        if hasattr(response, 'additional_kwargs') and response.additional_kwargs:
+            reasoning_content = response.additional_kwargs.get('reasoning_content')
+            if reasoning_content:
+                reasoning_text = reasoning_content
+                print(f"🧠 捕获推理过程: {len(reasoning_text)} 字符")
+
+        # 构建完整输出
+        full_output = None
+        if save_full_output:
+            full_output = self._build_full_output(response, prompt, docs)
+
+        result = {
+            "response": response.content,
+            "reasoning": reasoning_text,
+            "sources": [d.metadata.get('source', 'unknown') for d in docs],
+            "retrieved_docs": [{
+                "content": d.page_content[:200] + "...",
+                "source": d.metadata.get('source', 'unknown')
+            } for d in docs]
         }
+
+        if save_full_output:
+            result["full_output"] = full_output
+
+        return result
+
+    def _build_full_output(self, response, prompt, docs) -> dict:
+        """构建完整输出结构（用于后续分析）"""
+        output = {
+            "model": getattr(response, 'response_metadata', {}).get('model_name', 'unknown'),
+            "input_prompt": prompt,
+            "retrieved_documents": [{
+                "content": d.page_content,
+                "source": d.metadata.get('source', 'unknown')
+            } for d in docs],
+            "output": {
+                "content": response.content,
+                "reasoning": None,
+                "role": "assistant"
+            },
+            "usage": {}
+        }
+
+        # 提取推理内容
+        if hasattr(response, 'additional_kwargs') and response.additional_kwargs:
+            reasoning_content = response.additional_kwargs.get('reasoning_content')
+            if reasoning_content:
+                output["output"]["reasoning"] = reasoning_content
+
+        # 提取token使用情况
+        if hasattr(response, 'usage_metadata') and response.usage_metadata:
+            output["usage"] = {
+                "input_tokens": response.usage_metadata.get('input_tokens', 0),
+                "output_tokens": response.usage_metadata.get('output_tokens', 0),
+                "total_tokens": response.usage_metadata.get('total_tokens', 0)
+            }
+        elif hasattr(response, 'response_metadata') and response.response_metadata:
+            token_usage = response.response_metadata.get('token_usage', {})
+            if token_usage:
+                output["usage"] = {
+                    "input_tokens": token_usage.get('prompt_tokens', 0),
+                    "output_tokens": token_usage.get('completion_tokens', 0),
+                    "total_tokens": token_usage.get('total_tokens', 0)
+                }
+
+        return output
 
 
 def main():

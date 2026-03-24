@@ -1,0 +1,21 @@
+{
+  "total_patients": 9,
+  "evaluation_date": "2026-03-24T12:57:36.648995",
+  "patients": [
+    "Case1",
+    "Case10",
+    "Case2",
+    "Case3",
+    "Case4",
+    "Case6",
+    "Case7",
+    "Case8",
+    "Case9"
+  ],
+  "method": "WebSearch_LLM",
+  "features": [
+    "web_search_enabled",
+    "thinking_mode_enabled",
+    "full_output_recorded"
+  ]
+}

@@ -62,7 +62,7 @@ def query_cna(gene: str, alteration_type: str, tumor_type: str):
     """查询拷贝数变异"""
     params = {
         "hugoSymbol": gene,
-        "copyNumberAlterationType": alteration_type.upper(),
+        "copyNameAlterationType": alteration_type.upper(),
         "tumorType": tumor_type
     }
     result = make_oncokb_request("/annotate/copyNumberAlterations", params)
