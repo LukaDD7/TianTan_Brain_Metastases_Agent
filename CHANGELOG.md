@@ -6,6 +6,40 @@
 
 ---
 
+## [Unreleased] - 2026-03-25
+
+### 统一评估报告 v2.1 (含SD统计) 发布
+
+#### 数据重构与标准化
+- **评估报告重构**: 创建 `UNIFIED_EVALUATION_REPORT_v2.1_SD.md`
+  - 所有量化指标统一使用 **Mean ± SD** 格式
+  - 基于CSV原始数据重新计算统计量 (样本标准差, n=9)
+  - 添加95%置信区间和变异系数(CV)分析
+
+#### 关键数据修正
+| 指标 | 修正前 | 修正后 | 说明 |
+|------|--------|--------|------|
+| BM Agent延迟 | 45,231 ms | **263.7 ± 114.6 s** | 单位统一为秒 |
+| BM Agent Input | 18,234 | **575.2 ± 227.8 K** | Token单位统一为K |
+| BM Agent Output | 12,456 | **6.2 ± 3.0 K** | 修正为output-only |
+| BM Agent Total | 456,048 | **581.5 ± 229.0 K** | 核实CSV数据 |
+| WebSearch Tool Calls | 3.5 ± 1.2 | **1.0 ± 0.0** | 核实为单次搜索 |
+| BM Agent CPI | 0.931 | **0.888 ± 0.045** | 个体患者均值计算 |
+
+#### 可视化图表更新
+- **删除过期图表**: figure1-6_*.pdf/png (旧版本)
+- **生成9张新高清图表** (300 DPI):
+  - Figure1-7: 四种方法对比 (方法级)
+  - Figure8: 患者级4指标折线图 (CPI/CCR/PTR/MQR)
+  - Figure9: CPI详细对比图
+
+#### 新增文档
+- `TABLES_FOR_WORD.md`: Word粘贴版数据表
+- `README_v2.md`: v2.1版本快速参考
+- `generate_patient_line_charts.py`: 患者级折线图生成脚本
+
+---
+
 ## [Unreleased] - 2026-03-24
 
 ### 批量评估完成 (Batch Evaluation Completed)
