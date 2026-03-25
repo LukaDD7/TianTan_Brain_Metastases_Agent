@@ -91,3 +91,30 @@ temp/
 # 测试脚本（临时）
 test_*.py
 !tests/
+
+# =============================================================================
+# 患者敏感数据 - 绝不能提交！
+# =============================================================================
+
+# 患者原始数据目录
+analysis/samples/*/
+!analysis/samples/README.md
+
+# 旧的患者数据目录
+analysis/sample_*/
+
+# 患者评审详细记录（含患者信息）
+analysis/reviews/
+analysis/reviews/*.md
+analysis/reviews/*.csv
+
+# 旧的可视化（可能含患者信息）
+analysis/visualization/
+
+# 执行日志（可能含患者信息）
+analysis/*/execution_log/
+analysis/*/*_execution_log.jsonl
+analysis/*/*_complete.log
+
+# 患者输入文件
+analysis/*/patient_*_input.txt

@@ -95,46 +95,110 @@ class UnifiedDataLoader:
             "full_output": data.get("full_output", {})
         }
 
-    def load_bm_agent_results_placeholder(self) -> List[Dict]:
+    def load_bm_agent_results_from_samples(self) -> List[Dict]:
         """
-        【占位符】加载BM Agent结果
+        从 analysis/samples/ 目录加载 BM Agent 归档数据
 
-        TODO: 实现BM Agent数据加载
-        需要从execution_logs和patient reports中提取：
-        - report内容
-        - reasoning过程
-        - tool_calls列表
-        - latency（从duration_ms累加）
-        - token使用量（需要添加记录）
-
-        Returns:
-            [patient1_data, patient2_data, ...]
+        读取内容：
+        - report: 从 MDT_Report_{id}.md
+        - reasoning: 从 execution_log 的 llm_response 内容
+        - tool_calls: 从 execution_log 的 tool_call 条目
+        - latency_ms: 累加所有 duration_ms
+        - tokens: 累加所有 llm_response.usage
         """
-        print("⚠️ BM Agent结果加载为占位符，需要实现")
+        results = []
+        samples_dir = Path("analysis/samples")
 
-        # TODO: 实现实际加载逻辑
-        # 示例结构：
-        return [{
-            "patient_id": "PLACEHOLDER",
-            "hospital_id": "",
-            "method": "bm_agent",
-            "timestamp": "",
-            "report": "",
-            "reasoning": "",
-            "latency_ms": 0,  # 从execution_logs累加
-            "tokens": {
-                "input": 0,  # 需要添加记录
-                "output": 0,
-                "total": 0
-            },
-            "tool_calls": [],  # 从execution_logs提取
-            "full_output": {}
-        }]
+        if not samples_dir.exists():
+            print("⚠️ analysis/samples/ 目录不存在")
+            return results
+
+        for patient_dir in samples_dir.iterdir():
+            if not patient_dir.is_dir():
+                continue
+
+            patient_id = patient_dir.name
+            report_file = patient_dir / f"MDT_Report_{patient_id}.md"
+            log_file = patient_dir / "bm_agent_execution_log.jsonl"
+
+            if not report_file.exists() or not log_file.exists():
+                continue
+
+            try:
+                # 读取报告
+                with open(report_file, 'r', encoding='utf-8') as f:
+                    report_content = f.read()
+
+                # 解析执行日志
+                tool_calls = []
+                reasoning_parts = []
+                total_duration_ms = 0
+                total_tokens = {"input": 0, "output": 0, "total": 0}
+                timestamp = ""
+
+                with open(log_file, 'r', encoding='utf-8') as f:
+                    for line in f:
+                        try:
+                            entry = json.loads(line.strip())
+                            entry_type = entry.get("type")
+
+                            if entry_type == "tool_call":
+                                tool_calls.append({
+                                    "tool_name": entry.get("tool_name"),
+                                    "duration_ms": entry.get("duration_ms", 0),
+                                    "timestamp": entry.get("timestamp")
+                                })
+                                total_duration_ms += entry.get("duration_ms", 0)
+
+                            elif entry_type == "llm_response":
+                                # 提取token使用量
+                                usage = entry.get("usage", {})
+                                if usage:
+                                    total_tokens["input"] += usage.get("input_tokens", 0)
+                                    total_tokens["output"] += usage.get("output_tokens", 0)
+                                    total_tokens["total"] += usage.get("total_tokens", 0)
+
+                                # 收集推理内容
+                                content = entry.get("content", "")
+                                if content and len(reasoning_parts) < 5:  # 前5个推理片段
+                                    reasoning_parts.append(content[:500])  # 限制长度
+
+                            # 记录时间戳
+                            if not timestamp and entry.get("timestamp"):
+                                timestamp = entry.get("timestamp")
+
+                        except json.JSONDecodeError:
+                            continue
+
+                # 构建标准化数据
+                patient_data = {
+                    "patient_id": patient_id,
+                    "hospital_id": patient_id,  # 假设相同
+                    "method": "bm_agent",
+                    "timestamp": timestamp,
+                    "report": report_content,
+                    "reasoning": "\n...\n".join(reasoning_parts),
+                    "latency_ms": total_duration_ms,
+                    "tokens": total_tokens,
+                    "tool_calls": tool_calls,
+                    "num_tool_calls": len(tool_calls),
+                    "sources": []  # 可从报告中提取引用
+                }
+
+                results.append(patient_data)
+                print(f"   Loaded BM Agent data: {patient_id} ({len(tool_calls)} tool calls, "
+                      f"{total_tokens['total']} tokens, {total_duration_ms}ms)")
+
+            except Exception as e:
+                print(f"   Error loading {patient_id}: {e}")
+                continue
+
+        return results
 
     def load_all_results(self) -> Dict[str, List[Dict]]:
         """加载所有4种方法的结果"""
         all_results = self.load_baseline_results()
-        all_results["bm_agent"] = self.load_bm_agent_results_placeholder()
+        all_results["bm_agent"] = self.load_bm_agent_results_from_samples()
         return all_results
 
 

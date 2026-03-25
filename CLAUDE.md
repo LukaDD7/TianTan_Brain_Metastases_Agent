@@ -98,6 +98,115 @@
 * **运行批量评估**：`conda run -n tiantanBM_agent python scripts/run_batch_eval.py --max_cases 1`
 * **依赖安装**：`conda run -n tiantanBM_agent pip install <package>`
 
+---
+
+## 5. 批量评估验证状态 (Batch Evaluation Verification)
+
+### 5.1 评估完成情况 (2026-03-24)
+
+**已完成**: 9例患者 BM Agent 完整评估 + 3种Baseline方法
+- 患者ID: 605525, 612908, 638114, 640880, 648772, 665548, 708387, 747724, 868183
+- 数据归档: `analysis/samples/{patient_id}/`
+
+### 5.2 严格验证结果
+
+**已验证指标** (✅ 通过独立API查询验证):
+
+| 指标 | 验证方法 | 结果 | 状态 |
+|------|----------|------|------|
+| **PTR** | 正则提取 + 人工抽查 | 0.889 (8/9完全可追溯) | ✅ |
+| **OncoKB引用** | API独立查询 (query_oncokb.py) | 3/3 抽样通过 | ✅ |
+| **PubMed PMID** | API存在性验证 (search_pubmed.py) | 9/9 抽样通过 | ✅ |
+| **Token消耗** | 执行日志交叉验证 | 与CSV一致 | ✅ |
+| **Latency** | 执行日志时间戳验证 | 与CSV一致 | ✅ |
+| **工具调用** | 执行日志grep统计 | 平均41.6次/例 | ✅ |
+
+**OncoKB 验证详情** (抽样):
+- STK11 p.G279Cfs*6 (868183): LEVEL_4, Likely Oncogenic ✅
+- GNAS p.R201C (868183): Oncogenic ✅
+- KRAS G12V (605525): LEVEL_R1 (Cetuximab/Panitumumab耐药) ✅
+
+**PubMed 验证详情** (抽样):
+- PMID 33427654: CCTG SC.24/TROG 17.06 (脊柱转移SBRT) ✅
+- PMID 40232811: EVIDENS研究 (Nivolumab二线NSCLC) ✅
+- PMID 33264544: KEYNOTE-177 (MSI-H结直肠癌) ✅
+- PMID 36379002: DESTINY-Gastric01 (T-DXd HER2-low胃癌) ✅
+
+**待验证指标** (⏳ 需临床专家人工评审):
+- **CCR** (Clinical Consistency Rate): 治疗线判定准确性、方案匹配率
+- **MQR** (MDT Quality Rate): 8模块完整性、模块适用性判断
+- **CER** (Clinical Error Rate): 严重/主要/次要错误数
+
+### 5.3 数据归档位置
+
+```
+analysis/samples/
+├── 868183/          # 患者868183 (Case3) - 肺癌SMARCA4突变
+├── 747724/          # 患者747724 (Case10) - 乳腺癌HER2+
+├── 708387/          # 患者708387 (Case9) - 肺癌MET扩增
+├── 665548/          # 患者665548 (Case4) - 贲门癌HER2低表达
+├── 648772/          # 患者648772 (Case1) - 肺癌
+├── 640880/          # 患者640880 (Case2) - 肺癌
+├── 638114/          # 患者638114 (Case6) - 乳腺癌
+├── 612908/          # 患者612908 (Case7) - 肺癌KRAS G12V
+├── 605525/          # 患者605525 (Case8) - 结肠癌KRAS G12V
+└── README.md
+
+每个样本包含:
+- MDT_Report_{id}.md          # BM Agent生成的8模块报告
+- patient_{id}_input.txt      # 原始患者输入数据
+- bm_agent_execution_log.jsonl # 结构化执行日志
+- bm_agent_complete.log       # 人类可读完整日志
+- baseline_results.json       # 3种Baseline方法结果
+```
+
+### 5.4 验证报告与论文材料
+
+**严格验证报告**: `analysis/reports/verification_report_strict.md`
+- OncoKB独立验证结果
+- PubMed抽样验证结果
+- 执行日志交叉验证
+- 待审查项目清单
+
+**论文结果分节表述**: `analysis/reports/论文结果_分节表述.md`
+- 效率指标分析 (Latency/Token)
+- PTR分析 (0.889 vs 0.000)
+- 工具调用统计
+- 统计检验结果
+
+**论文表格Word版**: `analysis/reports/论文表格_Word粘贴版.md`
+- 患者基本特征表
+- 效率指标对比表
+- PTR对比表
+- 工具调用统计表
+- Wilcoxon检验结果表
+
+### 5.5 移交另一台电脑的工作清单
+
+**已打包文件** (可直接复制):
+1. `analysis/samples/` - 9例患者完整数据
+2. `analysis/reports/` - 验证报告 + 论文材料
+3. `analysis/unified_analysis.py` - 批量分析脚本
+4. `analysis/summary_table.csv` - 汇总数据表
+
+**需继续完成的工作**:
+1. 临床专家审查CCR/MQR/CER指标
+2. 完成CPI综合评分计算 (需CCR/MQR/CER)
+3. 生成最终论文图表
+4. 撰写讨论部分
+
+**验证脚本可用性**:
+```bash
+# OncoKB验证
+conda run -n tiantanBM_agent python skills/oncokb_query_skill/scripts/query_oncokb.py mutation --gene KRAS --alteration G12V --tumor-type "Colorectal Cancer"
+
+# PubMed验证
+conda run -n tiantanBM_agent python skills/pubmed_search_skill/scripts/search_pubmed.py --query "36379002[uid]" --max-results 1
+
+# 批量分析
+conda run -n tiantanBM_agent python analysis/unified_analysis.py
+```
+
 ## 5. 联网与检索规范 (Web Access Rules)
 * **绝对禁止使用本地无头浏览器（如 Puppeteer）**。
 * **统一使用 Jina Reader 渲染**：如果需要 AI 助手读取网页，请将目标网址拼接在 `https://r.jina.ai/` 之后。
