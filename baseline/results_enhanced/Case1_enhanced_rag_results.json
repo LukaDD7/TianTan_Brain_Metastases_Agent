@@ -1,0 +1,101 @@
+{
+  "patient_id": "Case1",
+  "hospital_id": "648772",
+  "patient_info": "住院号 648772。入院时间 2020年07月20日。年龄 49。性别 男。主诉 恶性肿瘤术后2年余，间断头晕头痛半年。现病史 患者2年内因颈部恶性黑色素瘤行多次手术：颈前肿物切除术及双侧颈部、锁骨上、左侧颊部淋巴结清扫，半年前患者无明显诱因出现头晕头痛，头痛性质为闷痛，程度可忍受，位于右额顶部，无放散，伴头晕，无恶心呕吐，无四肢乏力麻木，无视力下降，无四肢活动障碍，就诊于当地医院，行头CT检查发现颅内占位性病变，门诊以“颅内占位性病变”收入院。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n，体重\n无明显变化\n。。既往史 平素健康状况:\n良好\n。患者2年半前因甲状腺癌行右甲状腺根治术，术后口服优甲乐；1年前因恶性黑色素瘤颈淋巴结转移行颈淋巴结清扫术。\n否认高血压史、冠心病史\n，\n否认糖尿病史、脑血管病史、精神病史\n，\n否认肝炎史、疟疾史、结核史\n,\n否认手术史、外伤史、输血史\n，\n否认过敏史\n，\n预防接种史不详\n。。入院诊断 1.颅内占位性病变(额,右)2.颈恶性黑色素瘤术后3.甲状腺乳头状癌术后4.鼻窦炎。出院诊断 1.恶性黑色素瘤(额,右)2.颈恶性黑色素瘤术后3.甲状腺...",
+  "results": {
+    "enhanced_rag": {
+      "method": "Enhanced_RAG",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 648772  \n**报告日期：** 2020 年 07 月 23 日（术后评估）  \n**诊疗团队：** 神经外科、肿瘤内科、放射治疗科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n- **患者基本信息与入院情况**：患者男性，49 岁，因“恶性肿瘤术后 2 年余，间断头晕头痛半年”入院。既往有甲状腺乳头状癌及颈部恶性黑色素瘤手术史 [Local: 患者信息]。\n- **临床症状评估**：主诉为右额顶部闷痛，伴头晕，无恶心呕吐及神经功能缺损。症状提示颅内占位效应 [Local: 患者信息]。\n- **既往病史与合并症分析**：既往健康状况良好，否认高血压、糖尿病及心脑血管病史。合并鼻窦炎及低钾血症 [Local: 患者信息]。\n- **影像学初步印象**：头部 MRI 显示右额叶占位（20x25x16mm），T1WI 高/T2WI 低信号，增强扫描呈不规则分叶状实性中度强化，周围水肿，局部脑沟变浅。影像学诊断高度提示转移性黑色素瘤 [Local: 患者信息]。根据指南，黑色素瘤脑转移初诊发生率估计超过 25% [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n- **基于病理诊断的原发肿瘤特征**：患者原发灶为颈部恶性黑色素瘤，既往已行多次清扫术。本次颅内病变术后病理确认为恶性黑色素瘤转移 [Local: 患者信息]。\n- **分子分型与靶向治疗敏感性评估**：黑色素瘤常涉及特定基因突变（如 BRAF），但提供的指南片段未详细列出具体的分子分型检测建议及对应靶向药物 [Evidence: Insufficient in Retrieved Guidelines]。临床常规建议补充 BRAF 等基因检测以指导后续系统治疗。\n- **原发灶治疗策略建议**：鉴于原发灶（颈部）已行手术控制，当前治疗重点在于颅内转移灶及全身系统性控制。指南指出对于黑色素瘤脑转移患者，有多种治疗方案被推荐 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 3. 系统性管理 (Systemic Management)\n- **全身治疗方案**：患者已处于转移性疾病阶段（IV 期），需启动全身系统性治疗。指南确认针对黑色素瘤脑转移有推荐的系统治疗方案 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **药物选择与剂量考量**：提供的指南片段未列出具体的免疫检查点抑制剂或靶向药物名称及剂量 [Evidence: Insufficient in Retrieved Guidelines]。建议肿瘤内科根据最新临床实践指南（如 NCCN 或 CSCO）制定免疫联合治疗方案。\n- **围手术期用药参数**：患者已行手术，术后需评估激素（如地塞米松）使用情况以控制水肿，并根据全身治疗方案调整用药时机。\n\n## 4. 随访方案 (Follow-up Strategy)\n- **影像学复查时间窗**：建议术后定期进行头部 MRI 增强扫描。鉴于指南推荐术后手术腔行立体定向放射外科（SRS）治疗，需在放疗前后及治疗后定期监测 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **肿瘤标志物监测**：黑色素瘤特异性标志物（如 S-100, LDH）可作为参考，但指南片段未具体提及监测频率 [Evidence: Insufficient in Retrieved Guidelines]。\n- **神经系统功能评估**：每次随访需评估 KPS 评分及神经系统体征，特别是对于无症状脑转移患者，若 KPS<70 且无系统治疗选项，放疗获益有限 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n- **其他可行但未被选择的方案**：\n    1.  **单纯立体定向放射外科（SRS）**：患者入院时病灶较大（>2cm）且伴有明显占位效应（脑沟变浅）及症状（头痛）。指南指出，对于有大肿瘤且伴有占位效应的患者，手术比单纯放疗更可能获益 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    2.  **全脑放疗（WBRT）alone**：对于 1-2 个已切除的脑转移灶，指南推荐手术腔单独行 SRS，而非首选 WBRT，以减少认知功能损伤 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **选择当前方案而非替代方案的循证依据**：患者为症状性脑转移，指南明确建议症状性脑转移患者应接受局部治疗，不应推迟 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。手术切除可迅速缓解占位效应，术后辅以 SRS 可控制局部复发。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n- **术前准备要点**：患者已于 2020 年 7 月 23 日完成全麻下右额开颅病变全切除术。术前已完善常规检查 [Local: 患者信息]。\n- **术后护理注意事项**：术后伤口愈合良好（I/甲愈合），神经系统查体同术前。需监测电解质（患者出院诊断含低钾血症）及颅内压情况 [Local: 患者信息]。\n- **并发症预防策略**：指南建议对于接受全脑放疗的患者可使用美金刚及海马回避技术，但本患者首选手术腔 SRS，故美金刚非必须，除非后续病情进展需行 WBRT [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。重点预防术后癫痫及感染。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n- **关键基因突变分析**：黑色素瘤脑转移患者通常建议进行 BRAF V600E 等基因检测。但提供的指南片段未包含具体的基因检测推荐行号或突变类型 [Evidence: Insufficient in Retrieved Guidelines]。\n- **靶向治疗指导意义**：若检测出特定突变，可指导靶向药物使用。指南仅提及黑色素瘤有推荐的治疗方案，未详述分子指导细节 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **预后分子标志物**：目前提供的指南片段未列出具体的预后分子标志物 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n- **推荐的治疗时间线**：\n    1.  **已完成**：2020 年 7 月 23 日 颅脑肿瘤切除术 [Local: 患者信息]。\n    2.  **术后 2-4 周**：伤口愈合后，针对手术腔行立体定向放射外科（SRS）治疗。指南建议对于 1-2 个已切除的脑转移灶，应向患者提供手术腔单独 SRS 治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    3.  **同步/序贯**：启动全身系统性治疗（免疫/靶向）。\n- **关键决策节点**：术后病理确诊 -> 多学科讨论确定辅助放疗 -> 基因检测指导系统用药。\n- **多学科协作流程**：神经外科完成切除 -> 放疗科评估手术腔 SRS -> 肿瘤内科制定全身方案 -> 定期随访评估疗效。对于无症状且无系统治疗选项的患者，决策应基于多学科讨论潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组  \n**依据指南：** ASCO/SNO/ASTRO Brain Metastases Guideline (2021)  \n**免责声明：** 本报告基于提供的患者信息及检索到的指南片段生成，具体用药及检测需结合最新临床实践及患者个体情况。",
+      "reasoning": "",
+      "sources": [
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 1-11)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 9-34)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 38-46)"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 1,
+          "end_line": 11
+        },
+        {
+          "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34
+        },
+        {
+          "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46
+        }
+      ],
+      "latency_ms": 122443,
+      "full_output": {
+        "model": "qwen3.5-plus",
+        "timestamp": "2026-03-25T16:50:25.038366",
+        "latency_ms": 122443,
+        "input_prompt": "住院号 648772。入院时间 2020年07月20日。年龄 49。性别 男。主诉 恶性肿瘤术后2年余，间断头晕头痛半年。现病史 患者2年内因颈部恶性黑色素瘤行多次手术：颈前肿物切除术及双侧颈部、锁骨上、左侧颊部淋巴结清扫，半年前患者无明显诱因出现头晕头痛，头痛性质为闷痛，程度可忍受，位于右额顶部，无放散，伴头晕，无恶心呕吐，无四肢乏力麻木，无视力下降，无四肢活动障碍，就诊于当地医院，行头CT检查发现颅内占位性病变，门诊以“颅内占位性病变”收入院。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n，体重\n无明显变化\n。。既往史 平素健康状况:\n良好\n。患者2年半前因甲状腺癌行右甲状腺根治术，术后口服优甲乐；1年前因恶性黑色素瘤颈淋巴结转移行颈淋巴结清扫术。\n否认高血压史、冠心病史\n，\n否认糖尿病史、脑血管病史、精神病史\n，\n否认肝炎史、疟疾史、结核史\n,\n否认手术史、外伤史、输血史\n，\n否认过敏史\n，\n预防接种史不详\n。。入院诊断 1.颅内占位性病变(额,右)2.颈恶性黑色素瘤术后3.甲状腺乳头状癌术后4.鼻窦炎。出院诊断 1.恶性黑色素瘤(额,右)2.颈恶性黑色素瘤术后3.甲状腺乳头状癌术后4.鼻窦炎5.低钾血症。头部MRI 右额侧见半环形T1WI高T2WI低信号，内信号不均匀，相应于FLAIR上呈混杂稍高信号，周围可见片状T1WI高T2WI低信号，DWI/ADC序列未见弥散受限改变，呈等高信号，病灶大小约20X25X16mm（前后径X左右径X上下径），局部脑沟变浅，脑室系统未见明显异常。中线结构居中。注药后，右额病灶可见不规则分叶状实性中度强化。扫描层面内双侧眼球及眼眶结构未见明显异常；鼻窦内可见线状长T2信号，蝶窦左侧及左上颌窦可见多发囊状T2WI高信号，鼻中隔居中。报告诊断:\"右额异常信号：转移性黑色素瘤可能性大；鼻窦炎；鼻窦多发囊肿。\"。诊疗经过 入院后经常规检查后于2020年7月23日在全麻下行右额开颅，病变全切除术。术中可见右额脑表面张力高，脑沟回消失，切开皮层即可见病变，呈灰黑色，质地韧，血供丰富，与周围脑组织边界清楚，显微镜下自肿瘤大致边界并适当扩大逐步分离并完整切除，最终病变镜下全切，大小约2.5X1.5X1.5cm。手术顺利，术后恢复良好。神经系统查体同术前。伤口愈合好，I/甲愈合。可以出院。。\n",
+        "retrieved_documents": [
+          {
+            "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 1,
+            "end_line": 11
+          },
+          {
+            "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 9,
+            "end_line": 34
+          },
+          {
+            "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 38,
+            "end_line": 46
+          }
+        ],
+        "output": {
+          "content": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 648772  \n**报告日期：** 2020 年 07 月 23 日（术后评估）  \n**诊疗团队：** 神经外科、肿瘤内科、放射治疗科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n- **患者基本信息与入院情况**：患者男性，49 岁，因“恶性肿瘤术后 2 年余，间断头晕头痛半年”入院。既往有甲状腺乳头状癌及颈部恶性黑色素瘤手术史 [Local: 患者信息]。\n- **临床症状评估**：主诉为右额顶部闷痛，伴头晕，无恶心呕吐及神经功能缺损。症状提示颅内占位效应 [Local: 患者信息]。\n- **既往病史与合并症分析**：既往健康状况良好，否认高血压、糖尿病及心脑血管病史。合并鼻窦炎及低钾血症 [Local: 患者信息]。\n- **影像学初步印象**：头部 MRI 显示右额叶占位（20x25x16mm），T1WI 高/T2WI 低信号，增强扫描呈不规则分叶状实性中度强化，周围水肿，局部脑沟变浅。影像学诊断高度提示转移性黑色素瘤 [Local: 患者信息]。根据指南，黑色素瘤脑转移初诊发生率估计超过 25% [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n- **基于病理诊断的原发肿瘤特征**：患者原发灶为颈部恶性黑色素瘤，既往已行多次清扫术。本次颅内病变术后病理确认为恶性黑色素瘤转移 [Local: 患者信息]。\n- **分子分型与靶向治疗敏感性评估**：黑色素瘤常涉及特定基因突变（如 BRAF），但提供的指南片段未详细列出具体的分子分型检测建议及对应靶向药物 [Evidence: Insufficient in Retrieved Guidelines]。临床常规建议补充 BRAF 等基因检测以指导后续系统治疗。\n- **原发灶治疗策略建议**：鉴于原发灶（颈部）已行手术控制，当前治疗重点在于颅内转移灶及全身系统性控制。指南指出对于黑色素瘤脑转移患者，有多种治疗方案被推荐 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 3. 系统性管理 (Systemic Management)\n- **全身治疗方案**：患者已处于转移性疾病阶段（IV 期），需启动全身系统性治疗。指南确认针对黑色素瘤脑转移有推荐的系统治疗方案 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **药物选择与剂量考量**：提供的指南片段未列出具体的免疫检查点抑制剂或靶向药物名称及剂量 [Evidence: Insufficient in Retrieved Guidelines]。建议肿瘤内科根据最新临床实践指南（如 NCCN 或 CSCO）制定免疫联合治疗方案。\n- **围手术期用药参数**：患者已行手术，术后需评估激素（如地塞米松）使用情况以控制水肿，并根据全身治疗方案调整用药时机。\n\n## 4. 随访方案 (Follow-up Strategy)\n- **影像学复查时间窗**：建议术后定期进行头部 MRI 增强扫描。鉴于指南推荐术后手术腔行立体定向放射外科（SRS）治疗，需在放疗前后及治疗后定期监测 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **肿瘤标志物监测**：黑色素瘤特异性标志物（如 S-100, LDH）可作为参考，但指南片段未具体提及监测频率 [Evidence: Insufficient in Retrieved Guidelines]。\n- **神经系统功能评估**：每次随访需评估 KPS 评分及神经系统体征，特别是对于无症状脑转移患者，若 KPS<70 且无系统治疗选项，放疗获益有限 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n- **其他可行但未被选择的方案**：\n    1.  **单纯立体定向放射外科（SRS）**：患者入院时病灶较大（>2cm）且伴有明显占位效应（脑沟变浅）及症状（头痛）。指南指出，对于有大肿瘤且伴有占位效应的患者，手术比单纯放疗更可能获益 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    2.  **全脑放疗（WBRT）alone**：对于 1-2 个已切除的脑转移灶，指南推荐手术腔单独行 SRS，而非首选 WBRT，以减少认知功能损伤 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **选择当前方案而非替代方案的循证依据**：患者为症状性脑转移，指南明确建议症状性脑转移患者应接受局部治疗，不应推迟 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。手术切除可迅速缓解占位效应，术后辅以 SRS 可控制局部复发。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n- **术前准备要点**：患者已于 2020 年 7 月 23 日完成全麻下右额开颅病变全切除术。术前已完善常规检查 [Local: 患者信息]。\n- **术后护理注意事项**：术后伤口愈合良好（I/甲愈合），神经系统查体同术前。需监测电解质（患者出院诊断含低钾血症）及颅内压情况 [Local: 患者信息]。\n- **并发症预防策略**：指南建议对于接受全脑放疗的患者可使用美金刚及海马回避技术，但本患者首选手术腔 SRS，故美金刚非必须，除非后续病情进展需行 WBRT [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。重点预防术后癫痫及感染。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n- **关键基因突变分析**：黑色素瘤脑转移患者通常建议进行 BRAF V600E 等基因检测。但提供的指南片段未包含具体的基因检测推荐行号或突变类型 [Evidence: Insufficient in Retrieved Guidelines]。\n- **靶向治疗指导意义**：若检测出特定突变，可指导靶向药物使用。指南仅提及黑色素瘤有推荐的治疗方案，未详述分子指导细节 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **预后分子标志物**：目前提供的指南片段未列出具体的预后分子标志物 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n- **推荐的治疗时间线**：\n    1.  **已完成**：2020 年 7 月 23 日 颅脑肿瘤切除术 [Local: 患者信息]。\n    2.  **术后 2-4 周**：伤口愈合后，针对手术腔行立体定向放射外科（SRS）治疗。指南建议对于 1-2 个已切除的脑转移灶，应向患者提供手术腔单独 SRS 治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    3.  **同步/序贯**：启动全身系统性治疗（免疫/靶向）。\n- **关键决策节点**：术后病理确诊 -> 多学科讨论确定辅助放疗 -> 基因检测指导系统用药。\n- **多学科协作流程**：神经外科完成切除 -> 放疗科评估手术腔 SRS -> 肿瘤内科制定全身方案 -> 定期随访评估疗效。对于无症状且无系统治疗选项的患者，决策应基于多学科讨论潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组  \n**依据指南：** ASCO/SNO/ASTRO Brain Metastases Guideline (2021)  \n**免责声明：** 本报告基于提供的患者信息及检索到的指南片段生成，具体用药及检测需结合最新临床实践及患者个体情况。",
+          "reasoning": "",
+          "role": "assistant"
+        },
+        "usage": {
+          "input_tokens": 244,
+          "output_tokens": 918,
+          "total_tokens": 1162
+        }
+      }
+    }
+  },
+  "timestamp": "2026-03-25T16:50:25.038366"
+}

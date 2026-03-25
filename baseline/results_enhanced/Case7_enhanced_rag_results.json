@@ -1,0 +1,101 @@
+{
+  "patient_id": "Case7",
+  "hospital_id": "612908",
+  "patient_info": "住院号 612908。入院时间 2022年03月31日。年龄 53。性别 女。主诉 脑转移癌术后2年半。。现病史 患者2年半前因“突发四肢抽搐，双眼上吊，口吐白沫、小便失禁并意识障碍，持续数分钟好转”，急诊送往北京友好医院及北京国康医院，考虑癫痫大发作，给予药物治疗（具体不详），并给予行头部磁共振提示左额叶占位性病变，周围脑组织水肿明显，后于我科在B超下行左额开颅肿瘤切除术，术后病理回报“转移性腺癌”。后于宣武医院右肺肺癌手术。1月前言语不清、记忆力减退，1天前出现右手活动不利，失语，后自行缓解，偶伴左顶头痛、呕吐，后于我院行MRI检查“怀疑肿瘤复发”。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n，体重\n无明显变化\n。。既往史 2019年7月30日于我院行左额开颅肿瘤切除术。2019年9月于宣武医院右肺肺癌手术，术后艾克替尼治疗至今。曾于1999年因产后子宫大出血于东明县医院输“B”型血，输血量不详\n否认高血压史、冠心病史\n，\n否认糖尿病史、脑血管病史、精神病史\n，\n否认肝炎史、疟疾史、结核史\n,\n否认外伤史\n，\n否认过敏史\n，\n预防接种史不详\n。。入院诊断 颅内占位性病变（...",
+  "results": {
+    "enhanced_rag": {
+      "method": "Enhanced_RAG",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 612908  \n**患者姓名：** [隐去]  \n**性别：** 女  \n**年龄：** 53 岁  \n**入院时间：** 2022 年 03 月 31 日  \n**报告日期：** 2022 年 04 月（术后出院前）  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、病理科、影像科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**  \n  患者 53 岁女性，因“脑转移癌术后 2 年半，复发怀疑”入院。既往有左额开颅肿瘤切除术史（2019.7）及右肺肺癌手术史（2019.9）。本次入院前 1 月出现言语不清、记忆力减退，1 天前出现右手活动不利、失语（自行缓解），伴头痛呕吐。\n- **临床症状评估**  \n  主诉为神经系统局灶性症状（失语、肢体无力）及颅内压增高症状（头痛、呕吐）。症状呈进展性，提示颅内病变活动。根据指南，有症状的脑转移患者应接受局部治疗，无论使用何种全身治疗方案 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n- **既往病史与合并症分析**  \n  既往肺癌术后，长期服用艾克替尼。否认高血压、糖尿病、心脏病史。入院查体发现低钾血症，已纠正。\n- **影像学初步印象**  \n  头部 MRI 增强示左额顶叶异常强化灶（最大约 10×16×16mm），伴周围水肿及中线移位。胸部 CT 示左肺上叶多发磨玻璃结节。影像学证实颅内占位伴占位效应，符合复发转移特征。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**  \n  既往病理回报“转移性腺癌”，结合肺部手术史，原发灶高度疑似肺腺癌。指南指出，肺腺癌患者初诊时脑转移的发生率估计超过 25% `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]`。\n- **分子分型与靶向治疗敏感性评估**  \n  患者术后长期服用艾克替尼（EGFR-TKI），提示既往可能存在 EGFR 敏感突变。本次复发提示可能产生耐药或颅内进展。\n- **原发灶治疗策略建议**  \n  肺部目前为术后状态，左肺新发结节建议密切随诊。当前治疗重点为颅内复发灶的控制。鉴于颅内病灶引起明显症状及占位效应，优先处理颅内病变。\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**  \n  患者既往使用艾克替尼治疗至今。颅内复发提示可能存在中枢神经系统进展。\n- **药物选择与剂量考量**  \n  指南提及对于有系统性治疗选项的患者，决策应基于多学科讨论 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。但检索到的指南片段未提供特定靶向药物（如艾克替尼）的剂量调整或换药具体推荐 `[Evidence: Insufficient in Retrieved Guidelines]`。建议肿瘤内科评估是否更换为三代 TKI 或联合化疗。\n- **围手术期用药参数**  \n  术前已停用抗凝药物（如有），术后给予对症治疗（脱水、抗癫痫、补液）。指南强调有症状患者不应推迟局部治疗 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`，故在完善检查后迅速安排了手术。\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**  \n  术后建议定期行头部 MRI 增强检查。指南建议对于切除后的脑转移患者，应考虑术后放疗以降低复发风险。\n- **肿瘤标志物监测**  \n  监测肺部及全身肿瘤标志物，评估全身疾病控制情况。\n- **神经系统功能评估**  \n  监测 KPS 评分。指南指出，对于无症状脑转移且 KPS<70 且无全身治疗选项的患者，放疗获益有限 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。本患者术后恢复顺利，KPS 预期良好，应积极随访。对于 1-2 个切除后的脑转移灶，指南建议向患者提供手术腔的立体定向放射外科治疗（SRS） `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **其他可行但未被选择的方案**  \n  1. **单纯立体定向放射外科（SRS）而不手术：** 患者肿瘤较大（16mm），伴明显占位效应（中线移位）及骨侵犯。指南指出，伴有占位效应的大肿瘤患者比多发性脑转移患者更可能从手术中获益 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n  2. **全脑放疗（WBRT）：** 患者病灶局限（左额顶两处），且已行手术切除。为保护认知功能，优先考虑 SRS 而非 WBRT，除非有多发不可控病灶。指南提及海马避免和美金刚可用于接受 WBRT 的患者，但本例首选局部控制 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n  3. **单纯保守治疗：** 患者有明显神经功能缺损症状，指南明确建议有症状的脑转移患者应接受局部治疗 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n- **选择当前方案而非替代方案的循证依据**  \n  基于患者症状性复发、大肿瘤伴占位效应及骨侵犯特征，手术切除是合理的选项 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**  \n  完善心肺功能评估，纠正低钾血症。影像学明确肿瘤与功能区关系。\n- **术后护理注意事项**  \n  患者已于 2022.4 全麻下行左额颞开颅肿瘤切除术。术后监测意识、瞳孔及肢体肌力。目前患者恢复顺利，无发热及抽搐。\n- **并发症预防策略**  \n  预防癫痫发作（术后继续抗癫痫治疗）、预防深静脉血栓、预防切口感染。指南支持手术作为脑转移患者的合理选择，尤其是大肿瘤患者 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**  \n  患者长期服用艾克替尼，推测既往存在 EGFR 突变。本次术后标本建议再次行基因检测以明确耐药机制（如 T790M 等）。\n- **靶向治疗指导意义**  \n  检索到的指南片段未包含具体的分子病理检测流程或靶向药物选择标准 `[Evidence: Insufficient in Retrieved Guidelines]`。建议参考 NCCN 或 CSCO 肺癌指南进行补充检测。\n- **预后分子标志物**  \n  分子分型将直接影响后续全身治疗方案的选择及预后评估。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**  \n  1. **2022.03.31：** 入院，完善检查。\n  2. **2022.04：** 行左额颞开颅肿瘤切除术（已执行）。\n  3. **术后 2-4 周：** 伤口愈合后，放疗科评估是否行术腔 SRS 治疗。指南建议对于 1-2 个切除后的脑转移灶，应提供术腔 SRS `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n  4. **长期：** 肿瘤内科调整全身治疗方案，定期影像随访。\n- **关键决策节点**  \n  - 决定手术而非单纯放疗（基于占位效应和症状）。\n  - 决定术后是否辅助放疗（基于切除灶数量 1-2 个，指南推荐 SRS）。\n- **多学科协作流程**  \n  神经外科主导颅内病灶切除，放疗科评估术后辅助放疗，肿瘤内科管理全身系统及靶向治疗，影像科负责随访监测。指南强调局部治疗决策应基于多学科讨论 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组  \n**依据指南：** ASCO/SNO/ASTRO Brain Metastases Guideline (2021)",
+      "reasoning": "",
+      "sources": [
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 1-11)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 9-34)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 38-46)"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 1,
+          "end_line": 11
+        },
+        {
+          "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34
+        },
+        {
+          "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46
+        }
+      ],
+      "latency_ms": 111899,
+      "full_output": {
+        "model": "qwen3.5-plus",
+        "timestamp": "2026-03-25T16:59:53.632012",
+        "latency_ms": 111899,
+        "input_prompt": "住院号 612908。入院时间 2022年03月31日。年龄 53。性别 女。主诉 脑转移癌术后2年半。。现病史 患者2年半前因“突发四肢抽搐，双眼上吊，口吐白沫、小便失禁并意识障碍，持续数分钟好转”，急诊送往北京友好医院及北京国康医院，考虑癫痫大发作，给予药物治疗（具体不详），并给予行头部磁共振提示左额叶占位性病变，周围脑组织水肿明显，后于我科在B超下行左额开颅肿瘤切除术，术后病理回报“转移性腺癌”。后于宣武医院右肺肺癌手术。1月前言语不清、记忆力减退，1天前出现右手活动不利，失语，后自行缓解，偶伴左顶头痛、呕吐，后于我院行MRI检查“怀疑肿瘤复发”。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n，体重\n无明显变化\n。。既往史 2019年7月30日于我院行左额开颅肿瘤切除术。2019年9月于宣武医院右肺肺癌手术，术后艾克替尼治疗至今。曾于1999年因产后子宫大出血于东明县医院输“B”型血，输血量不详\n否认高血压史、冠心病史\n，\n否认糖尿病史、脑血管病史、精神病史\n，\n否认肝炎史、疟疾史、结核史\n,\n否认外伤史\n，\n否认过敏史\n，\n预防接种史不详\n。。入院诊断 颅内占位性病变（额部-颅骨，顶叶，左侧，复发）脑转移癌术后（左，顶）肺癌术后（右）。出院诊断 转移性腺癌（额部-颅骨，顶叶，左侧，复发）  低钾血症 脑转移癌术后（左，额）  肺癌术后（右）。头部MRI 平扫+增强示：左额骨呈术后改变，骨板下可见混杂信号影，左额头可见斑片状T2WI等信号肿块，SWI见条状低信号，局部板障显示不清，增强扫描明显强化。左额叶可见大片T1WI低信号、T2WI高信号手术残腔，边缘信号混杂，周围可见大片T1WI稍低信号、T2WI稍高信号影；DWI序列未见弥散受限。增强扫描术区边缘及术区硬脑膜可见线样强化。术区脑沟紊乱，左侧脑室受压变形，中线轻度右偏。左额顶可见两处斑片状T2WI稍高信号，增强扫描明显强化，大小约10×16×16mm（上下径×左右径×前后径）。扫描层面内，双侧上颌窦、双侧蝶窦、左侧额窦和左侧筛窦粘膜增厚；乳突内未见异常信号，双侧眼球大小及位置正常，双眼眶内未见异常信号。报告诊断:“左侧额叶转移瘤术后”改变；左侧额部头皮软组织及其下异常强化；左侧额顶叶异常强化灶：转移瘤；鼻窦炎。\"。胸部CT 胸廓对称，纵隔及气管居中，两肺支气管血管束走行尚可，右肺门旁可见线状高密度",
+        "retrieved_documents": [
+          {
+            "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 1,
+            "end_line": 11
+          },
+          {
+            "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 9,
+            "end_line": 34
+          },
+          {
+            "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 38,
+            "end_line": 46
+          }
+        ],
+        "output": {
+          "content": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 612908  \n**患者姓名：** [隐去]  \n**性别：** 女  \n**年龄：** 53 岁  \n**入院时间：** 2022 年 03 月 31 日  \n**报告日期：** 2022 年 04 月（术后出院前）  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、病理科、影像科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**  \n  患者 53 岁女性，因“脑转移癌术后 2 年半，复发怀疑”入院。既往有左额开颅肿瘤切除术史（2019.7）及右肺肺癌手术史（2019.9）。本次入院前 1 月出现言语不清、记忆力减退，1 天前出现右手活动不利、失语（自行缓解），伴头痛呕吐。\n- **临床症状评估**  \n  主诉为神经系统局灶性症状（失语、肢体无力）及颅内压增高症状（头痛、呕吐）。症状呈进展性，提示颅内病变活动。根据指南，有症状的脑转移患者应接受局部治疗，无论使用何种全身治疗方案 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n- **既往病史与合并症分析**  \n  既往肺癌术后，长期服用艾克替尼。否认高血压、糖尿病、心脏病史。入院查体发现低钾血症，已纠正。\n- **影像学初步印象**  \n  头部 MRI 增强示左额顶叶异常强化灶（最大约 10×16×16mm），伴周围水肿及中线移位。胸部 CT 示左肺上叶多发磨玻璃结节。影像学证实颅内占位伴占位效应，符合复发转移特征。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**  \n  既往病理回报“转移性腺癌”，结合肺部手术史，原发灶高度疑似肺腺癌。指南指出，肺腺癌患者初诊时脑转移的发生率估计超过 25% `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]`。\n- **分子分型与靶向治疗敏感性评估**  \n  患者术后长期服用艾克替尼（EGFR-TKI），提示既往可能存在 EGFR 敏感突变。本次复发提示可能产生耐药或颅内进展。\n- **原发灶治疗策略建议**  \n  肺部目前为术后状态，左肺新发结节建议密切随诊。当前治疗重点为颅内复发灶的控制。鉴于颅内病灶引起明显症状及占位效应，优先处理颅内病变。\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**  \n  患者既往使用艾克替尼治疗至今。颅内复发提示可能存在中枢神经系统进展。\n- **药物选择与剂量考量**  \n  指南提及对于有系统性治疗选项的患者，决策应基于多学科讨论 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。但检索到的指南片段未提供特定靶向药物（如艾克替尼）的剂量调整或换药具体推荐 `[Evidence: Insufficient in Retrieved Guidelines]`。建议肿瘤内科评估是否更换为三代 TKI 或联合化疗。\n- **围手术期用药参数**  \n  术前已停用抗凝药物（如有），术后给予对症治疗（脱水、抗癫痫、补液）。指南强调有症状患者不应推迟局部治疗 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`，故在完善检查后迅速安排了手术。\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**  \n  术后建议定期行头部 MRI 增强检查。指南建议对于切除后的脑转移患者，应考虑术后放疗以降低复发风险。\n- **肿瘤标志物监测**  \n  监测肺部及全身肿瘤标志物，评估全身疾病控制情况。\n- **神经系统功能评估**  \n  监测 KPS 评分。指南指出，对于无症状脑转移且 KPS<70 且无全身治疗选项的患者，放疗获益有限 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。本患者术后恢复顺利，KPS 预期良好，应积极随访。对于 1-2 个切除后的脑转移灶，指南建议向患者提供手术腔的立体定向放射外科治疗（SRS） `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **其他可行但未被选择的方案**  \n  1. **单纯立体定向放射外科（SRS）而不手术：** 患者肿瘤较大（16mm），伴明显占位效应（中线移位）及骨侵犯。指南指出，伴有占位效应的大肿瘤患者比多发性脑转移患者更可能从手术中获益 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n  2. **全脑放疗（WBRT）：** 患者病灶局限（左额顶两处），且已行手术切除。为保护认知功能，优先考虑 SRS 而非 WBRT，除非有多发不可控病灶。指南提及海马避免和美金刚可用于接受 WBRT 的患者，但本例首选局部控制 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n  3. **单纯保守治疗：** 患者有明显神经功能缺损症状，指南明确建议有症状的脑转移患者应接受局部治疗 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n- **选择当前方案而非替代方案的循证依据**  \n  基于患者症状性复发、大肿瘤伴占位效应及骨侵犯特征，手术切除是合理的选项 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**  \n  完善心肺功能评估，纠正低钾血症。影像学明确肿瘤与功能区关系。\n- **术后护理注意事项**  \n  患者已于 2022.4 全麻下行左额颞开颅肿瘤切除术。术后监测意识、瞳孔及肢体肌力。目前患者恢复顺利，无发热及抽搐。\n- **并发症预防策略**  \n  预防癫痫发作（术后继续抗癫痫治疗）、预防深静脉血栓、预防切口感染。指南支持手术作为脑转移患者的合理选择，尤其是大肿瘤患者 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**  \n  患者长期服用艾克替尼，推测既往存在 EGFR 突变。本次术后标本建议再次行基因检测以明确耐药机制（如 T790M 等）。\n- **靶向治疗指导意义**  \n  检索到的指南片段未包含具体的分子病理检测流程或靶向药物选择标准 `[Evidence: Insufficient in Retrieved Guidelines]`。建议参考 NCCN 或 CSCO 肺癌指南进行补充检测。\n- **预后分子标志物**  \n  分子分型将直接影响后续全身治疗方案的选择及预后评估。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**  \n  1. **2022.03.31：** 入院，完善检查。\n  2. **2022.04：** 行左额颞开颅肿瘤切除术（已执行）。\n  3. **术后 2-4 周：** 伤口愈合后，放疗科评估是否行术腔 SRS 治疗。指南建议对于 1-2 个切除后的脑转移灶，应提供术腔 SRS `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n  4. **长期：** 肿瘤内科调整全身治疗方案，定期影像随访。\n- **关键决策节点**  \n  - 决定手术而非单纯放疗（基于占位效应和症状）。\n  - 决定术后是否辅助放疗（基于切除灶数量 1-2 个，指南推荐 SRS）。\n- **多学科协作流程**  \n  神经外科主导颅内病灶切除，放疗科评估术后辅助放疗，肿瘤内科管理全身系统及靶向治疗，影像科负责随访监测。指南强调局部治疗决策应基于多学科讨论 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组  \n**依据指南：** ASCO/SNO/ASTRO Brain Metastases Guideline (2021)",
+          "reasoning": "",
+          "role": "assistant"
+        },
+        "usage": {
+          "input_tokens": 378,
+          "output_tokens": 947,
+          "total_tokens": 1325
+        }
+      }
+    }
+  },
+  "timestamp": "2026-03-25T16:59:53.632012"
+}

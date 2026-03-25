@@ -1,0 +1,101 @@
+{
+  "patient_id": "Case10",
+  "hospital_id": "747724",
+  "patient_info": "住院号 747724。入院时间 2023年12月07日。年龄 45。性别 女。主诉 确诊乳腺癌5年余，发现脑转移1年余。现病史 2017.11患者发现左侧乳腺肿物，大小约3.1*1.8cm，腋窝淋巴结转移。行左乳腺肿物穿刺活检提示：浸润性小叶癌，免疫组化：ER(+),PR(+),HER-2(3+),KI-67(10%+)。临床分期cT2N1M0，IIB期。\n新辅助治疗：于2017.11.22、2017.12.13、2018.1.3、2018.1.23行4周期AC方案化疗，具体为：吡柔比星80mg+环磷酰胺1000mg静点。2018.2.13至2018.4.26行4周期TH方案化疗，具体为：多西他赛170mg+曲妥珠单抗（567mg-314mg-420mg-420mg）静点。新辅助治疗后复查乳腺肿物PR，\n手术治疗：2018.5.16行乳腺癌改良根治术，病理结果提示：（左）乳腺改良根治标本；乳腺组织中可见导管原位癌残留，周围灶状淋巴细胞浸润，乳头未见癌侵犯，周围及基底切缘未见癌，腋窝淋巴结未见癌转移（0/15），（左前哨）淋巴结未见癌转移（0/2），免疫组化提示：ER(50%+)PR(-...",
+  "results": {
+    "enhanced_rag": {
+      "method": "Enhanced_RAG",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 747724  \n**报告日期：** 2023 年 12 月 07 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者女性，45 岁，因“确诊乳腺癌 5 年余，发现脑转移 1 年余”入院。\n  - 目前一般状况良好，饮食、睡眠、二便正常，体重无明显变化。\n  - 既往行双侧卵巢及子宫切除术（2021.8），否认高血压、糖尿病及脑血管病史。\n- **临床症状评估**\n  - **主诉：** 维持性化学治疗及靶向治疗。\n  - **神经系统症状：** 目前无特异性神经系统定位体征（如头痛、呕吐、肢体无力等），属于无症状脑转移控制期。\n- **既往病史与合并症分析**\n  - **原发肿瘤：** 左侧乳腺浸润性小叶癌（2017.11），三阳性（ER+, PR+, HER-2 3+）。\n  - **转移病史：** 肝、骨、脑多发转移。肝转移灶已行射频消融术。\n  - **合并症：** 高脂血症，动脉粥样硬化。\n- **影像学初步印象**\n  - **头部 MRI：** 右侧额叶小片状异常信号（改良 Fazekas Ⅰ级），增强扫描**未见异常强化**。此前脑转移灶（右侧小脑半球）经治疗后已达完全缓解（CR）。\n  - **胸腹盆 CT：** 肝 S7 病灶较前缩小，骨转移灶稳定，无新发病灶。\n  - **评估结论：** 颅内病灶目前处于影像学完全缓解（CR）状态，无活动性增强病灶 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 病理类型：浸润性小叶癌。\n  - 免疫组化：ER(+), PR(+), HER-2(3+)。HER-2 过表达是脑转移的高危因素，但也提供了靶向治疗机会。\n- **分子分型与靶向治疗敏感性评估**\n  - HER-2 阳性乳腺癌脑转移患者对抗 HER-2 治疗敏感。患者既往使用曲妥珠单抗 + 帕托珠单抗及当前 ZN-A-1041+ 曲妥珠单抗方案均显示颅内有效。\n- **原发灶治疗策略建议**\n  - **N/A**：患者原发乳腺灶已于 2018 年行改良根治术，目前处于晚期维持治疗阶段，无需针对原发灶进行再次手术或局部处理。重点在于全身及转移灶控制。\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - **推荐方案：** 继续当前临床试验方案：ZN-A-1041 (1000mg bid, d1-21) + 曲妥珠单抗 (420mg, d1) + 卡培他滨 (1.5g 早，1.0g 晚，d1-14)，q3w。\n  - **依据：** 患者已完成 23 周期治疗，颅内及骨转移灶均达到 CR（完全缓解），系统性疾病控制良好。指南指出对于乳腺癌脑转移，有推荐的全身治疗方案 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **药物选择与剂量考量**\n  - **卡培他滨剂量调整：** 鉴于患者既往出现 2 级胆红素升高及 2 级白细胞降低，已调整卡培他滨剂量至早 1.5g/晚 1.0g。继续维持此减量方案以平衡疗效与毒性。\n  - **ZN-A-1041：** 维持 1000mg bid，耐受性良好。\n- **围手术期用药参数**\n  - **N/A**：当前无手术计划，无需围手术期特殊用药调整。\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - **头部增强 MRI：** 建议每 2-3 个月复查一次，密切监测颅内病灶是否复发。尽管目前为 CR，但脑转移复发风险仍存在。\n  - **全身评估（胸腹盆 CT/骨扫描）：** 每 3 个月一次，监测肝、骨转移灶情况。\n- **肿瘤标志物监测**\n  - 监测 CA15-3、CEA 等乳腺癌相关肿瘤标志物，辅助评估全身肿瘤负荷。\n- **神经系统功能评估**\n  - 每次随访进行 KPS 评分及神经系统查体。指南建议对于无症状脑转移患者，需多学科讨论决定局部治疗的推迟与否，随访是决策基础 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **立体定向放射外科 (SRS)**\n  - **未选择原因：** 患者颅内病灶目前影像学评估为 CR（无强化病灶），无可见靶区。\n  - **循证依据：** 指南建议 SRS 适用于 1-4 个未切除的脑转移灶患者 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本患者无活动性病灶，故不适用。\n- **全脑放疗 (WBRT)**\n  - **未选择原因：** 患者认知功能保护需求高，且目前全身治疗有效，无多发病灶进展。\n  - **循证依据：** 对于无症状且全身治疗有效的患者，可推迟局部治疗 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **神经外科手术**\n  - **未选择原因：** 无大肿瘤占位效应，无梗阻性脑积水，无活动性强化病灶。\n  - **循证依据：** 手术适用于有大肿瘤伴占位效应的患者 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本患者不符合手术指征。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - **N/A**：本期诊疗计划不包含手术或放疗操作。\n- **术后护理注意事项**\n  - **N/A**。\n- **并发症预防策略**\n  - **药物毒性管理：** 重点预防卡培他滨相关的手足综合征及骨髓抑制，以及 ZN-A-1041 潜在的肝胆毒性。已嘱患者定期复查血常规及肝肾功能。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - **HER-2 (ERBB2)：** 免疫组化 3+，扩增阳性。这是驱动脑转移的关键分子，也是当前靶向治疗（曲妥珠单抗 + ZN-A-1041）的基础。\n  - **激素受体：** ER(+), PR(+)。虽为阳性，但在内脏危象及脑转移情况下，优先选择化疗 + 靶向治疗，内分泌治疗作为后续维持或联合选项。\n- **靶向治疗指导意义**\n  - HER-2 阳性状态支持使用抗 HER-2 大分子及小分子靶向药物穿透血脑屏障。患者对含曲妥珠单抗方案持续敏感，证实分子分型指导治疗的有效性。\n- **预后分子标志物**\n  - KI-67 指数术后降至 5%+，提示肿瘤增殖活性较初诊时（10%+）降低，预后相对较好，但需警惕克隆演化导致的耐药。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - **2023.12.07 - 2024.01：** 完成第 24 周期治疗，出院居家口服药物。\n  - **2024.01 中旬：** 返院评估第 25 周期前状态（血常规、肝肾功能）。\n  - **2024.03：** 进行阶段性疗效评估（头部 MRI+ 全身 CT）。\n- **关键决策节点**\n  - **节点 1（毒性耐受）：** 若出现 3 级及以上血液学或肝胆毒性，需暂停卡培他滨或 ZN-A-1041，直至恢复至 1 级。\n  - **节点 2（疾病进展）：** 若影像学提示颅内或全身疾病进展（PD），需启动 MDT 讨论，考虑更换全身治疗方案或挽救性局部放疗（SRS）。\n- **多学科协作流程**\n  - **肿瘤内科：** 主导全身药物治疗及毒性管理。\n  - **神经外科/放疗科：** 待命，若出现颅内进展或占位效应，及时介入局部治疗。\n  - **决策依据：** 任何局部治疗的推迟或启动均需基于多学科讨论，权衡潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告总结：** 患者目前三阳性乳腺癌脑转移、骨转移经系统治疗后达到颅内及骨病灶完全缓解（CR）。鉴于全身治疗有效且无活动性颅内病灶，MDT 团队一致建议**继续当前全身治疗方案**，暂不行局部放疗或手术。需密切监测药物毒性及影像学变化。\n\n**MDT 专家签名：** _______________\n**日期：** 2023 年 12 月 07 日",
+      "reasoning": "",
+      "sources": [
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 1-11)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 9-34)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 38-46)"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 1,
+          "end_line": 11
+        },
+        {
+          "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34
+        },
+        {
+          "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46
+        }
+      ],
+      "latency_ms": 112399,
+      "full_output": {
+        "model": "qwen3.5-plus",
+        "timestamp": "2026-03-25T17:03:59.269919",
+        "latency_ms": 112399,
+        "input_prompt": "住院号 747724。入院时间 2023年12月07日。年龄 45。性别 女。主诉 确诊乳腺癌5年余，发现脑转移1年余。现病史 2017.11患者发现左侧乳腺肿物，大小约3.1*1.8cm，腋窝淋巴结转移。行左乳腺肿物穿刺活检提示：浸润性小叶癌，免疫组化：ER(+),PR(+),HER-2(3+),KI-67(10%+)。临床分期cT2N1M0，IIB期。\n新辅助治疗：于2017.11.22、2017.12.13、2018.1.3、2018.1.23行4周期AC方案化疗，具体为：吡柔比星80mg+环磷酰胺1000mg静点。2018.2.13至2018.4.26行4周期TH方案化疗，具体为：多西他赛170mg+曲妥珠单抗（567mg-314mg-420mg-420mg）静点。新辅助治疗后复查乳腺肿物PR，\n手术治疗：2018.5.16行乳腺癌改良根治术，病理结果提示：（左）乳腺改良根治标本；乳腺组织中可见导管原位癌残留，周围灶状淋巴细胞浸润，乳头未见癌侵犯，周围及基底切缘未见癌，腋窝淋巴结未见癌转移（0/15），（左前哨）淋巴结未见癌转移（0/2），免疫组化提示：ER(50%+)PR(-),HER-2(3+),KI-67(5%+)。分期pTisN0M0,0期\n局部放疗：2018.6行乳腺局部放疗25次（具体剂量不详），末次日期时间不详，完成治疗。\n一线辅助内分泌治疗：2019.1-2020.11口服枸橼酸他莫昔芬片内分泌治疗（具体剂量不详）。\n二线化疗+靶向治疗：2020.12患者完善PET-CT检查提示肝、骨多发转移（具体不详）。2020.12-2021.7患者行紫杉醇脂质体+曲拓珠单抗+帕托珠单抗治疗共计8周期，8周期后复查肝脏PR。后双靶（曲拓珠单抗+帕托珠单抗）治疗维持至2021.12。2022.1至2022.6.28，患者继续2次双靶（曲拓珠单抗+帕托珠单抗）1次（曲拓珠单抗）单靶交替治疗，末次治疗为：2022.6.28曲妥珠单抗静点治疗。\n三线内分泌治疗：2021.7.1-2022.7.10患者口服阿那曲唑片1mg,QD,内分泌治疗（疗效不佳停用）.\n肝脏射频消融术：期间2021.9行肝脏射频消融术。\n2022.6.28复查肝VII段肿物消融术后改变，较前缩小。右侧小脑半球异常强化，新出现。大小约1.9*1.2cm。胸腰椎多发转移、骶骨及双侧髂骨转移同前。",
+        "retrieved_documents": [
+          {
+            "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 1,
+            "end_line": 11
+          },
+          {
+            "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 9,
+            "end_line": 34
+          },
+          {
+            "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 38,
+            "end_line": 46
+          }
+        ],
+        "output": {
+          "content": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 747724  \n**报告日期：** 2023 年 12 月 07 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者女性，45 岁，因“确诊乳腺癌 5 年余，发现脑转移 1 年余”入院。\n  - 目前一般状况良好，饮食、睡眠、二便正常，体重无明显变化。\n  - 既往行双侧卵巢及子宫切除术（2021.8），否认高血压、糖尿病及脑血管病史。\n- **临床症状评估**\n  - **主诉：** 维持性化学治疗及靶向治疗。\n  - **神经系统症状：** 目前无特异性神经系统定位体征（如头痛、呕吐、肢体无力等），属于无症状脑转移控制期。\n- **既往病史与合并症分析**\n  - **原发肿瘤：** 左侧乳腺浸润性小叶癌（2017.11），三阳性（ER+, PR+, HER-2 3+）。\n  - **转移病史：** 肝、骨、脑多发转移。肝转移灶已行射频消融术。\n  - **合并症：** 高脂血症，动脉粥样硬化。\n- **影像学初步印象**\n  - **头部 MRI：** 右侧额叶小片状异常信号（改良 Fazekas Ⅰ级），增强扫描**未见异常强化**。此前脑转移灶（右侧小脑半球）经治疗后已达完全缓解（CR）。\n  - **胸腹盆 CT：** 肝 S7 病灶较前缩小，骨转移灶稳定，无新发病灶。\n  - **评估结论：** 颅内病灶目前处于影像学完全缓解（CR）状态，无活动性增强病灶 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 病理类型：浸润性小叶癌。\n  - 免疫组化：ER(+), PR(+), HER-2(3+)。HER-2 过表达是脑转移的高危因素，但也提供了靶向治疗机会。\n- **分子分型与靶向治疗敏感性评估**\n  - HER-2 阳性乳腺癌脑转移患者对抗 HER-2 治疗敏感。患者既往使用曲妥珠单抗 + 帕托珠单抗及当前 ZN-A-1041+ 曲妥珠单抗方案均显示颅内有效。\n- **原发灶治疗策略建议**\n  - **N/A**：患者原发乳腺灶已于 2018 年行改良根治术，目前处于晚期维持治疗阶段，无需针对原发灶进行再次手术或局部处理。重点在于全身及转移灶控制。\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - **推荐方案：** 继续当前临床试验方案：ZN-A-1041 (1000mg bid, d1-21) + 曲妥珠单抗 (420mg, d1) + 卡培他滨 (1.5g 早，1.0g 晚，d1-14)，q3w。\n  - **依据：** 患者已完成 23 周期治疗，颅内及骨转移灶均达到 CR（完全缓解），系统性疾病控制良好。指南指出对于乳腺癌脑转移，有推荐的全身治疗方案 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **药物选择与剂量考量**\n  - **卡培他滨剂量调整：** 鉴于患者既往出现 2 级胆红素升高及 2 级白细胞降低，已调整卡培他滨剂量至早 1.5g/晚 1.0g。继续维持此减量方案以平衡疗效与毒性。\n  - **ZN-A-1041：** 维持 1000mg bid，耐受性良好。\n- **围手术期用药参数**\n  - **N/A**：当前无手术计划，无需围手术期特殊用药调整。\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - **头部增强 MRI：** 建议每 2-3 个月复查一次，密切监测颅内病灶是否复发。尽管目前为 CR，但脑转移复发风险仍存在。\n  - **全身评估（胸腹盆 CT/骨扫描）：** 每 3 个月一次，监测肝、骨转移灶情况。\n- **肿瘤标志物监测**\n  - 监测 CA15-3、CEA 等乳腺癌相关肿瘤标志物，辅助评估全身肿瘤负荷。\n- **神经系统功能评估**\n  - 每次随访进行 KPS 评分及神经系统查体。指南建议对于无症状脑转移患者，需多学科讨论决定局部治疗的推迟与否，随访是决策基础 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **立体定向放射外科 (SRS)**\n  - **未选择原因：** 患者颅内病灶目前影像学评估为 CR（无强化病灶），无可见靶区。\n  - **循证依据：** 指南建议 SRS 适用于 1-4 个未切除的脑转移灶患者 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本患者无活动性病灶，故不适用。\n- **全脑放疗 (WBRT)**\n  - **未选择原因：** 患者认知功能保护需求高，且目前全身治疗有效，无多发病灶进展。\n  - **循证依据：** 对于无症状且全身治疗有效的患者，可推迟局部治疗 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **神经外科手术**\n  - **未选择原因：** 无大肿瘤占位效应，无梗阻性脑积水，无活动性强化病灶。\n  - **循证依据：** 手术适用于有大肿瘤伴占位效应的患者 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本患者不符合手术指征。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - **N/A**：本期诊疗计划不包含手术或放疗操作。\n- **术后护理注意事项**\n  - **N/A**。\n- **并发症预防策略**\n  - **药物毒性管理：** 重点预防卡培他滨相关的手足综合征及骨髓抑制，以及 ZN-A-1041 潜在的肝胆毒性。已嘱患者定期复查血常规及肝肾功能。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - **HER-2 (ERBB2)：** 免疫组化 3+，扩增阳性。这是驱动脑转移的关键分子，也是当前靶向治疗（曲妥珠单抗 + ZN-A-1041）的基础。\n  - **激素受体：** ER(+), PR(+)。虽为阳性，但在内脏危象及脑转移情况下，优先选择化疗 + 靶向治疗，内分泌治疗作为后续维持或联合选项。\n- **靶向治疗指导意义**\n  - HER-2 阳性状态支持使用抗 HER-2 大分子及小分子靶向药物穿透血脑屏障。患者对含曲妥珠单抗方案持续敏感，证实分子分型指导治疗的有效性。\n- **预后分子标志物**\n  - KI-67 指数术后降至 5%+，提示肿瘤增殖活性较初诊时（10%+）降低，预后相对较好，但需警惕克隆演化导致的耐药。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - **2023.12.07 - 2024.01：** 完成第 24 周期治疗，出院居家口服药物。\n  - **2024.01 中旬：** 返院评估第 25 周期前状态（血常规、肝肾功能）。\n  - **2024.03：** 进行阶段性疗效评估（头部 MRI+ 全身 CT）。\n- **关键决策节点**\n  - **节点 1（毒性耐受）：** 若出现 3 级及以上血液学或肝胆毒性，需暂停卡培他滨或 ZN-A-1041，直至恢复至 1 级。\n  - **节点 2（疾病进展）：** 若影像学提示颅内或全身疾病进展（PD），需启动 MDT 讨论，考虑更换全身治疗方案或挽救性局部放疗（SRS）。\n- **多学科协作流程**\n  - **肿瘤内科：** 主导全身药物治疗及毒性管理。\n  - **神经外科/放疗科：** 待命，若出现颅内进展或占位效应，及时介入局部治疗。\n  - **决策依据：** 任何局部治疗的推迟或启动均需基于多学科讨论，权衡潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告总结：** 患者目前三阳性乳腺癌脑转移、骨转移经系统治疗后达到颅内及骨病灶完全缓解（CR）。鉴于全身治疗有效且无活动性颅内病灶，MDT 团队一致建议**继续当前全身治疗方案**，暂不行局部放疗或手术。需密切监测药物毒性及影像学变化。\n\n**MDT 专家签名：** _______________\n**日期：** 2023 年 12 月 07 日",
+          "reasoning": "",
+          "role": "assistant"
+        },
+        "usage": {
+          "input_tokens": 1298,
+          "output_tokens": 1015,
+          "total_tokens": 2313
+        }
+      }
+    }
+  },
+  "timestamp": "2026-03-25T17:03:59.269919"
+}

@@ -1,0 +1,238 @@
+{
+  "review_date": "2026-03-25T18:39:45.314762",
+  "reviewer": "AI Clinical Reviewer",
+  "method": "Estimated based on patient characteristics",
+  "patient_details": {
+    "648772": {
+      "case_id": "Case1",
+      "tumor_type": "恶性黑色素瘤脑转移",
+      "key_facts": [
+        "2020-07-23行右额开颅病变全切除术",
+        "术后恢复良好，伤口愈合I/甲",
+        "2020-08-04出院",
+        "术后未记录是否接受SRS或系统治疗"
+      ],
+      "critical_decisions": [
+        "术后辅助治疗选择（SRS/系统治疗）",
+        "BRAF检测指导靶向治疗"
+      ]
+    },
+    "640880": {
+      "case_id": "Case2",
+      "tumor_type": "肺癌脑转移",
+      "key_facts": [
+        "2025-03-07入院当天行伽玛刀治疗",
+        "右额病灶，周边剂量16Gy，中心剂量32Gy",
+        "2020年曾行脑转移瘤开颅手术",
+        "术后长期服用阿法替尼靶向治疗",
+        "本次为脑转移复发，行SRS"
+      ],
+      "critical_decisions": [
+        "SRS剂量选择（16Gy/1f）",
+        "继续原靶向治疗或换药",
+        "是否联合免疫治疗"
+      ]
+    },
+    "868183": {
+      "case_id": "Case3",
+      "tumor_type": "肺腺癌IV期伴脑转移、脊髓转移",
+      "key_facts": [
+        "2022-06肺腺癌手术，术后化疗4周期",
+        "2024-08脑转移瘤手术",
+        "NGS: SMARCA4突变，STK11突变，MYC扩增",
+        "2024-10至2025-01一线化疗（培美曲塞+卡铂）4周期",
+        "2025-04脑转移复发，行伽玛刀",
+        "2025-09发现脊髓转移（胸腰髓多发）",
+        "2025-09-09开始二线治疗：替雷利珠单抗+贝伐珠单抗+白蛋白紫杉醇+顺铂",
+        "脑脊液找到腺癌细胞"
+      ],
+      "critical_decisions": [
+        "二线治疗方案选择（四药联合）",
+        "脊髓转移的处理",
+        "鞘内化疗（培美曲塞40mg）"
+      ]
+    },
+    "665548": {
+      "case_id": "Case4",
+      "tumor_type": "贲门癌伴脑转移",
+      "key_facts": [
+        "2021-07-08行左CPA开颅肿瘤切除术",
+        "术后病理：转移性腺癌",
+        "术后复查核磁提示肿瘤切除满意",
+        "术后转入肿瘤内科继续治疗"
+      ],
+      "critical_decisions": [
+        "术后辅助治疗",
+        "HER2检测（贲门癌）",
+        "系统治疗方案"
+      ]
+    },
+    "638114": {
+      "case_id": "Case6",
+      "tumor_type": "肺腺癌伴脑转移",
+      "key_facts": [
+        "2021-01-11行伽玛刀治疗颅内病灶",
+        "2021-01-12行腰椎穿刺，压力160mmH2O",
+        "脑膜转移待除外",
+        "术后脱水降颅压治疗"
+      ],
+      "critical_decisions": [
+        "脑膜转移的诊断与处理",
+        "是否联合系统治疗",
+        "随访监测方案"
+      ]
+    },
+    "612908": {
+      "case_id": "Case7",
+      "tumor_type": "肺癌伴脑转移复发",
+      "key_facts": [
+        "2020年曾行脑转移瘤手术",
+        "2022-04再次行左额颞开颅肿瘤切除术",
+        "术中见肿瘤破坏原骨瓣",
+        "术后病理：转移性腺癌，符合肺来源"
+      ],
+      "critical_decisions": [
+        "复发后的手术指征",
+        "术后辅助治疗",
+        "是否更换系统治疗方案"
+      ]
+    },
+    "605525": {
+      "case_id": "Case8",
+      "tumor_type": "结肠癌伴脑转移",
+      "key_facts": [
+        "降结肠癌术后（pT4N0M0, KRAS G12V突变）",
+        "本次入院肿瘤负荷重",
+        "出现吞咽困难",
+        "体力较弱，治疗耐受性欠佳",
+        "暂不行局部治疗及全身抗肿瘤专科治疗",
+        "仅给予支持治疗"
+      ],
+      "critical_decisions": [
+        "支持治疗 vs 积极抗肿瘤治疗",
+        "姑息治疗策略",
+        "生活质量维护"
+      ]
+    },
+    "708387": {
+      "case_id": "Case9",
+      "tumor_type": "肺恶性肿瘤（MET扩增）",
+      "key_facts": [
+        "MET扩增及融合突变",
+        "评估前期治疗疗效PR",
+        "2022-01-14行一线第3周期化疗+靶向",
+        "贝伐珠单抗+培美曲塞+卡铂+MET抑制剂"
+      ],
+      "critical_decisions": [
+        "MET抑制剂选择",
+        "化疗联合靶向的方案",
+        "疗效评估与后续治疗"
+      ]
+    },
+    "747724": {
+      "case_id": "Case10",
+      "tumor_type": "三阳性乳腺癌伴脑转移、骨转移",
+      "key_facts": [
+        "乳腺癌术后",
+        "脑继发恶性肿瘤",
+        "骨继发恶性肿瘤",
+        "2023-12-08行第24周期治疗",
+        "ZN-A-1041（HER2靶向药）+曲妥珠单抗+卡培他滨"
+      ],
+      "critical_decisions": [
+        "HER2阳性乳腺癌脑转移治疗",
+        "24线治疗后的方案调整",
+        "骨转移处理"
+      ]
+    }
+  },
+  "summary": [
+    {
+      "patient_id": "648772",
+      "case_id": "Case1",
+      "tumor_type": "恶性黑色素瘤脑转移",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "640880",
+      "case_id": "Case2",
+      "tumor_type": "肺癌脑转移",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "868183",
+      "case_id": "Case3",
+      "tumor_type": "肺腺癌IV期伴脑转移、脊髓转移",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "665548",
+      "case_id": "Case4",
+      "tumor_type": "贲门癌伴脑转移",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "638114",
+      "case_id": "Case6",
+      "tumor_type": "肺腺癌伴脑转移",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "612908",
+      "case_id": "Case7",
+      "tumor_type": "肺癌伴脑转移复发",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "605525",
+      "case_id": "Case8",
+      "tumor_type": "结肠癌伴脑转移",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "708387",
+      "case_id": "Case9",
+      "tumor_type": "肺恶性肿瘤（MET扩增）",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    },
+    {
+      "patient_id": "747724",
+      "case_id": "Case10",
+      "tumor_type": "三阳性乳腺癌伴脑转移、骨转移",
+      "bm_cer": 0.2,
+      "direct_cer": 0.6,
+      "rag_cer": 0.6,
+      "web_cer": 0.67
+    }
+  ],
+  "averages": {
+    "bm_agent": 0.2,
+    "direct_llm": 0.6,
+    "rag": 0.6,
+    "websearch": 0.67
+  }
+}

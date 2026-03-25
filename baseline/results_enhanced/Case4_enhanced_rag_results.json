@@ -1,0 +1,101 @@
+{
+  "patient_id": "Case4",
+  "hospital_id": "665548",
+  "patient_info": "住院号 665548。入院时间 2021年07月06日。年龄 57。性别 男。主诉 贲门癌1年余，脑转移7月。现病史 患者2020-5进食哽咽，剑突下疼痛，胃镜病理：贲门高度可疑中-低分化腺癌，免疫组化：Her2(肿瘤部分1+)，Her2阳性对照（+++），Her2阴性对照（-），MLH1(+)，MSH2(+)，MSH6(+)，PMS2（+），微卫星稳定。胸CT：双肺多发结节性质待定。腹盆增强CT：胃壁贲门区囊壁增厚，占位伴溃疡，浆膜面毛糙，肝内多发2.5*1.8cm，转移瘤？分期T4NxM1 IV期。2020-6-11起予一线4周期化疗：奥沙利铂250mg+口服替吉奥60mg bid d1-14，q21d，复查肝转移灶增大，血CEA缓慢升高，疗效PD。2020-9-23起予二线2周期白蛋白紫杉醇200mg d1、d8+顺铂40mg d2-4，q21d化疗后10-22复查胸CT示肺内病灶较前增大、增多，考虑转移瘤，腹增强CT：食管下端、胃底贲门区管壁增厚伴不均匀强化，考虑恶性肿瘤，肝内多发转移，较2020-8-18进展。医科院肿瘤医院建议予信迪丽单抗200mg d1 q21d（2020...",
+  "results": {
+    "enhanced_rag": {
+      "method": "Enhanced_RAG",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 665548  \n**报告日期：** 2021 年 07 月  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n- **患者基本信息与入院情况**：患者男性，57 岁，因“颅内多发占位性病变（左 CPA、右顶枕）”收入院。既往确诊贲门癌 1 年余，脑转移 7 月。入院时 ECOG PS 评分较差，神志清但精神差，饮食睡眠差，间断呕吐。\n- **临床症状评估**：主诉为颅内压增高症状（呕吐、头晕），既往有活动不利、头晕头胀史。经前期脱水降颅压及伽玛刀治疗后症状曾缓解，但近期影像学提示进展，症状复发。\n- **既往病史与合并症分析**：既往有长期胃幽门溃疡史，曾发生应激性溃疡伴出血。曾有输液港导管相关感染及血栓形成史（颈内静脉附壁血栓）。否认高血压、糖尿病史。\n- **影像学初步印象**：头部 MRI 显示右顶叶近上矢状窦旁、右枕及左侧 CPA 多发囊实性占位，左顶病灶扩散受限，注药后环形强化，周边水肿明显，四脑室受压变形。对比前片（2021-4-26）病变周围水肿范围增大 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]`。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n- **基于病理诊断的原发肿瘤特征**：原发灶为贲门高度可疑中 - 低分化腺癌，分期 T4NxM1 IV 期。伴有肝、肺、纵隔淋巴结多发转移。\n- **分子分型与靶向治疗敏感性评估**：免疫组化显示 Her2(肿瘤部分 1+)，微卫星稳定（MSS）。基因检测未发现可用药物靶向突变。\n- **原发灶治疗策略建议**：鉴于原发灶及全身多处转移（肝、肺）目前处于维持治疗阶段，且脑部症状为当前主要矛盾，原发灶局部处理（如手术或放疗）暂非优先，应以全身系统治疗配合脑部局部治疗为主。对于无症状脑转移患者，局部治疗不应推迟，除非多学科讨论建议推迟 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。本患者为症状性脑转移，需积极干预。\n\n## 3. 系统性管理 (Systemic Management)\n- **全身治疗方案**：患者已接受多线治疗（一线奥沙利铂 + 替吉奥，二线白蛋白紫杉醇 + 顺铂，四线奥沙利铂 + 卡培他滨 + 信迪利单抗，五线多西他赛 + 信迪利单抗）。目前处于四线/五线治疗后进展状态。\n- **药物选择与剂量考量**：既往使用安罗替尼因溃疡出血风险未予使用。近期化疗出现 IV 度消化道反应及上消化道出血。鉴于患者全身状况及出血风险，后续系统治疗需谨慎选择，避免加重消化道损伤。\n- **围手术期用药参数**：术后拟继续抗肿瘤治疗，但患者强烈要求出院。若后续治疗，需评估骨髓功能（既往出现 II°粒细胞减低）及凝血功能（既往静脉血栓史）。关于具体胃癌脑转移的系统性药物选择，检索指南中缺乏特异性推荐 `[Evidence: Insufficient in Retrieved Guidelines]`。\n\n## 4. 随访方案 (Follow-up Strategy)\n- **影像学复查时间窗**：建议出院后 1 个月复查头部增强 MRI，评估手术残腔及未处理病灶（右顶枕）情况。此后每 2-3 个月复查一次，或随症状变化随时复查。\n- **肿瘤标志物监测**：监测 CEA、CA19-9、NSE 等指标变化，既往 CEA 高达 85.59ng/ml，需关注其动态趋势。\n- **神经系统功能评估**：定期评估 ECOG PS 评分、肌力及颅神经功能（特别是 CPA 区手术后可能涉及的面听神经功能）。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n- **其他可行但未被选择的方案**：\n    1.  **全脑放疗 (WBRT)**：患者既往已接受多次伽玛刀治疗，且全身状况曾较差（ECOG 3-4 分）。虽然 WBRT 是选项之一，但考虑到认知功能保护及既往放疗史，优先选择了局部手术切除大病灶。指南指出对于无症状且无系统治疗选项的患者，若 KPS<70 可能无法从放疗中获益 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。本患者虽经治疗 PS 改善，但反复进展，WBRT 毒性风险高。\n    2.  **安罗替尼抗血管生成治疗**：因患者有长期胃溃疡史及近期上消化道出血史，口服安罗替尼导致出血、穿孔风险大，故被排除。\n    3.  **保守治疗**：患者颅内占位伴明显水肿及四脑室受压，保守治疗无法解除占位效应，危及生命。\n- **选择当前方案而非替代方案的循证依据**：指南建议手术是大肿瘤伴占位效应患者的合理选择，此类患者比多发脑转移或全身疾病未控制患者更可能获益 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。患者左 CPA 病灶较大且引起梗阻性脑积水风险，手术减压获益明确。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n- **术前准备要点**：完善心肺功能评估，纠正营养不良。鉴于既往静脉血栓史，术前需评估凝血状态，预防性抗凝需权衡出血风险（既往脑出血及消化道出血史）。\n- **术后护理注意事项**：密切监测意识瞳孔变化，预防术后出血及感染。继续予脱水降颅压（甘露醇、甘油果糖）、抑酸保胃（预防应激性溃疡）、抗癫痫治疗。\n- **并发症预防策略**：患者既往有输液港血栓及感染史，术后改为外周静脉输液或重新评估中心静脉通路。预防深静脉血栓形成，但需警惕颅内及消化道出血风险。指南强调症状性脑转移患者应接受局部治疗，无论使用何种系统治疗 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n- **关键基因突变分析**：既往基因检测无可用药物靶向突变。Her2 免疫组化 1+（不确定阳性），MSI 状态为稳定（MSS）。\n- **靶向治疗指导意义**：目前缺乏针对胃癌脑转移的强效靶向药物证据。Her2 1+ 通常不推荐抗 Her2 治疗，除非进一步证实扩增。\n- **预后分子标志物**：检索指南中未包含胃癌脑转移特异性分子预后标志物 `[Evidence: Insufficient in Retrieved Guidelines]`。一般实体瘤脑转移预后与全身疾病控制情况及颅内病灶负荷相关。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n- **推荐的治疗时间线**：\n    1.  **2021-07-08**：全麻下行左 CPA 开颅肿瘤切除术（已执行）。\n    2.  **术后 1 周内**：伤口拆线，评估神经功能恢复情况。\n    3.  **术后 3-4 周**：若患者体力恢复，考虑针对残余病灶（右顶枕）的立体定向放射外科治疗（SRS）。指南建议对于 1-2 个切除的脑转移瘤，应向手术腔提供 SRS `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n    4.  **长期**：根据全身状况决定是否继续免疫联合化疗维持。\n- **关键决策节点**：\n    1.  **手术决策**：基于占位效应明显、药物及放疗后进展，MDT 讨论决定手术。决策应基于多学科讨论潜在获益与危害 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n    2.  **出院决策**：患者强烈要求出院，已告知风险（病情进展、死亡风险），签署自动出院同意书。\n- **多学科协作流程**：神经外科主导颅内病灶处理，肿瘤内科评估全身治疗耐受性，放疗科评估残余病灶放疗时机，营养科支持改善营养不良。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组  \n**声明：** 本报告基于患者具体临床信息及 ASCO/SNO/ASTRO 脑转移瘤治疗指南生成。部分胃癌特异性治疗建议因指南覆盖范围限制，标注为证据不足，需结合临床实际判断。",
+      "reasoning": "",
+      "sources": [
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 1-11)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 9-34)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 38-46)"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 1,
+          "end_line": 11
+        },
+        {
+          "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34
+        },
+        {
+          "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46
+        }
+      ],
+      "latency_ms": 108698,
+      "full_output": {
+        "model": "qwen3.5-plus",
+        "timestamp": "2026-03-25T16:56:07.270234",
+        "latency_ms": 108698,
+        "input_prompt": "住院号 665548。入院时间 2021年07月06日。年龄 57。性别 男。主诉 贲门癌1年余，脑转移7月。现病史 患者2020-5进食哽咽，剑突下疼痛，胃镜病理：贲门高度可疑中-低分化腺癌，免疫组化：Her2(肿瘤部分1+)，Her2阳性对照（+++），Her2阴性对照（-），MLH1(+)，MSH2(+)，MSH6(+)，PMS2（+），微卫星稳定。胸CT：双肺多发结节性质待定。腹盆增强CT：胃壁贲门区囊壁增厚，占位伴溃疡，浆膜面毛糙，肝内多发2.5*1.8cm，转移瘤？分期T4NxM1 IV期。2020-6-11起予一线4周期化疗：奥沙利铂250mg+口服替吉奥60mg bid d1-14，q21d，复查肝转移灶增大，血CEA缓慢升高，疗效PD。2020-9-23起予二线2周期白蛋白紫杉醇200mg d1、d8+顺铂40mg d2-4，q21d化疗后10-22复查胸CT示肺内病灶较前增大、增多，考虑转移瘤，腹增强CT：食管下端、胃底贲门区管壁增厚伴不均匀强化，考虑恶性肿瘤，肝内多发转移，较2020-8-18进展。医科院肿瘤医院建议予信迪丽单抗200mg d1 q21d（2020-11-6于大兴医院），联合安罗替尼12mg 口服（14/21d）治疗，因既往胃溃疡病史，口服安罗替尼导致出血、穿孔风险大，暂未予。2020-10出现活动不利，头晕、头胀，伴恶心、呕吐。头MRI：（2020-11-28延庆医院）右侧额顶占位，周围明显水肿。胸CT（2020-12-02海淀医院）对比2020-10-21，双肺多发前略增大、增多，考虑转移，肝脏多发转移，食管下端及贲门壁厚。病情进展，2020-12-8我院行伽玛刀治疗：右额顶26*28.9*29.7mm，靶中心剂量26Gy，周边剂量13Gy，右小脑8.4*8.6*8.7mm，左小脑4.5*4.6*4.5mm,右额6.7*6.5*5.5mm，靶中心剂量26.7Gy，周边剂量16Gy。2020-12-11、2021-1-5予2周期贝伐珠单抗300mg iv抗肿瘤血管生成，并持续予甘露醇、地塞米松、甘油果糖等脱水降颅压治疗，抑酸、保肝、抗癫痫等对症治疗。后患者自卧床入院状态ECOG PS 3-4分→1分，可下地需人搀扶行走，四肢肌力自3级恢复至5级，头晕、头痛、记忆力减轻症状明显减轻。基因检测：无可用药物靶向突变，2020-12-",
+        "retrieved_documents": [
+          {
+            "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 1,
+            "end_line": 11
+          },
+          {
+            "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 9,
+            "end_line": 34
+          },
+          {
+            "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 38,
+            "end_line": 46
+          }
+        ],
+        "output": {
+          "content": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 665548  \n**报告日期：** 2021 年 07 月  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n- **患者基本信息与入院情况**：患者男性，57 岁，因“颅内多发占位性病变（左 CPA、右顶枕）”收入院。既往确诊贲门癌 1 年余，脑转移 7 月。入院时 ECOG PS 评分较差，神志清但精神差，饮食睡眠差，间断呕吐。\n- **临床症状评估**：主诉为颅内压增高症状（呕吐、头晕），既往有活动不利、头晕头胀史。经前期脱水降颅压及伽玛刀治疗后症状曾缓解，但近期影像学提示进展，症状复发。\n- **既往病史与合并症分析**：既往有长期胃幽门溃疡史，曾发生应激性溃疡伴出血。曾有输液港导管相关感染及血栓形成史（颈内静脉附壁血栓）。否认高血压、糖尿病史。\n- **影像学初步印象**：头部 MRI 显示右顶叶近上矢状窦旁、右枕及左侧 CPA 多发囊实性占位，左顶病灶扩散受限，注药后环形强化，周边水肿明显，四脑室受压变形。对比前片（2021-4-26）病变周围水肿范围增大 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]`。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n- **基于病理诊断的原发肿瘤特征**：原发灶为贲门高度可疑中 - 低分化腺癌，分期 T4NxM1 IV 期。伴有肝、肺、纵隔淋巴结多发转移。\n- **分子分型与靶向治疗敏感性评估**：免疫组化显示 Her2(肿瘤部分 1+)，微卫星稳定（MSS）。基因检测未发现可用药物靶向突变。\n- **原发灶治疗策略建议**：鉴于原发灶及全身多处转移（肝、肺）目前处于维持治疗阶段，且脑部症状为当前主要矛盾，原发灶局部处理（如手术或放疗）暂非优先，应以全身系统治疗配合脑部局部治疗为主。对于无症状脑转移患者，局部治疗不应推迟，除非多学科讨论建议推迟 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。本患者为症状性脑转移，需积极干预。\n\n## 3. 系统性管理 (Systemic Management)\n- **全身治疗方案**：患者已接受多线治疗（一线奥沙利铂 + 替吉奥，二线白蛋白紫杉醇 + 顺铂，四线奥沙利铂 + 卡培他滨 + 信迪利单抗，五线多西他赛 + 信迪利单抗）。目前处于四线/五线治疗后进展状态。\n- **药物选择与剂量考量**：既往使用安罗替尼因溃疡出血风险未予使用。近期化疗出现 IV 度消化道反应及上消化道出血。鉴于患者全身状况及出血风险，后续系统治疗需谨慎选择，避免加重消化道损伤。\n- **围手术期用药参数**：术后拟继续抗肿瘤治疗，但患者强烈要求出院。若后续治疗，需评估骨髓功能（既往出现 II°粒细胞减低）及凝血功能（既往静脉血栓史）。关于具体胃癌脑转移的系统性药物选择，检索指南中缺乏特异性推荐 `[Evidence: Insufficient in Retrieved Guidelines]`。\n\n## 4. 随访方案 (Follow-up Strategy)\n- **影像学复查时间窗**：建议出院后 1 个月复查头部增强 MRI，评估手术残腔及未处理病灶（右顶枕）情况。此后每 2-3 个月复查一次，或随症状变化随时复查。\n- **肿瘤标志物监测**：监测 CEA、CA19-9、NSE 等指标变化，既往 CEA 高达 85.59ng/ml，需关注其动态趋势。\n- **神经系统功能评估**：定期评估 ECOG PS 评分、肌力及颅神经功能（特别是 CPA 区手术后可能涉及的面听神经功能）。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n- **其他可行但未被选择的方案**：\n    1.  **全脑放疗 (WBRT)**：患者既往已接受多次伽玛刀治疗，且全身状况曾较差（ECOG 3-4 分）。虽然 WBRT 是选项之一，但考虑到认知功能保护及既往放疗史，优先选择了局部手术切除大病灶。指南指出对于无症状且无系统治疗选项的患者，若 KPS<70 可能无法从放疗中获益 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。本患者虽经治疗 PS 改善，但反复进展，WBRT 毒性风险高。\n    2.  **安罗替尼抗血管生成治疗**：因患者有长期胃溃疡史及近期上消化道出血史，口服安罗替尼导致出血、穿孔风险大，故被排除。\n    3.  **保守治疗**：患者颅内占位伴明显水肿及四脑室受压，保守治疗无法解除占位效应，危及生命。\n- **选择当前方案而非替代方案的循证依据**：指南建议手术是大肿瘤伴占位效应患者的合理选择，此类患者比多发脑转移或全身疾病未控制患者更可能获益 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。患者左 CPA 病灶较大且引起梗阻性脑积水风险，手术减压获益明确。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n- **术前准备要点**：完善心肺功能评估，纠正营养不良。鉴于既往静脉血栓史，术前需评估凝血状态，预防性抗凝需权衡出血风险（既往脑出血及消化道出血史）。\n- **术后护理注意事项**：密切监测意识瞳孔变化，预防术后出血及感染。继续予脱水降颅压（甘露醇、甘油果糖）、抑酸保胃（预防应激性溃疡）、抗癫痫治疗。\n- **并发症预防策略**：患者既往有输液港血栓及感染史，术后改为外周静脉输液或重新评估中心静脉通路。预防深静脉血栓形成，但需警惕颅内及消化道出血风险。指南强调症状性脑转移患者应接受局部治疗，无论使用何种系统治疗 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n- **关键基因突变分析**：既往基因检测无可用药物靶向突变。Her2 免疫组化 1+（不确定阳性），MSI 状态为稳定（MSS）。\n- **靶向治疗指导意义**：目前缺乏针对胃癌脑转移的强效靶向药物证据。Her2 1+ 通常不推荐抗 Her2 治疗，除非进一步证实扩增。\n- **预后分子标志物**：检索指南中未包含胃癌脑转移特异性分子预后标志物 `[Evidence: Insufficient in Retrieved Guidelines]`。一般实体瘤脑转移预后与全身疾病控制情况及颅内病灶负荷相关。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n- **推荐的治疗时间线**：\n    1.  **2021-07-08**：全麻下行左 CPA 开颅肿瘤切除术（已执行）。\n    2.  **术后 1 周内**：伤口拆线，评估神经功能恢复情况。\n    3.  **术后 3-4 周**：若患者体力恢复，考虑针对残余病灶（右顶枕）的立体定向放射外科治疗（SRS）。指南建议对于 1-2 个切除的脑转移瘤，应向手术腔提供 SRS `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n    4.  **长期**：根据全身状况决定是否继续免疫联合化疗维持。\n- **关键决策节点**：\n    1.  **手术决策**：基于占位效应明显、药物及放疗后进展，MDT 讨论决定手术。决策应基于多学科讨论潜在获益与危害 `[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]`。\n    2.  **出院决策**：患者强烈要求出院，已告知风险（病情进展、死亡风险），签署自动出院同意书。\n- **多学科协作流程**：神经外科主导颅内病灶处理，肿瘤内科评估全身治疗耐受性，放疗科评估残余病灶放疗时机，营养科支持改善营养不良。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组  \n**声明：** 本报告基于患者具体临床信息及 ASCO/SNO/ASTRO 脑转移瘤治疗指南生成。部分胃癌特异性治疗建议因指南覆盖范围限制，标注为证据不足，需结合临床实际判断。",
+          "reasoning": "",
+          "role": "assistant"
+        },
+        "usage": {
+          "input_tokens": 736,
+          "output_tokens": 895,
+          "total_tokens": 1631
+        }
+      }
+    }
+  },
+  "timestamp": "2026-03-25T16:56:07.270234"
+}

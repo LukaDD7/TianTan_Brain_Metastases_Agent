@@ -386,6 +386,10 @@ class ReportGenerator:
     def __init__(self, output_dir: str = "analysis/reports"):
         self.output_dir = output_dir
         os.makedirs(output_dir, exist_ok=True)
+        # 导入时间戳工具
+        sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        from utils.timestamp_utils import get_timestamped_filename
+        self.get_timestamped_filename = get_timestamped_filename
 
     def generate_summary_table(self, results: Dict[str, List[Dict]]) -> pd.DataFrame:
         """生成汇总表格"""
@@ -406,8 +410,9 @@ class ReportGenerator:
 
         df = pd.DataFrame(rows)
 
-        # 保存CSV
-        output_file = os.path.join(self.output_dir, "summary_table.csv")
+        # 保存CSV - 使用带时间戳的文件名
+        output_filename = self.get_timestamped_filename("summary_table", "csv")
+        output_file = os.path.join(self.output_dir, output_filename)
         df.to_csv(output_file, index=False, encoding='utf-8-sig')
 
         return df
@@ -442,8 +447,9 @@ class ReportGenerator:
 
         report_text = "\n".join(report)
 
-        # 保存报告
-        output_file = os.path.join(self.output_dir, "comparison_report.md")
+        # 保存报告 - 使用带时间戳的文件名
+        output_filename = self.get_timestamped_filename("comparison_report", "md")
+        output_file = os.path.join(self.output_dir, output_filename)
         with open(output_file, 'w', encoding='utf-8') as f:
             f.write(report_text)
 

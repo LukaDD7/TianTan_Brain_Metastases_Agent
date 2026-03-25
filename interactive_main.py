@@ -700,7 +700,10 @@ def submit_mdt_report(patient_id: str, report_content: str) -> str:
     patient_dir = os.path.join(SANDBOX_DIR, "patients", patient_id, "reports")
     os.makedirs(patient_dir, exist_ok=True)
 
-    file_path = os.path.join(patient_dir, f"MDT_Report_{patient_id}.md")
+    # 使用带时间戳的文件名
+    from datetime import datetime
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    file_path = os.path.join(patient_dir, f"MDT_Report_{patient_id}_{timestamp}.md")
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(report_content)
 

@@ -1,0 +1,101 @@
+{
+  "patient_id": "Case3",
+  "hospital_id": "868183",
+  "patient_info": "住院号 868183。入院时间 2025年09月04日。年龄 50。性别 男。主诉 右肺腺癌术后3年余，脑转移瘤术后1年余。现病史 2022年5月患者体检时发现肺占位性病变，2022年6月30日于中日友好医院复查胸部CT示右肺尖软组织密度肿块，边缘毛糙，约31mm。2022-07-01于中日友好医院接受胸腔镜下右肺上叶肿物楔形切除术+胸腔镜下右肺上叶切除术+胸腔镜下纵隔淋巴结清扫术+胸膜粘连松解术，病理：非小细胞性低分化癌（大小约4*3.5*2.7cm），伴坏死，结合免疫组化，符合低分化浸润性腺癌（可见实性、筛状及腺泡型结构），累及支气管，侵犯肺内血管管壁，肺门及纵隔淋巴结均阴性，术后未行基因检测，术后接受培美曲塞联合铂类辅助化疗4周期。此后定期复查未见复查。2024.6无明显诱因出现中重度头痛，伴随记忆力下降，言语不利，症状进行性加重，当地医院就诊发现颅内占位性病变。2024-07-31外院PET-CT示左侧额颞叶混杂密度肿块，大小约36mm*35mm，考虑脑转移伴脑水肿；左侧锁骨区、纵隔及两侧肺门多发淋巴结钙化，双侧胸膜局限性钙化；腹膜后小淋巴结，放射性摄取增高，建议随诊观察除外转...",
+  "results": {
+    "enhanced_rag": {
+      "method": "Enhanced_RAG",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 868183  \n**入院时间：** 2025 年 09 月 04 日  \n**报告日期：** 2025 年 09 月 05 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n- **患者基本信息与入院情况：** 患者男性，50 岁，因“右肺腺癌术后 3 年余，脑转移瘤术后 1 年余，发现脊髓占位伴下肢无力 2 个月”入院。既往有肺结核病史（已治愈）。\n- **临床症状评估：** 主诉为下肢无力、感觉障碍及疼痛。神经系统查体提示脊髓压迫症状。头部 MRI 显示左额颞岛叶转移瘤术后改变，较前稳定；但颈椎及腰椎 MRI 提示颈 4-胸 4 脊髓内异常信号及腰椎椎管多发占位，高度怀疑脊髓转移瘤伴潜在脊髓压迫风险。\n- **既往病史与合并症分析：** 2022 年确诊右肺低分化腺癌，行手术及辅助化疗。2024 年发现脑转移，行手术切除及术后化疗（培美曲塞 + 卡铂 4 周期），后因术腔复发行伽玛刀治疗。目前全身疾病进展（脊髓转移）。\n- **影像学初步印象：** 颅内病变稳定（术后及伽玛刀后改变），椎管内多发占位性病变（颈胸段及腰段），考虑转移瘤可能性大，需紧急评估脊髓压迫风险。肺癌脑转移发生率较高，文献估计转移性肺腺癌初诊时脑转移比例超过 25% [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n- **基于病理诊断的原发肿瘤特征：** 原发灶为右肺低分化浸润性腺癌（2022 年病理），脑转移灶病理证实为转移性腺癌（TTF-1+）。\n- **分子分型与靶向治疗敏感性评估：** 脑转移灶 NGS 检测显示 SMARCA4、STK11 突变，MYC 扩增，TMB-H（9.62 Muts/Mb），PD-L1 CPS=10。无 EGFR/ALK 等经典驱动基因突变报道。\n- **原发灶治疗策略建议：** 目前原发肺灶控制尚可（2024 年 10 月复查未见明确复发），主要矛盾为远处转移（脑、脊髓）。治疗重点转向全身系统性治疗及脊髓局部控制。对于实体瘤脑转移患者，治疗决策应基于多学科讨论潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 3. 系统性管理 (Systemic Management)\n- **全身治疗方案：** 患者既往接受培美曲塞联合铂类化疗 4 周期后出现疾病进展（脑术腔复发及脊髓转移）。鉴于 PD-L1 CPS=10 且 TMB-H，建议二线治疗引入免疫检查点抑制剂（ICI）联合化疗，或参加针对 SMARCA4/STK11 突变的临床试验。\n- **药物选择与剂量考量：** 若选择免疫联合化疗，需评估患者体能状态（目前下肢无力，KPS 可能受影响）。指南指出，对于无症状脑转移且 KPS<70 且无全身治疗选择的患者，放疗获益有限，提示全身治疗需结合体能状态评估 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **围手术期用药参数：** 若行脊髓减压手术，围手术期需继续使用地塞米松减轻水肿，并注意免疫治疗相关不良反应监测。\n- **证据说明：** 具体二线免疫治疗方案在提供的脑转移指南片段中未详细列出特定药物组合 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 4. 随访方案 (Follow-up Strategy)\n- **影像学复查时间窗：** 建议脊髓放疗或手术后 3 个月复查全脊柱 MRI，头部 MRI 每 2-3 个月复查一次。对于有症状的脑转移患者，无论使用何种全身治疗，均应接受局部治疗并密切随访 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **肿瘤标志物监测：** 监测 CEA、CYFRA21-1 等肺癌相关标志物。\n- **神经系统功能评估：** 每次随访评估下肢肌力、感觉平面及括约肌功能，警惕脊髓压迫加重。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n- **其他可行但未被选择的方案：** \n    1.  **全脑放疗（WBRT）：** 患者颅内病变已行手术及伽玛刀控制，目前稳定，且 WBRT 认知毒性大。指南建议对于 1-4 个未切除脑转移灶首选 SRS，对于手术切除后 1-2 个灶也推荐术腔 SRS，WBRT 仅作为合理选项之一但需权衡 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    2.  **单纯最佳支持治疗：** 患者存在脊髓压迫症状（无力、疼痛），若不干预可能导致瘫痪，故不建议仅行支持治疗。\n- **选择当前方案而非替代方案的循证依据：** 患者目前主要威胁为脊髓转移导致的神经功能缺损，需积极局部干预（手术或放疗）联合全身治疗。指南支持对于有症状的转移灶应接受局部治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n- **术前准备要点：** 若评估脊髓不稳定或压迫严重需手术，术前需完善脊柱稳定性评分（SINS），大剂量激素冲击减轻水肿。指南指出对于有大肿块伴占位效应的患者，手术是合理选项，获益可能大于多发转移灶患者 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **术后护理注意事项：** 预防深静脉血栓，早期康复训练，伤口护理。\n- **并发症预防策略：** 预防感染、脑脊液漏（若涉及硬膜修补）及放射性脊髓炎（若行放疗）。\n- **证据说明：** 提供的指南主要针对脑转移，脊髓手术的具体围术期管理细节在检索指南中未涵盖 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n- **关键基因突变分析：** \n    - **SMARCA4 (54.22%) & STK11 (36.73%)：** 提示预后可能较差，对免疫治疗敏感性可能受影响（STK11 突变常与免疫冷肿瘤相关），但患者 TMB-H 且 PD-L1 CPS=10，仍可从免疫治疗中获益。\n    - **MYC 扩增：** 可能与肿瘤侵袭性相关。\n- **靶向治疗指导意义：** 目前无针对 SMARCA4/STK11 的标准获批靶向药，建议关注相关临床试验。\n- **预后分子标志物：** TMB-H（>10 Muts/Mb 附近）及 PD-L1 阳性提示免疫治疗潜在获益。\n- **证据说明：** 提供的指南片段未包含具体基因突变对靶向治疗指导的详细推荐 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n- **推荐的治疗时间线：**\n    1.  **第 1 周：** 完成脊柱增强 MRI，评估脊髓压迫紧急程度。若存在急性压迫，优先行脊髓减压手术或急诊放疗。\n    2.  **第 2-4 周：** 启动全身系统性治疗（免疫 + 化疗）。\n    3.  **第 3 个月：** 复查影像评估疗效。\n- **关键决策节点：** 脊髓局部治疗方式选择（手术 vs 放疗）取决于脊柱稳定性及神经功能缺损速度。指南强调对于有症状的脑转移患者应接受局部治疗，此原则可类推至有症状的脊髓转移 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **多学科协作流程：** 神经外科评估手术可行性，放疗科评估放疗剂量，肿瘤内科制定全身方案。指南明确建议治疗决策应基于多学科讨论 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告签署：**  \n**MDT 专家组**  \n**日期：** 2025 年 09 月 05 日",
+      "reasoning": "",
+      "sources": [
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 1-11)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 9-34)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 38-46)"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 1,
+          "end_line": 11
+        },
+        {
+          "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34
+        },
+        {
+          "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46
+        }
+      ],
+      "latency_ms": 117554,
+      "full_output": {
+        "model": "qwen3.5-plus",
+        "timestamp": "2026-03-25T16:54:18.570470",
+        "latency_ms": 117554,
+        "input_prompt": "住院号 868183。入院时间 2025年09月04日。年龄 50。性别 男。主诉 右肺腺癌术后3年余，脑转移瘤术后1年余。现病史 2022年5月患者体检时发现肺占位性病变，2022年6月30日于中日友好医院复查胸部CT示右肺尖软组织密度肿块，边缘毛糙，约31mm。2022-07-01于中日友好医院接受胸腔镜下右肺上叶肿物楔形切除术+胸腔镜下右肺上叶切除术+胸腔镜下纵隔淋巴结清扫术+胸膜粘连松解术，病理：非小细胞性低分化癌（大小约4*3.5*2.7cm），伴坏死，结合免疫组化，符合低分化浸润性腺癌（可见实性、筛状及腺泡型结构），累及支气管，侵犯肺内血管管壁，肺门及纵隔淋巴结均阴性，术后未行基因检测，术后接受培美曲塞联合铂类辅助化疗4周期。此后定期复查未见复查。2024.6无明显诱因出现中重度头痛，伴随记忆力下降，言语不利，症状进行性加重，当地医院就诊发现颅内占位性病变。2024-07-31外院PET-CT示左侧额颞叶混杂密度肿块，大小约36mm*35mm，考虑脑转移伴脑水肿；左侧锁骨区、纵隔及两侧肺门多发淋巴结钙化，双侧胸膜局限性钙化；腹膜后小淋巴结，放射性摄取增高，建议随诊观察除外转移。2024-08-09我院门诊行头部MRI增强示左额颞岛叶占位，大小约39mm×36mm×46mm，周围见大片水肿带，结合病史，考虑转移瘤；左颞叶钩回疝。2024年8月25日于我院接受左额颞开颅肿瘤切除术+人工硬脑膜修补术(导航)，病理：转移性腺癌，TTF-1（+），脑转移瘤组织（海普洛斯）NGS结果：SMARCA4 c.356-2A＞T（突变率54.22%），GNAS p.R201C（突变率29.75%），MYC扩增（拷贝数3.2），CDKN2A（拷贝数0.7），LRP1B p.E3955G（突变率30.33%），STK11 p.G279Cfs*6（突变率36.73%），PD-L1 TPS＜1%、CPS=10，TMB 9.62Muts/Mb（排位高于87.1%患者），MSS。2024年10月复查头部增强MRI、胸部平扫CT、腹部超声、肾上腺超声、浅表淋巴结超声，未见明确肿瘤复发转移证据。经科室讨论，建议给予4周期培美曲塞联合卡铂一线化疗。2024-10-23、2024-11-26、2024-12-20、2025-01-21接受4周期PC方案化疗，具体为：培美曲塞900mg ivgt",
+        "retrieved_documents": [
+          {
+            "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 1,
+            "end_line": 11
+          },
+          {
+            "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 9,
+            "end_line": 34
+          },
+          {
+            "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 38,
+            "end_line": 46
+          }
+        ],
+        "output": {
+          "content": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 868183  \n**入院时间：** 2025 年 09 月 04 日  \n**报告日期：** 2025 年 09 月 05 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n- **患者基本信息与入院情况：** 患者男性，50 岁，因“右肺腺癌术后 3 年余，脑转移瘤术后 1 年余，发现脊髓占位伴下肢无力 2 个月”入院。既往有肺结核病史（已治愈）。\n- **临床症状评估：** 主诉为下肢无力、感觉障碍及疼痛。神经系统查体提示脊髓压迫症状。头部 MRI 显示左额颞岛叶转移瘤术后改变，较前稳定；但颈椎及腰椎 MRI 提示颈 4-胸 4 脊髓内异常信号及腰椎椎管多发占位，高度怀疑脊髓转移瘤伴潜在脊髓压迫风险。\n- **既往病史与合并症分析：** 2022 年确诊右肺低分化腺癌，行手术及辅助化疗。2024 年发现脑转移，行手术切除及术后化疗（培美曲塞 + 卡铂 4 周期），后因术腔复发行伽玛刀治疗。目前全身疾病进展（脊髓转移）。\n- **影像学初步印象：** 颅内病变稳定（术后及伽玛刀后改变），椎管内多发占位性病变（颈胸段及腰段），考虑转移瘤可能性大，需紧急评估脊髓压迫风险。肺癌脑转移发生率较高，文献估计转移性肺腺癌初诊时脑转移比例超过 25% [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n- **基于病理诊断的原发肿瘤特征：** 原发灶为右肺低分化浸润性腺癌（2022 年病理），脑转移灶病理证实为转移性腺癌（TTF-1+）。\n- **分子分型与靶向治疗敏感性评估：** 脑转移灶 NGS 检测显示 SMARCA4、STK11 突变，MYC 扩增，TMB-H（9.62 Muts/Mb），PD-L1 CPS=10。无 EGFR/ALK 等经典驱动基因突变报道。\n- **原发灶治疗策略建议：** 目前原发肺灶控制尚可（2024 年 10 月复查未见明确复发），主要矛盾为远处转移（脑、脊髓）。治疗重点转向全身系统性治疗及脊髓局部控制。对于实体瘤脑转移患者，治疗决策应基于多学科讨论潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 3. 系统性管理 (Systemic Management)\n- **全身治疗方案：** 患者既往接受培美曲塞联合铂类化疗 4 周期后出现疾病进展（脑术腔复发及脊髓转移）。鉴于 PD-L1 CPS=10 且 TMB-H，建议二线治疗引入免疫检查点抑制剂（ICI）联合化疗，或参加针对 SMARCA4/STK11 突变的临床试验。\n- **药物选择与剂量考量：** 若选择免疫联合化疗，需评估患者体能状态（目前下肢无力，KPS 可能受影响）。指南指出，对于无症状脑转移且 KPS<70 且无全身治疗选择的患者，放疗获益有限，提示全身治疗需结合体能状态评估 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **围手术期用药参数：** 若行脊髓减压手术，围手术期需继续使用地塞米松减轻水肿，并注意免疫治疗相关不良反应监测。\n- **证据说明：** 具体二线免疫治疗方案在提供的脑转移指南片段中未详细列出特定药物组合 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 4. 随访方案 (Follow-up Strategy)\n- **影像学复查时间窗：** 建议脊髓放疗或手术后 3 个月复查全脊柱 MRI，头部 MRI 每 2-3 个月复查一次。对于有症状的脑转移患者，无论使用何种全身治疗，均应接受局部治疗并密切随访 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **肿瘤标志物监测：** 监测 CEA、CYFRA21-1 等肺癌相关标志物。\n- **神经系统功能评估：** 每次随访评估下肢肌力、感觉平面及括约肌功能，警惕脊髓压迫加重。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n- **其他可行但未被选择的方案：** \n    1.  **全脑放疗（WBRT）：** 患者颅内病变已行手术及伽玛刀控制，目前稳定，且 WBRT 认知毒性大。指南建议对于 1-4 个未切除脑转移灶首选 SRS，对于手术切除后 1-2 个灶也推荐术腔 SRS，WBRT 仅作为合理选项之一但需权衡 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    2.  **单纯最佳支持治疗：** 患者存在脊髓压迫症状（无力、疼痛），若不干预可能导致瘫痪，故不建议仅行支持治疗。\n- **选择当前方案而非替代方案的循证依据：** 患者目前主要威胁为脊髓转移导致的神经功能缺损，需积极局部干预（手术或放疗）联合全身治疗。指南支持对于有症状的转移灶应接受局部治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n- **术前准备要点：** 若评估脊髓不稳定或压迫严重需手术，术前需完善脊柱稳定性评分（SINS），大剂量激素冲击减轻水肿。指南指出对于有大肿块伴占位效应的患者，手术是合理选项，获益可能大于多发转移灶患者 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **术后护理注意事项：** 预防深静脉血栓，早期康复训练，伤口护理。\n- **并发症预防策略：** 预防感染、脑脊液漏（若涉及硬膜修补）及放射性脊髓炎（若行放疗）。\n- **证据说明：** 提供的指南主要针对脑转移，脊髓手术的具体围术期管理细节在检索指南中未涵盖 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n- **关键基因突变分析：** \n    - **SMARCA4 (54.22%) & STK11 (36.73%)：** 提示预后可能较差，对免疫治疗敏感性可能受影响（STK11 突变常与免疫冷肿瘤相关），但患者 TMB-H 且 PD-L1 CPS=10，仍可从免疫治疗中获益。\n    - **MYC 扩增：** 可能与肿瘤侵袭性相关。\n- **靶向治疗指导意义：** 目前无针对 SMARCA4/STK11 的标准获批靶向药，建议关注相关临床试验。\n- **预后分子标志物：** TMB-H（>10 Muts/Mb 附近）及 PD-L1 阳性提示免疫治疗潜在获益。\n- **证据说明：** 提供的指南片段未包含具体基因突变对靶向治疗指导的详细推荐 [Evidence: Insufficient in Retrieved Guidelines]。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n- **推荐的治疗时间线：**\n    1.  **第 1 周：** 完成脊柱增强 MRI，评估脊髓压迫紧急程度。若存在急性压迫，优先行脊髓减压手术或急诊放疗。\n    2.  **第 2-4 周：** 启动全身系统性治疗（免疫 + 化疗）。\n    3.  **第 3 个月：** 复查影像评估疗效。\n- **关键决策节点：** 脊髓局部治疗方式选择（手术 vs 放疗）取决于脊柱稳定性及神经功能缺损速度。指南强调对于有症状的脑转移患者应接受局部治疗，此原则可类推至有症状的脊髓转移 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **多学科协作流程：** 神经外科评估手术可行性，放疗科评估放疗剂量，肿瘤内科制定全身方案。指南明确建议治疗决策应基于多学科讨论 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告签署：**  \n**MDT 专家组**  \n**日期：** 2025 年 09 月 05 日",
+          "reasoning": "",
+          "role": "assistant"
+        },
+        "usage": {
+          "input_tokens": 509,
+          "output_tokens": 985,
+          "total_tokens": 1494
+        }
+      }
+    }
+  },
+  "timestamp": "2026-03-25T16:54:18.570470"
+}

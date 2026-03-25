@@ -1,0 +1,85 @@
+{
+  "total_patients": 9,
+  "total_latency_ms": 936658,
+  "total_input_tokens": 4635,
+  "total_output_tokens": 8061,
+  "total_tokens": 12696,
+  "avg_latency_ms": 104073.11111111111,
+  "avg_input_tokens": 515.0,
+  "avg_output_tokens": 895.6666666666666,
+  "avg_total_tokens": 1410.6666666666667,
+  "patients": [
+    {
+      "patient_id": "Case10",
+      "hospital_id": "747724",
+      "latency_ms": 112399,
+      "input_tokens": 1298,
+      "output_tokens": 1015,
+      "total_tokens": 2313
+    },
+    {
+      "patient_id": "Case1",
+      "hospital_id": "648772",
+      "latency_ms": 122443,
+      "input_tokens": 244,
+      "output_tokens": 918,
+      "total_tokens": 1162
+    },
+    {
+      "patient_id": "Case2",
+      "hospital_id": "640880",
+      "latency_ms": 115974,
+      "input_tokens": 315,
+      "output_tokens": 826,
+      "total_tokens": 1141
+    },
+    {
+      "patient_id": "Case3",
+      "hospital_id": "868183",
+      "latency_ms": 117554,
+      "input_tokens": 509,
+      "output_tokens": 985,
+      "total_tokens": 1494
+    },
+    {
+      "patient_id": "Case4",
+      "hospital_id": "665548",
+      "latency_ms": 108698,
+      "input_tokens": 736,
+      "output_tokens": 895,
+      "total_tokens": 1631
+    },
+    {
+      "patient_id": "605525",
+      "hospital_id": "N/A",
+      "latency_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    {
+      "patient_id": "Case6",
+      "hospital_id": "638114",
+      "latency_ms": 114458,
+      "input_tokens": 327,
+      "output_tokens": 1042,
+      "total_tokens": 1369
+    },
+    {
+      "patient_id": "Case7",
+      "hospital_id": "612908",
+      "latency_ms": 111899,
+      "input_tokens": 378,
+      "output_tokens": 947,
+      "total_tokens": 1325
+    },
+    {
+      "patient_id": "Case9",
+      "hospital_id": "708387",
+      "latency_ms": 133233,
+      "input_tokens": 828,
+      "output_tokens": 1433,
+      "total_tokens": 2261
+    }
+  ]
+}

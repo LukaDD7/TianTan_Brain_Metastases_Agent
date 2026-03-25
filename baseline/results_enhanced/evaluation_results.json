@@ -1,0 +1,2105 @@
+{
+  "timestamp": "2026-03-25T17:13:47.793547",
+  "method": "Enhanced_RAG",
+  "individual_results": [
+    {
+      "patient_id": "Case10",
+      "hospital_id": "747724",
+      "latency_ms": 112399,
+      "citations_count": 7,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "inference",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36",
+          "full": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        }
+      ],
+      "ptr": 0.9285714285714286,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 1,
+          "status": "部分可追溯（推断）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 2.2,
+      "ccr_scores": {
+        "S_line": 0,
+        "S_scheme": 3,
+        "S_dose": 2,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.8246428571428571
+    },
+    {
+      "patient_id": "Case1",
+      "hospital_id": "648772",
+      "latency_ms": 122443,
+      "citations_count": 17,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "inference",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36",
+          "full": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        }
+      ],
+      "ptr": 0.029411764705882353,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 1,
+          "status": "部分可追溯（推断）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 1.8,
+      "ccr_scores": {
+        "S_line": 0,
+        "S_scheme": 3,
+        "S_dose": 0,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.5648529411764706
+    },
+    {
+      "patient_id": "Case2",
+      "hospital_id": "640880",
+      "latency_ms": 115974,
+      "citations_count": 16,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "inference",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36",
+          "full": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        }
+      ],
+      "ptr": 0.03125,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 1,
+          "status": "部分可追溯（推断）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 2.2,
+      "ccr_scores": {
+        "S_line": 0,
+        "S_scheme": 3,
+        "S_dose": 2,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.6003125
+    },
+    {
+      "patient_id": "Case3",
+      "hospital_id": "868183",
+      "latency_ms": 117554,
+      "citations_count": 12,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "inference",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36",
+          "full": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        }
+      ],
+      "ptr": 0.7083333333333334,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 1,
+          "status": "部分可追溯（推断）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 2.4,
+      "ccr_scores": {
+        "S_line": 3,
+        "S_scheme": 3,
+        "S_dose": 0,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.7870833333333334
+    },
+    {
+      "patient_id": "Case4",
+      "hospital_id": "665548",
+      "latency_ms": 108698,
+      "citations_count": 9,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        }
+      ],
+      "ptr": 0.0,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 2.4,
+      "ccr_scores": {
+        "S_line": 3,
+        "S_scheme": 3,
+        "S_dose": 0,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.61
+    },
+    {
+      "patient_id": "605525",
+      "hospital_id": "Unknown",
+      "latency_ms": 0,
+      "citations_count": 0,
+      "citations": [],
+      "ptr": 0.0,
+      "ptr_details": [],
+      "mqr": 0.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": false,
+          "score": 0.0
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": false,
+          "score": 0.0
+        },
+        {
+          "name": "系统性管理",
+          "present": false,
+          "score": 0.0
+        },
+        {
+          "name": "随访方案",
+          "present": false,
+          "score": 0.0
+        },
+        {
+          "name": "排他性论证",
+          "present": false,
+          "score": 0.0
+        },
+        {
+          "name": "围手术期管理",
+          "present": false,
+          "score": 0.0
+        },
+        {
+          "name": "分子病理",
+          "present": false,
+          "score": 0.0
+        },
+        {
+          "name": "执行路径",
+          "present": false,
+          "score": 0.0
+        }
+      ],
+      "cer": 0.5333333333333333,
+      "errors": [
+        {
+          "type": "minor",
+          "weight": 8.0,
+          "description": "模块缺失: 8个",
+          "context": "报告模块不完整"
+        }
+      ],
+      "ccr": 0.0,
+      "ccr_scores": {
+        "S_line": 0,
+        "S_scheme": 0,
+        "S_dose": 0,
+        "S_reject": 0,
+        "S_align": 0
+      },
+      "cpi": 0.06999999999999999
+    },
+    {
+      "patient_id": "Case6",
+      "hospital_id": "638114",
+      "latency_ms": 114458,
+      "citations_count": 13,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "inference",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36",
+          "full": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "inference",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36",
+          "full": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        }
+      ],
+      "ptr": 0.07692307692307693,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 1,
+          "status": "部分可追溯（推断）"
+        },
+        {
+          "citation": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 1,
+          "status": "部分可追溯（推断）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 2.2,
+      "ccr_scores": {
+        "S_line": 0,
+        "S_scheme": 3,
+        "S_dose": 2,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.6117307692307692
+    },
+    {
+      "patient_id": "Case7",
+      "hospital_id": "612908",
+      "latency_ms": 111899,
+      "citations_count": 15,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        }
+      ],
+      "ptr": 0.0,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 0,
+          "status": "不可追溯",
+          "details": {
+            "exists": false,
+            "reason": "File not found: ASCO_SNO_ASTRO_Brain_Metastases.md"
+          }
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 1.8,
+      "ccr_scores": {
+        "S_line": 0,
+        "S_scheme": 3,
+        "S_dose": 0,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.5575
+    },
+    {
+      "patient_id": "Case9",
+      "hospital_id": "708387",
+      "latency_ms": 133233,
+      "citations_count": 14,
+      "citations": [
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 9-34]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        },
+        {
+          "type": "local",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34,
+          "full": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 9-34]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "insufficient",
+          "full": "[Evidence: Insufficient in Retrieved Guidelines]"
+        },
+        {
+          "type": "inference",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36",
+          "full": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]"
+        }
+      ],
+      "ptr": 0.75,
+      "ptr_details": [
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 9-34]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/"
+          }
+        },
+        {
+          "citation": "[Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 9-34]",
+          "score": 2,
+          "status": "完全可追溯",
+          "details": {
+            "exists": true,
+            "total_lines": 915,
+            "content_preview": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU"
+          }
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Evidence: Insufficient in Retrieved Guidelines]",
+          "score": 0,
+          "status": "不可追溯（证据不足）"
+        },
+        {
+          "citation": "[Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]",
+          "score": 1,
+          "status": "部分可追溯（推断）"
+        }
+      ],
+      "mqr": 4.0,
+      "module_details": [
+        {
+          "name": "入院评估",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "原发灶处理方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "系统性管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "随访方案",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "排他性论证",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "围手术期管理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "分子病理",
+          "present": true,
+          "score": 0.5
+        },
+        {
+          "name": "执行路径",
+          "present": true,
+          "score": 0.5
+        }
+      ],
+      "cer": 0.0,
+      "errors": [],
+      "ccr": 2.8,
+      "ccr_scores": {
+        "S_line": 3,
+        "S_scheme": 3,
+        "S_dose": 2,
+        "S_reject": 3,
+        "S_align": 3
+      },
+      "cpi": 0.8325
+    }
+  ],
+  "summary": {
+    "count": 9,
+    "ccr": {
+      "mean": 1.9777777777777779,
+      "std": 0.8027729719194864,
+      "min": 0.0,
+      "max": 2.8
+    },
+    "ptr": {
+      "mean": 0.28049884483708015,
+      "std": 0.3914912779428003,
+      "min": 0.0,
+      "max": 0.9285714285714286
+    },
+    "mqr": {
+      "mean": 3.5555555555555554,
+      "std": 1.3333333333333333,
+      "min": 0.0,
+      "max": 4.0
+    },
+    "cer": {
+      "mean": 0.05925925925925926,
+      "std": 0.17777777777777778,
+      "min": 0.0,
+      "max": 0.5333333333333333
+    },
+    "cpi": {
+      "mean": 0.6065136000981589,
+      "std": 0.23003213589279456,
+      "min": 0.06999999999999999,
+      "max": 0.8325
+    }
+  }
+}

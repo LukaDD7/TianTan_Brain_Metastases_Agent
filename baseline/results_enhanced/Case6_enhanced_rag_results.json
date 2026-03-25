@@ -1,0 +1,101 @@
+{
+  "patient_id": "Case6",
+  "hospital_id": "638114",
+  "patient_info": "住院号 638114。入院时间 2021年01月08日。年龄 57。性别 男。主诉 确诊肺腺癌12年，发现脑转移7年。现病史 2008年12月患者确诊肺腺癌，行左肺上叶摘除术，术后分期IB期，手术组织基因检测提示EGFR19外显子突变，DFS 60个月。2013年12月患者发现脑转移，右枕叶占位，大小约20*8mm，行伽马刀治疗（靶中心剂量36Gy，周围剂量18GY\n），评效CR。从2013年12月起行一线吉非替尼靶向治疗，DFS 50个月。2018年2月患者再次发现脑转移，右侧小脑半球占位，大小约10*18*9mm，再次行伽马刀治疗（中心剂量32Gy，周围剂量16Gy），PFS 15个月。2020年1月右侧小脑半球PD，大小为18*28mm，2020-1-1行开颅手术切除右侧小脑半球肿瘤，手术标本行基因检测提示T790M突变，\n改为二线奥西替尼靶向治疗 。2020-12复查PET-CT提示右小脑原位复发，脑干、脑膜部位疑似待查。2021-1-8起改服用双倍量奥西替尼靶向治疗。患者目前偶有头疼，无头晕、恶心呕吐、现为进一步治疗入院。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n...",
+  "results": {
+    "enhanced_rag": {
+      "method": "Enhanced_RAG",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 638114  \n**报告日期：** 2021 年 01 月 15 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、放射科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者男性，57 岁，因“确诊肺腺癌 12 年，发现脑转移 7 年”入院。\n  - 既往历经左肺上叶切除术、多次伽马刀治疗及开颅手术，长期靶向治疗史。\n  - 本次入院主要原因为 2020-12 复查提示右小脑原位复发，脑干、脑膜部位疑似待查，且出现偶发头疼症状。\n\n- **临床症状评估**\n  - 主诉：偶有头疼，无头晕、恶心呕吐。\n  - 神经系统查体：目前病情平稳，KPS 评分预估≥70 分（基于饮食睡眠可、二便如常、体重无变化）。\n  - 指南依据：对于有症状的脑转移患者，无论使用何种全身治疗，均应接受局部治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n- **既往病史与合并症分析**\n  - 肺腺癌术后（2008 年），EGFR 19 外显子突变。\n  - 脑转移多次复发（2013, 2018, 2020），伴 T790M 突变。\n  - 合并症：反流性食管炎。否认高血压、糖尿病、心脏病史。\n\n- **影像学初步印象**\n  - 头部 MRI：右侧桥小脑角、右侧小脑可见不规则强化影，较 2020-04 片未见明显改变，但临床怀疑脑膜转移。\n  - 胸部 CT：左肺上叶切除术后状态，左肺微小结节，纵膈大血管未见明显异常。\n  - 流行病学背景：肺腺癌患者初诊时脑转移发生率估计超过 25% [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n---\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 原发灶：肺腺癌（2008 年确诊），目前已行根治性手术。\n  - 当前状态：胸部 CT 显示左肺陈旧性病灶及微小结节，未见明显进展性大块病灶。\n\n- **分子分型与靶向治疗敏感性评估**\n  - 初始突变：EGFR 19 外显子突变。\n  - 耐药突变：2020 年手术标本提示 T790M 突变。\n  - 当前检测：2021-01 血 NGS 未见基因突变（可能受血脑屏障影响，假阴性）。\n\n- **原发灶治疗策略建议**\n  - 鉴于原发灶目前相对稳定，主要矛盾集中在中枢神经系统（CNS）进展。\n  - 治疗重点转向颅内病灶控制及全身系统性药物调整。\n  - [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]：对于无症状脑转移且无全身治疗选项的患者才考虑单纯放疗，本例患者有全身治疗选项（靶向药），故应结合全身治疗。\n\n---\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - 当前方案：奥西替尼（Osimertinib）双倍剂量口服。\n  - 调整原因：2020-12 复查提示原位复发及疑似脑膜转移，标准剂量可能不足以控制 CNS 进展。\n  - 证据说明：关于双倍剂量奥西替尼的具体用药推荐，[Evidence: Insufficient in Retrieved Guidelines]（检索指南片段未涵盖具体 TKI 剂量调整策略，基于临床专家共识及个案处理）。\n\n- **药物选择与剂量考量**\n  - 奥西替尼作为三代 EGFR-TKI，具有较好的血脑屏障透过率。\n  - 针对疑似脑膜转移，提高剂量旨在增加脑脊液药物浓度。\n\n- **围手术期用药参数**\n  - 2021-01-11 伽马刀治疗后，予甘露醇及地塞米松脱水降颅压治疗。\n  - 指南依据：症状性脑转移应接受局部治疗，围手术期/放疗期需管理水肿 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - 建议治疗后 2-3 个月复查头部增强 MRI，评估伽马刀疗效及脑膜转移情况。\n  - 若病情变化随时复查。\n\n- **肿瘤标志物监测**\n  - 定期监测血清 CEA 等肺癌相关标志物。\n  - 必要时重复腰椎穿刺监测脑脊液细胞学及基因突变。\n\n- **神经系统功能评估**\n  - 每次随访评估 KPS 评分及神经系统体征。\n  - 指南依据：对于无症状脑转移患者，是否推迟局部治疗应基于多学科讨论潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本例为有症状/进展患者，需密切监测。\n\n---\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **全脑放疗 (WBRT)**\n  - **未选择原因**：患者已接受多次局部放疗（伽马刀），且预期生存期较长，为避免认知功能损伤。\n  - **循证依据**：指南指出对于 1-4 个未切除脑转移灶，应提供单独立体定向放射外科（SRS）治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。仅当预期生存期>4 个月且无海马病变时，WBRT 才建议联合美金刚及海马回避 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本例优选 SRS 以保护认知。\n\n- **再次开颅手术**\n  - **未选择原因**：患者 2020 年已行开颅手术，本次病灶较小且多发疑似（脑干/脑膜），手术风险高且获益有限。\n  - **循证依据**：手术是大体积肿瘤伴占位效应患者的合理选择，本例病灶相对局限且已行 GK 处理 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n- **单纯化疗**\n  - **未选择原因**：患者 EGFR 突变阳性，靶向治疗疗效优于化疗，且化疗入脑能力较弱。\n  - **证据说明**：检索指南片段未详细对比化疗与靶向在 CNS 的具体疗效，[Evidence: Insufficient in Retrieved Guidelines]。\n\n---\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - 本次入院已行伽马刀治疗（2021-01-11），无需再次术前准备。\n  - 腰椎穿刺前已评估凝血及颅内压情况。\n\n- **术后护理注意事项**\n  - 伽马刀术后继续脱水降颅压治疗（甘露醇、地塞米松）。\n  - 腰椎穿刺术后去枕平卧，预防低颅压头痛。\n  - 监测血常规及肝肾功能，特别是双倍剂量奥西替尼的耐受性。\n\n- **并发症预防策略**\n  - 预防放射性脑坏死：严格控制伽马刀剂量（本次中心剂量 32-36Gy 范围内）。\n  - 预防血栓：患者活动可，鼓励适度活动。\n  - 指南依据：对于接受 WBRT 的患者才明确推荐美金刚等，本例为 SRS，重点在于水肿管理 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - 2008 年：EGFR 19 外显子突变。\n  - 2020 年：组织检测提示 T790M 突变。\n  - 2021 年：血 NGS 未见突变（可能因血液中人肿瘤 DNA 含量低或血脑屏障阻隔）。\n\n- **靶向治疗指导意义**\n  - T790M 阳性支持继续使用三代 TKI（奥西替尼）。\n  - 血液检测阴性不排除组织阳性，临床决策主要依据既往组织结果及影像学进展。\n  - 证据说明：检索指南片段未涵盖具体基因检测频率及血液 vs 组织检测的优先級，[Evidence: Insufficient in Retrieved Guidelines]。\n\n- **预后分子标志物**\n  - EGFR 突变型肺腺癌脑转移预后相对野生型较好，但多次复发提示耐药风险增加。\n\n---\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - 2021-01-08：入院，开始双倍量奥西替尼。\n  - 2021-01-11：行伽马刀治疗颅内病灶。\n  - 2021-01-12：行腰椎穿刺术，留取脑脊液。\n  - 2021-01-15：出院，口服药物维持。\n  - 2021-04 月：门诊复查头部 MRI 及胸部 CT。\n\n- **关键决策节点**\n  - 节点 1：确认脑膜转移状态（依赖脑脊液病理回报）。\n  - 节点 2：评估双倍剂量奥西替尼耐受性及疗效（2 个月后）。\n  - 节点 3：若 CNS 进展，考虑临床试验或局部补救治疗。\n\n- **多学科协作流程**\n  - 神经外科与放疗科协作完成局部控制（GK）。\n  - 肿瘤内科主导全身靶向治疗调整。\n  - 指南依据：局部治疗的决定应基于多学科讨论患者可能经历的潜在获益和危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告签署：** 脑转移瘤 MDT 专家组  \n**日期：** 2021 年 01 月 15 日",
+      "reasoning": "",
+      "sources": [
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 1-11)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 9-34)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 38-46)"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 1,
+          "end_line": 11
+        },
+        {
+          "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 9,
+          "end_line": 34
+        },
+        {
+          "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 36,
+          "end_line": 36
+        },
+        {
+          "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+          "start_line": 38,
+          "end_line": 46
+        }
+      ],
+      "latency_ms": 114458,
+      "full_output": {
+        "model": "qwen3.5-plus",
+        "timestamp": "2026-03-25T16:58:01.730322",
+        "latency_ms": 114458,
+        "input_prompt": "住院号 638114。入院时间 2021年01月08日。年龄 57。性别 男。主诉 确诊肺腺癌12年，发现脑转移7年。现病史 2008年12月患者确诊肺腺癌，行左肺上叶摘除术，术后分期IB期，手术组织基因检测提示EGFR19外显子突变，DFS 60个月。2013年12月患者发现脑转移，右枕叶占位，大小约20*8mm，行伽马刀治疗（靶中心剂量36Gy，周围剂量18GY\n），评效CR。从2013年12月起行一线吉非替尼靶向治疗，DFS 50个月。2018年2月患者再次发现脑转移，右侧小脑半球占位，大小约10*18*9mm，再次行伽马刀治疗（中心剂量32Gy，周围剂量16Gy），PFS 15个月。2020年1月右侧小脑半球PD，大小为18*28mm，2020-1-1行开颅手术切除右侧小脑半球肿瘤，手术标本行基因检测提示T790M突变，\n改为二线奥西替尼靶向治疗 。2020-12复查PET-CT提示右小脑原位复发，脑干、脑膜部位疑似待查。2021-1-8起改服用双倍量奥西替尼靶向治疗。患者目前偶有头疼，无头晕、恶心呕吐、现为进一步治疗入院。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n，体重\n无明显变化\n。。既往史 平素健康状况:\n良好\n。\n否认高血压史、冠心病史\n，\n否认糖尿病史、脑血管病史、精神病史\n，\n否认肝炎史、疟疾史、结核史\n，\n否认外伤输血史，\n否认过敏史\n，\n预防接种史不详\n。。入院诊断 1.恶性肿瘤靶向治疗2.肺腺癌术后3.脑继发恶性肿瘤4.反流性食管炎5.脑膜转移待除外。出院诊断 1.恶性肿瘤靶向治疗2.肺腺癌术后3.脑继发恶性肿瘤4.反流性食管炎5.脑膜转移待除外。头部MRI 右枕颅骨术后改变，局部骨质不连续，右侧小脑半球可见片状长T2长T1信号，flair像右侧小脑半球可见低信号，DWI像脑实质内未见弥散受限信号，脑室系统大小、位置及形态正常，中线结构居中，脑沟和脑裂无异常发现。各扫描层面内双侧上颌窦内可见长T2信号影，双侧眼球大小及位置无特殊。增强扫描：右侧桥小脑角、右侧小脑可见不规则强化影。报告诊断:\" 右枕颅骨术后改变，所见较2020-04-23MR片，未见明显改变；双侧上颌窦囊肿。\"。胸部CT 左肺体积缩小，左侧胸廓塌陷，肋间隙变窄。左肺上叶切除术后状态，左肺上叶支气管截断。左残肺见条索影及微小结节影。左侧胸膜增厚。纵膈大血管未见明显异",
+        "retrieved_documents": [
+          {
+            "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 1,
+            "end_line": 11
+          },
+          {
+            "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 9,
+            "end_line": 34
+          },
+          {
+            "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 36,
+            "end_line": 36
+          },
+          {
+            "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+            "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+            "start_line": 38,
+            "end_line": 46
+          }
+        ],
+        "output": {
+          "content": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 638114  \n**报告日期：** 2021 年 01 月 15 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、放射科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者男性，57 岁，因“确诊肺腺癌 12 年，发现脑转移 7 年”入院。\n  - 既往历经左肺上叶切除术、多次伽马刀治疗及开颅手术，长期靶向治疗史。\n  - 本次入院主要原因为 2020-12 复查提示右小脑原位复发，脑干、脑膜部位疑似待查，且出现偶发头疼症状。\n\n- **临床症状评估**\n  - 主诉：偶有头疼，无头晕、恶心呕吐。\n  - 神经系统查体：目前病情平稳，KPS 评分预估≥70 分（基于饮食睡眠可、二便如常、体重无变化）。\n  - 指南依据：对于有症状的脑转移患者，无论使用何种全身治疗，均应接受局部治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n- **既往病史与合并症分析**\n  - 肺腺癌术后（2008 年），EGFR 19 外显子突变。\n  - 脑转移多次复发（2013, 2018, 2020），伴 T790M 突变。\n  - 合并症：反流性食管炎。否认高血压、糖尿病、心脏病史。\n\n- **影像学初步印象**\n  - 头部 MRI：右侧桥小脑角、右侧小脑可见不规则强化影，较 2020-04 片未见明显改变，但临床怀疑脑膜转移。\n  - 胸部 CT：左肺上叶切除术后状态，左肺微小结节，纵膈大血管未见明显异常。\n  - 流行病学背景：肺腺癌患者初诊时脑转移发生率估计超过 25% [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 38-46]。\n\n---\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 原发灶：肺腺癌（2008 年确诊），目前已行根治性手术。\n  - 当前状态：胸部 CT 显示左肺陈旧性病灶及微小结节，未见明显进展性大块病灶。\n\n- **分子分型与靶向治疗敏感性评估**\n  - 初始突变：EGFR 19 外显子突变。\n  - 耐药突变：2020 年手术标本提示 T790M 突变。\n  - 当前检测：2021-01 血 NGS 未见基因突变（可能受血脑屏障影响，假阴性）。\n\n- **原发灶治疗策略建议**\n  - 鉴于原发灶目前相对稳定，主要矛盾集中在中枢神经系统（CNS）进展。\n  - 治疗重点转向颅内病灶控制及全身系统性药物调整。\n  - [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]：对于无症状脑转移且无全身治疗选项的患者才考虑单纯放疗，本例患者有全身治疗选项（靶向药），故应结合全身治疗。\n\n---\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - 当前方案：奥西替尼（Osimertinib）双倍剂量口服。\n  - 调整原因：2020-12 复查提示原位复发及疑似脑膜转移，标准剂量可能不足以控制 CNS 进展。\n  - 证据说明：关于双倍剂量奥西替尼的具体用药推荐，[Evidence: Insufficient in Retrieved Guidelines]（检索指南片段未涵盖具体 TKI 剂量调整策略，基于临床专家共识及个案处理）。\n\n- **药物选择与剂量考量**\n  - 奥西替尼作为三代 EGFR-TKI，具有较好的血脑屏障透过率。\n  - 针对疑似脑膜转移，提高剂量旨在增加脑脊液药物浓度。\n\n- **围手术期用药参数**\n  - 2021-01-11 伽马刀治疗后，予甘露醇及地塞米松脱水降颅压治疗。\n  - 指南依据：症状性脑转移应接受局部治疗，围手术期/放疗期需管理水肿 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - 建议治疗后 2-3 个月复查头部增强 MRI，评估伽马刀疗效及脑膜转移情况。\n  - 若病情变化随时复查。\n\n- **肿瘤标志物监测**\n  - 定期监测血清 CEA 等肺癌相关标志物。\n  - 必要时重复腰椎穿刺监测脑脊液细胞学及基因突变。\n\n- **神经系统功能评估**\n  - 每次随访评估 KPS 评分及神经系统体征。\n  - 指南依据：对于无症状脑转移患者，是否推迟局部治疗应基于多学科讨论潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本例为有症状/进展患者，需密切监测。\n\n---\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **全脑放疗 (WBRT)**\n  - **未选择原因**：患者已接受多次局部放疗（伽马刀），且预期生存期较长，为避免认知功能损伤。\n  - **循证依据**：指南指出对于 1-4 个未切除脑转移灶，应提供单独立体定向放射外科（SRS）治疗 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。仅当预期生存期>4 个月且无海马病变时，WBRT 才建议联合美金刚及海马回避 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。本例优选 SRS 以保护认知。\n\n- **再次开颅手术**\n  - **未选择原因**：患者 2020 年已行开颅手术，本次病灶较小且多发疑似（脑干/脑膜），手术风险高且获益有限。\n  - **循证依据**：手术是大体积肿瘤伴占位效应患者的合理选择，本例病灶相对局限且已行 GK 处理 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n- **单纯化疗**\n  - **未选择原因**：患者 EGFR 突变阳性，靶向治疗疗效优于化疗，且化疗入脑能力较弱。\n  - **证据说明**：检索指南片段未详细对比化疗与靶向在 CNS 的具体疗效，[Evidence: Insufficient in Retrieved Guidelines]。\n\n---\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - 本次入院已行伽马刀治疗（2021-01-11），无需再次术前准备。\n  - 腰椎穿刺前已评估凝血及颅内压情况。\n\n- **术后护理注意事项**\n  - 伽马刀术后继续脱水降颅压治疗（甘露醇、地塞米松）。\n  - 腰椎穿刺术后去枕平卧，预防低颅压头痛。\n  - 监测血常规及肝肾功能，特别是双倍剂量奥西替尼的耐受性。\n\n- **并发症预防策略**\n  - 预防放射性脑坏死：严格控制伽马刀剂量（本次中心剂量 32-36Gy 范围内）。\n  - 预防血栓：患者活动可，鼓励适度活动。\n  - 指南依据：对于接受 WBRT 的患者才明确推荐美金刚等，本例为 SRS，重点在于水肿管理 [Inference from Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - 2008 年：EGFR 19 外显子突变。\n  - 2020 年：组织检测提示 T790M 突变。\n  - 2021 年：血 NGS 未见突变（可能因血液中人肿瘤 DNA 含量低或血脑屏障阻隔）。\n\n- **靶向治疗指导意义**\n  - T790M 阳性支持继续使用三代 TKI（奥西替尼）。\n  - 血液检测阴性不排除组织阳性，临床决策主要依据既往组织结果及影像学进展。\n  - 证据说明：检索指南片段未涵盖具体基因检测频率及血液 vs 组织检测的优先級，[Evidence: Insufficient in Retrieved Guidelines]。\n\n- **预后分子标志物**\n  - EGFR 突变型肺腺癌脑转移预后相对野生型较好，但多次复发提示耐药风险增加。\n\n---\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - 2021-01-08：入院，开始双倍量奥西替尼。\n  - 2021-01-11：行伽马刀治疗颅内病灶。\n  - 2021-01-12：行腰椎穿刺术，留取脑脊液。\n  - 2021-01-15：出院，口服药物维持。\n  - 2021-04 月：门诊复查头部 MRI 及胸部 CT。\n\n- **关键决策节点**\n  - 节点 1：确认脑膜转移状态（依赖脑脊液病理回报）。\n  - 节点 2：评估双倍剂量奥西替尼耐受性及疗效（2 个月后）。\n  - 节点 3：若 CNS 进展，考虑临床试验或局部补救治疗。\n\n- **多学科协作流程**\n  - 神经外科与放疗科协作完成局部控制（GK）。\n  - 肿瘤内科主导全身靶向治疗调整。\n  - 指南依据：局部治疗的决定应基于多学科讨论患者可能经历的潜在获益和危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告签署：** 脑转移瘤 MDT 专家组  \n**日期：** 2021 年 01 月 15 日",
+          "reasoning": "",
+          "role": "assistant"
+        },
+        "usage": {
+          "input_tokens": 327,
+          "output_tokens": 1042,
+          "total_tokens": 1369
+        }
+      }
+    }
+  },
+  "timestamp": "2026-03-25T16:58:01.730322"
+}

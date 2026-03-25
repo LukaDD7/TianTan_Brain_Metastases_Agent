@@ -1,0 +1,45 @@
+{
+  "patient_id": "605525",
+  "response": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 605525  \n**报告日期：** 2025 年 07 月 31 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n- **患者基本信息与入院情况**：男性，61 岁。因“结肠癌术后 6 年，肺及颅内转移”入院。既往行结肠癌根治术、肺转移灶切除术、多次伽马刀及开颅手术。\n- **临床症状评估**：\n    - **主诉**：右侧肢体无力，进食欠佳。\n    - **现病史**：2025.5 行开颅手术后恢复可，但近期出现吞咽困难，右下肢肌力 3 级。院外癫痫控制可。体重下降 25Kg，提示严重营养不良。\n    - **体征**：高血压 3 级（术后血压正常，已停药），甲状腺功能减退，贫血（HB 75g/L），血小板减少。\n- **既往病史与合并症分析**：降结肠中分化腺癌（pT4N0M0 IIB），KRAS G12V 突变。多线治疗失败（含化疗、靶向、免疫、抗血管生成）。合并症包括脑水肿、症状性癫痫、低钠血症、营养不良。\n- **影像学初步印象**：\n    - **头部 MRI**：左额叶占位切除术后改变；脑内多发强化灶（转移瘤），较前缩小但伴重度水肿；中线结构右移 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    - **胸部 CT**：双肺多发转移，纵隔淋巴结转移，间质性改变进展。\n    - **腹盆 CT**：肝脏多发低密度灶（待定），左肾占位，腹膜后淋巴结饱满。\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n- **基于病理诊断的原发肿瘤特征**：降结肠中分化腺癌，伴神经内分泌标记物表达（Syn+），CDX-2 部分+。原发灶已于 2019 年切除。\n- **分子分型与靶向治疗敏感性评估**：\n    - **基因检测**：组织 NGS 示 **KRAS G12V** 突变。\n    - **敏感性**：KRAS 突变通常提示对 EGFR 单抗（如西妥昔单抗）耐药。\n    - **指南依据**：[Evidence: Insufficient in Retrieved Guidelines]（检索指南片段未包含结直肠癌特定分子靶向治疗推荐）。\n- **原发灶治疗策略建议**：鉴于目前全身多发转移且体能状态差，不再针对原发灶区域进行积极干预，以最佳支持治疗为主。\n\n## 3. 系统性管理 (Systemic Management)\n- **全身治疗方案**：\n    - **当前决策**：**暂停全身抗肿瘤专科治疗**（化疗/免疫/靶向）。\n    - **依据**：患者既往多线治疗（5 线）后疾病快速进展，且出现 III°骨髓抑制、吞咽困难、严重营养不良。体能状态（KPS）预估 < 70 分。\n    - **指南支持**：对于体能状态较差（KPS < 70）且无有效系统治疗选择的患者，放疗及积极抗肿瘤治疗获益有限 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **药物选择与剂量考量**：\n    - **对症治疗**：脱水（甘露醇/激素）、抗癫痫、营养支持、纠正电解质紊乱（低钠）、甲状腺素替代（优甲乐）。\n    - **既往方案回顾**：依沃西单抗 + 替莫唑胺 + 卡培他滨（5 线）后出现耐受性欠佳。\n    - **指南依据**：[Evidence: Insufficient in Retrieved Guidelines]（检索指南片段未包含具体化疗药物剂量推荐）。\n- **围手术期用药参数**：不适用（暂无新手术计划）。\n\n## 4. 随访方案 (Follow-up Strategy)\n- **影像学复查时间窗**：建议出院后 1 个月复查头部 MRI，评估颅内水肿及转移灶变化。\n- **肿瘤标志物监测**：定期监测 CEA、CA19-9，但鉴于终末期状态，以临床症状监测为主。\n- **神经系统功能评估**：重点监测癫痫发作频率、肢体肌力变化及意识状态。\n- **指南支持**：局部治疗决策应基于多学科讨论及患者潜在获益与风险的评估 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n- **其他可行但未被选择的方案**：\n    1.  **再次伽马刀（SRS）或全脑放疗（WBRT）**：\n        - **排他性论证**：患者颅内多发转移伴重度水肿，且既往已行多次 SRS 及开颅手术。目前 KPS < 70，指南指出此类患者从放疗中获益甚微 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n    2.  **继续第 6 线全身化疗/免疫治疗**：\n        - **排他性论证**：患者出现 III°骨髓抑制、吞咽困难及体重急剧下降，耐受性极差。继续治疗可能加速病情恶化而非延长生存。\n    3.  **再次开颅手术**：\n        - **排他性论证**：多发转移灶，非单发大肿块占位效应，且患者一般情况无法耐受麻醉及手术创伤 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n- **选择当前方案而非替代方案的循证依据**：基于多学科讨论（MDT），决定 deferred local therapy（推迟局部治疗），转为支持治疗，符合指南对于体能状态差患者的推荐 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 6. 围手术期管理 (Peri-procedural Management)\n- **术前准备要点**：N/A（本次入院未计划新手术）。\n- **术后护理注意事项**：\n    - 针对 2025.5 开颅术后状态，继续管理术区水肿及预防癫痫。\n    - 加强营养支持（肠内/肠外营养），预防吸入性肺炎（因吞咽困难）。\n- **并发症预防策略**：\n    - **癫痫**：维持抗癫痫药物血药浓度。\n    - **血栓**：评估出血风险后考虑物理预防，因血小板减少需谨慎药物预防。\n    - **指南支持**：有症状的脑转移患者应接受局部治疗（已执行），后续管理侧重于症状控制 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n- **关键基因突变分析**：**KRAS G12V**。\n- **靶向治疗指导意义**：\n    - 提示对抗 EGFR 治疗原发耐药。\n    - 目前无针对 KRAS G12V 的标准获批靶向药用于结直肠癌脑转移（尽管新兴药物在研发中）。\n    - **指南依据**：[Evidence: Insufficient in Retrieved Guidelines]（检索指南片段未涵盖结直肠癌特定基因突变的治疗推荐）。\n- **预后分子标志物**：KRAS 突变通常与较差的预后相关，结合多线治疗失败，提示预后不良。\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n- **推荐的治疗时间线**：\n    - **即刻**：出院，转为院外对症支持治疗（姑息治疗）。\n    - **短期（1 个月内）**：门诊随访，重点控制癫痫、疼痛及营养支持。\n    - **长期**：根据生存期预期，适时介入安宁疗护。\n- **关键决策节点**：\n    - **2025.7.31 MDT 讨论**：确认停止抗肿瘤治疗，转向最佳支持治疗（BSC）。\n    - **决策依据**：肿瘤负荷重、进展快、耐受性差、KPS 评分低。\n- **多学科协作流程**：\n    - 肿瘤内科：评估全身治疗耐受性，建议停药。\n    - 神经外科/放疗科：评估局部治疗获益，建议暂缓。\n    - 指南支持：推迟局部治疗的决定应基于多学科讨论潜在获益与危害 [Local: ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md, Line: 36-36]。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组\n**声明：** 本报告基于提供的患者信息及检索到的 ASCO/SNO/ASTRO 脑转移指南片段生成。部分结直肠癌特异性治疗建议因检索指南范围限制标记为证据不足。",
+  "reasoning": "",
+  "sources": [
+    "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 1-11)",
+    "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 9-34)",
+    "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+    "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 36-36)",
+    "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md (Line: 38-46)"
+  ],
+  "latency_ms": 120030,
+  "retrieved_docs": [
+    {
+      "content": "# TREATMENT FOR BRAIN METASTASES: asco-sno-astro GUIDELINE  \n\nMICHAEL a. VOGELBAUM, md, p HdÀ; PAUL d. BROWN, mdÀ; HANS MESSERSMITH, mph3; PRISCILLA k. BRASTIANOS, md4; STUART BURRI, md5;   \nDAN CAHIL...",
+      "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+      "start_line": 1,
+      "end_line": 11
+    },
+    {
+      "content": "associated content APPENDIX  \n\n# DATA SUPPLEMENT  \n\nAUTHOR AFFILIATIONS   \nAND SUPPORT   \nINFORMATION (IF   \nAPPLICABLE) APPEAR AT THE END OF THIS   \nARTICLE.   \nACCEPTED ON OCTOBER 27, 2021 AND   \nPU...",
+      "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+      "start_line": 9,
+      "end_line": 34
+    },
+    {
+      "content": "recommendatIONS SURGERY IS A REASONABLE OPTION FOR PATIENTS WITH BRAIN METASTASES. PATIENTS WITH LARGE TUMORS WITH MASS EFFECT ARE MORE LIKELY TO BENEFIT THAN THOSE WITH MULTIPLE BRAIN METASTASES AND/...",
+      "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+      "start_line": 36,
+      "end_line": 36
+    },
+    {
+      "content": "NO SYSTEMIC THERAPY OPTIONS, STEREOTACTIC RADIOSURGERY (srs) ALONE SHOULD BE OFFERED TO PATIENTS WITH ONE TO FOUR UNRESECTED BRAIN METASTASES, EXCLUDING SMALL-CELL LUNG CARCINOMA. srs ALONE TO THE SUR...",
+      "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+      "start_line": 36,
+      "end_line": 36
+    },
+    {
+      "content": "ADDITIONAL INFORMATION IS AVAILABLE AT WWW.ASCO.ORG/NEUROONCOLOGY GUIDELINES.  \n\nj CLIN ONCOL 40:492-516. 2021 BY AMERICAN SOCIETY OF CLINICAL ONCOLOGY  \n\n# introduction  \n\niN THE UNITED STATES, IT IS...",
+      "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+      "start_line": 38,
+      "end_line": 46
+    }
+  ]
+}
