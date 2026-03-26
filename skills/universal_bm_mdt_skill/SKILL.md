@@ -31,6 +31,15 @@ Extract the following fields from the provided medical record into a structured 
 ### 1.2 The "Unknown" Rule
 If critical data (e.g., KPS, specific gene status, extracranial disease burden) is missing, you MUST label it as `"unknown"`. **FABRICATION OF CLINICAL DATA IS STRICTLY PROHIBITED.**
 
+### 1.3 Biomarker Inference Guardrail
+Prior treatment history can be used only as a **trigger for targeted verification**, not as proof of a biomarker.
+- **Allowed:** "Icotinib exposure suggests EGFR testing should be prioritized."
+- **Forbidden:** "Icotinib exposure means EGFR mutation is confirmed."
+- **Allowed:** "KRAS-directed resistance should be checked because an EGFR inhibitor failed."
+- **Forbidden:** "EGFR-TKI failure proves KRAS mutation."
+
+If a treatment is highly specific to one biomarker class, you may raise suspicion for that class, but you MUST keep the status as `unknown` until the molecular result is explicitly present in the record or retrieved from a validated molecular database.
+
 ---
 
 ## Phase 2: Active Evidence Acquisition (Strict Workflow Routing)
@@ -49,6 +58,8 @@ If critical data (e.g., KPS, specific gene status, extracranial disease burden) 
 
 ### 2.2 The Targeted Layer: Molecular Profiling (OncoKB Integration)
 **Execute this SECOND.** Once the guideline establishes the general framework, if you identify ANY genetic biomarker (e.g., EGFR 19del, BRAF V600E, MET amplification) in the patient's record, you **MUST** actively utilize the OncoKB script to confirm drug evidence levels and resistance.
+
+If a biomarker is only **suggested by treatment history**, do not convert it into a confirmed molecular status; instead, use it to justify an OncoKB query or to request molecular retesting.
 
 **Execution Method (Use your native `execute` tool):**
 * *For Mutations:* `/home/luzhenyang/anaconda3/envs/tiantanBM_agent/bin/python /media/luzhenyang/project/TianTan_Brain_Metastases_Agent/skills/oncokb_query_skill/scripts/query_oncokb.py mutation --gene {GENE} --alteration {ALTERATION} --tumor-type "{TUMOR_TYPE}"`
@@ -160,6 +171,12 @@ You are **FORBIDDEN** from moving to Phase 4. You must stop and execute the Deep
 ### 3.3 Rejected Alternatives (Crucial Step)
 You must actively evaluate and **reject at least 2 alternative treatment plans**, citing evidence.
 
+### 3.4 Evidence Status Labels
+Every major conclusion must be labeled as one of the following:
+- **confirmed**: directly supported by the record or validated database query
+- **inferred**: a clinically reasonable suspicion that still needs confirmation
+- **unknown**: not established from the record or validated evidence
+
 ---
 
 ## Phase 4: The 8-Module Standardized Output Architecture
@@ -179,6 +196,7 @@ If, after executing the Deep Drill (Phase 3.2), you STILL cannot find the exact 
   **⚠️ CRITICAL RED LINE: Every holding parameter, timing window, and management recommendation in this module MUST have a [Local] or [PubMed] citation. NO PRE-TRAINED KNOWLEDGE ALLOWED. Use Phase 2.4 search protocol.**
 * **Module 7: Molecular Pathology Orders (`molecular_pathology_orders`)** - Recommendations for missing tests (e.g., "Recommend NGS testing for MET ex14 skipping").
   **⚠️ CRITICAL RED LINE: Every biomarker recommendation, testing priority, and panel composition in this module MUST have a [Local] or [PubMed] citation. NO PRE-TRAINED KNOWLEDGE ALLOWED. Use Phase 2.4 search protocol.**
+  - If the module is driven by treatment-history suspicion rather than a confirmed biomarker, explicitly write that the biomarker status remains `unknown` and the recommendation is to retest.
 * **Module 8: Agent Execution Trajectory (`agent_execution_trajectory`)** - An audit log of your thought process (Which scripts you executed, which guidelines you grepped).
 
 **Citation Protocol (Updated):**

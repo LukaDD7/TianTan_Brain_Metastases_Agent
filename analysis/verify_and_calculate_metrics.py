@@ -5,6 +5,7 @@ Unified Metrics Calculation and Verification
 """
 
 import json
+import os
 import pandas as pd
 import numpy as np
 from scipy import stats
@@ -89,29 +90,28 @@ def verify_and_update_data():
 
 
 def calculate_statistics(data):
-    """计算统计数据"""
+    """计算统计数据（标准差统一使用 sample SD, ddof=1）"""
     ccr_values = [v['ccr'] for v in data.values()]
     mqr_values = [v['mqr'] for v in data.values()]
     cer_values = [v['cer'] for v in data.values()]
     ptr_values = [v['ptr'] for v in data.values()]
     cpi_values = [v['cpi'] for v in data.values()]
 
+    def metric_stats(values):
+        return {
+            'mean': np.mean(values),
+            'std': np.std(values, ddof=1),
+            'min': np.min(values),
+            'max': np.max(values),
+            'median': np.median(values)
+        }
+
     stats = {
-        'CCR': {'mean': np.mean(ccr_values), 'std': np.std(ccr_values),
-                'min': np.min(ccr_values), 'max': np.max(ccr_values),
-                'median': np.median(ccr_values)},
-        'MQR': {'mean': np.mean(mqr_values), 'std': np.std(mqr_values),
-                'min': np.min(mqr_values), 'max': np.max(mqr_values),
-                'median': np.median(mqr_values)},
-        'CER': {'mean': np.mean(cer_values), 'std': np.std(cer_values),
-                'min': np.min(cer_values), 'max': np.max(cer_values),
-                'median': np.median(cer_values)},
-        'PTR': {'mean': np.mean(ptr_values), 'std': np.std(ptr_values),
-                'min': np.min(ptr_values), 'max': np.max(ptr_values),
-                'median': np.median(ptr_values)},
-        'CPI': {'mean': np.mean(cpi_values), 'std': np.std(cpi_values),
-                'min': np.min(cpi_values), 'max': np.max(cpi_values),
-                'median': np.median(cpi_values)}
+        'CCR': metric_stats(ccr_values),
+        'MQR': metric_stats(mqr_values),
+        'CER': metric_stats(cer_values),
+        'PTR': metric_stats(ptr_values),
+        'CPI': metric_stats(cpi_values)
     }
 
     return stats
@@ -226,7 +226,6 @@ def save_final_data(data, stats, stat_results):
     output_dir = Path("analysis/final_results")
     output_dir.mkdir(exist_ok=True)
 
-    # 保存JSON
     final_data = {
         'patient_scores': data,
         'statistics': {k: {kk: float(vv) for kk, vv in v.items()} for k, v in stats.items()},
@@ -234,20 +233,14 @@ def save_final_data(data, stats, stat_results):
                                   for kk, vv in result.items()}
                              for k, result in stat_results.items()},
         'cpi_formula': 'CPI = 0.35×CCR/4 + 0.25×PTR + 0.25×MQR/4 + 0.15×(1-CER)',
-        'weights': {'CCR': 0.35, 'PTR': 0.25, 'MQR': 0.25, 'CER': 0.15}
+        'weights': {'CCR': 0.35, 'PTR': 0.25, 'MQR': 0.25, 'CER': 0.15},
+        'sd_definition': 'sample standard deviation (ddof=1)'
     }
 
-    # 导入时间戳工具
-    import sys
-    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from utils.timestamp_utils import get_timestamped_filename
-
-    # 使用带时间戳的文件名
-    json_filename = get_timestamped_filename("final_metrics", "json")
-    with open(output_dir / json_filename, 'w', encoding='utf-8') as f:
+    json_path = output_dir / 'final_metrics.json'
+    with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(final_data, f, indent=2, ensure_ascii=False)
 
-    # 保存CSV
     df_data = []
     for pid, d in data.items():
         df_data.append({
@@ -261,12 +254,12 @@ def save_final_data(data, stats, stat_results):
             'CPI': d['cpi']
         })
     df = pd.DataFrame(df_data)
-    csv_filename = get_timestamped_filename("final_metrics", "csv")
-    df.to_csv(output_dir / csv_filename, index=False, encoding='utf-8-sig')
+    csv_path = output_dir / 'final_metrics.csv'
+    df.to_csv(csv_path, index=False, encoding='utf-8-sig')
 
     print(f"\n数据已保存到:")
-    print(f"  - {output_dir}/{json_filename}")
-    print(f"  - {output_dir}/{csv_filename}")
+    print(f"  - {json_path}")
+    print(f"  - {csv_path}")
 
 
 def main():

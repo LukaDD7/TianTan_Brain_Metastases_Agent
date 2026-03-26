@@ -329,9 +329,10 @@ class MetricsCalculator:
         """
         计算综合性能指数 (CPI)
 
-        公式：CPI = 0.35×CCR + 0.25×PTR + 0.25×MQR + 0.15×(1-CER)
+        说明：CCR/MQR 为 0-4 分制，计算 CPI 时需先归一化到 0-1。
+        公式：CPI = 0.35×(CCR/4) + 0.25×PTR + 0.25×(MQR/4) + 0.15×(1-CER)
         """
-        return 0.35 * ccr + 0.25 * ptr + 0.25 * mqr + 0.15 * (1 - cer)
+        return 0.35 * (ccr / 4.0) + 0.25 * ptr + 0.25 * (mqr / 4.0) + 0.15 * (1 - cer)
 
 
 class StatisticalAnalyzer:

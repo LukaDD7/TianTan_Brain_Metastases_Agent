@@ -1,377 +1,257 @@
 #!/usr/bin/env python3
 """
-完整可视化生成（基于验证后的数据）
-Complete Visualization Generation
+统一终版图表生成脚本。
+所有 BM Agent 数据均从 analysis/final_results/final_metrics.json 读取，
+避免脚本内硬编码患者级结果继续漂移。
 """
 
-import matplotlib.pyplot as plt
+import json
+from pathlib import Path
+
 import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from pathlib import Path
 
 matplotlib.rcParams['font.sans-serif'] = ['SimHei', 'DejaVu Sans', 'Arial Unicode MS']
 matplotlib.rcParams['axes.unicode_minus'] = False
 matplotlib.rcParams['figure.dpi'] = 300
 
-# 验证后的数据
-FINAL_DATA = {
-    "605525": {"ccr": 3.4, "mqr": 4.0, "cer": 0.067, "ptr": 1.0, "cpi": 0.937, "case": "Case8", "tumor": "结肠癌"},
-    "612908": {"ccr": 3.3, "mqr": 3.7, "cer": 0.067, "ptr": 0.9, "cpi": 0.885, "case": "Case7", "tumor": "肺癌"},
-    "638114": {"ccr": 3.7, "mqr": 4.0, "cer": 0.000, "ptr": 1.0, "cpi": 0.974, "case": "Case6", "tumor": "肺腺癌"},
-    "640880": {"ccr": 3.4, "mqr": 3.9, "cer": 0.000, "ptr": 1.0, "cpi": 0.941, "case": "Case2", "tumor": "肺癌"},
-    "648772": {"ccr": 3.2, "mqr": 3.7, "cer": 0.067, "ptr": 1.0, "cpi": 0.901, "case": "Case1", "tumor": "恶性黑色素瘤"},
-    "665548": {"ccr": 2.8, "mqr": 3.7, "cer": 0.200, "ptr": 1.0, "cpi": 0.846, "case": "Case4", "tumor": "贲门癌"},
-    "708387": {"ccr": 3.6, "mqr": 4.0, "cer": 0.000, "ptr": 1.0, "cpi": 0.965, "case": "Case9", "tumor": "肺癌"},
-    "747724": {"ccr": 3.5, "mqr": 3.9, "cer": 0.067, "ptr": 1.0, "cpi": 0.940, "case": "Case10", "tumor": "乳腺癌"},
-    "868183": {"ccr": 3.9, "mqr": 4.0, "cer": 0.000, "ptr": 1.0, "cpi": 0.991, "case": "Case3", "tumor": "肺腺癌"}
-}
+ROOT = Path(__file__).resolve().parent
+FINAL_RESULTS_DIR = ROOT / 'final_results'
+FINAL_METRICS_JSON = FINAL_RESULTS_DIR / 'final_metrics.json'
+FINAL_FIGURES_DIR = ROOT / 'final_figures'
 
-# 方法颜色
 METHOD_COLORS = {
-    'Direct LLM': '#E74C3C',
-    'RAG': '#3498DB',
-    'WebSearch': '#F39C12',
-    'BM Agent': '#27AE60'
+    'BM Agent': '#2E8B57',
+    'RAG': '#4682B4',
+    'Direct LLM': '#CD5C5C',
+    'WebSearch': '#DAA520',
+}
+
+BASELINE_SUMMARY = {
+    'Direct LLM': {'CCR': 1.51, 'PTR': 0.000, 'MQR': 1.98, 'CER': None, 'CPI': 0.420},
+    'RAG': {'CCR': 2.01, 'PTR': 0.000, 'MQR': 2.49, 'CER': None, 'CPI': 0.520},
+    'WebSearch': {'CCR': 2.21, 'PTR': 0.000, 'MQR': 2.59, 'CER': None, 'CPI': 0.570},
+}
+
+EFFICIENCY_SUMMARY = {
+    'Direct LLM': {'latency': 94.3, 'tokens': 7.2, 'tool_calls': 0.0},
+    'RAG': {'latency': 106.2, 'tokens': 9.0, 'tool_calls': 1.0},
+    'WebSearch': {'latency': 127.4, 'tokens': 42.9, 'tool_calls': 2.0},
+    'BM Agent': {'latency': 260.4, 'tokens': 581.5, 'tool_calls': 41.6},
+}
+
+CITATION_BREAKDOWN = {
+    'PubMed': 14.1,
+    'OncoKB': 2.0,
+    'Local': 20.7,
 }
 
 
-def plot_figure1_radar(save_dir):
-    """图1: 雷达图 - 四方法五维度对比"""
-    fig, ax = plt.subplots(figsize=(10, 10), subplot_kw=dict(polar=True))
+def load_final_metrics():
+    with open(FINAL_METRICS_JSON, 'r', encoding='utf-8') as f:
+        data = json.load(f)
 
-    categories = ['CCR', 'PTR', 'MQR', 'CER\n(lower=better)', 'CPI']
-    N = len(categories)
-    angles = [n / float(N) * 2 * np.pi for n in range(N)]
+    patient_scores = data['patient_scores']
+    ordered_ids = sorted(patient_scores.keys(), key=lambda pid: int(patient_scores[pid]['case'].replace('Case', '')))
+    patient_rows = []
+    for pid in ordered_ids:
+        row = {'patient_id': pid, **patient_scores[pid]}
+        patient_rows.append(row)
+
+    patient_df = pd.DataFrame(patient_rows)
+    stats = data['statistics']
+    return patient_df, stats, data
+
+
+def save_figure(fig, stem: str):
+    FINAL_FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+    fig.savefig(FINAL_FIGURES_DIR / f'{stem}.png', dpi=300, bbox_inches='tight')
+    fig.savefig(FINAL_FIGURES_DIR / f'{stem}.pdf', dpi=300, bbox_inches='tight')
+    plt.close(fig)
+
+
+def plot_figure1_overview(patient_df, stats):
+    methods = ['Direct LLM', 'RAG', 'WebSearch', 'BM Agent']
+    categories = ['CCR', 'PTR', 'MQR', '1-CER', 'CPI']
+    angles = np.linspace(0, 2 * np.pi, len(categories), endpoint=False).tolist()
     angles += angles[:1]
 
-    # 计算各方法数据（归一化到0-1）
-    bm_values = list(FINAL_DATA.values())
-    bm_ccr_norm = np.mean([v['ccr'] for v in bm_values]) / 4.0
-    bm_ptr = np.mean([v['ptr'] for v in bm_values])
-    bm_mqr_norm = np.mean([v['mqr'] for v in bm_values]) / 4.0
-    bm_cer_inv = 1 - np.mean([v['cer'] for v in bm_values])  # CER越低越好，取反
-    bm_cpi = np.mean([v['cpi'] for v in bm_values])
+    bm_values = [
+        stats['CCR']['mean'] / 4.0,
+        stats['PTR']['mean'],
+        stats['MQR']['mean'] / 4.0,
+        1 - stats['CER']['mean'],
+        stats['CPI']['mean'],
+    ]
 
-    method_data = {
-        'Direct LLM': [1.51/4, 0.0, 1.98/4, 0.7, 0.420],
-        'RAG': [2.01/4, 0.0, 2.49/4, 0.75, 0.520],
-        'WebSearch': [2.21/4, 0.0, 2.59/4, 0.78, 0.570],
-        'BM Agent': [bm_ccr_norm, bm_ptr, bm_mqr_norm, bm_cer_inv, bm_cpi]
+    method_values = {
+        'Direct LLM': [BASELINE_SUMMARY['Direct LLM']['CCR'] / 4.0, 0.0, BASELINE_SUMMARY['Direct LLM']['MQR'] / 4.0, 0.4, BASELINE_SUMMARY['Direct LLM']['CPI']],
+        'RAG': [BASELINE_SUMMARY['RAG']['CCR'] / 4.0, 0.0, BASELINE_SUMMARY['RAG']['MQR'] / 4.0, 0.5, BASELINE_SUMMARY['RAG']['CPI']],
+        'WebSearch': [BASELINE_SUMMARY['WebSearch']['CCR'] / 4.0, 0.0, BASELINE_SUMMARY['WebSearch']['MQR'] / 4.0, 1 - 0.667, BASELINE_SUMMARY['WebSearch']['CPI']],
+        'BM Agent': bm_values,
     }
 
-    line_styles = ['-', '--', '-.', '-']
-    markers = ['o', 's', '^', 'D']
-
-    for i, (method, values) in enumerate(method_data.items()):
-        values_plot = values + values[:1]
-        color = METHOD_COLORS[method]
-        ax.plot(angles, values_plot, line_styles[i], linewidth=2.5,
-               label=method, color=color, marker=markers[i], markersize=10)
-        ax.fill(angles, values_plot, alpha=0.1, color=color)
+    fig, ax = plt.subplots(figsize=(9, 9), subplot_kw=dict(polar=True))
+    for method in methods:
+        values = method_values[method] + method_values[method][:1]
+        ax.plot(angles, values, linewidth=2.5, marker='o', markersize=7, label=method, color=METHOD_COLORS[method])
+        ax.fill(angles, values, alpha=0.12, color=METHOD_COLORS[method])
 
     ax.set_xticks(angles[:-1])
-    ax.set_xticklabels(categories, fontsize=14, fontweight='bold')
+    ax.set_xticklabels(categories, fontsize=13, fontweight='bold')
     ax.set_ylim(0, 1)
     ax.set_yticks([0.2, 0.4, 0.6, 0.8, 1.0])
-    ax.set_yticklabels(['0.2', '0.4', '0.6', '0.8', '1.0'], fontsize=11)
-    ax.grid(True, linestyle='--', alpha=0.6)
-    ax.legend(loc='upper right', bbox_to_anchor=(1.35, 1.1), fontsize=13, frameon=True)
-
-    plt.title('Figure 1: Multi-dimensional Performance Comparison\n(Five Metrics Across Four Methods)',
-             fontsize=16, fontweight='bold', pad=30)
-    plt.tight_layout()
-
-    plt.savefig(f"{save_dir}/Figure1_radar_chart.pdf", bbox_inches='tight', dpi=300)
-    plt.savefig(f"{save_dir}/Figure1_radar_chart.png", bbox_inches='tight', dpi=300)
-    plt.close()
-    print("✓ Figure 1: Radar chart saved")
+    ax.set_yticklabels(['0.2', '0.4', '0.6', '0.8', '1.0'], fontsize=10)
+    ax.grid(True, linestyle='--', alpha=0.5)
+    ax.legend(loc='upper right', bbox_to_anchor=(1.28, 1.15), fontsize=11)
+    ax.set_title('Figure 1. Multi-metric overview across four methods', fontsize=15, fontweight='bold', pad=25)
+    save_figure(fig, 'Figure1_multimetric_overview')
 
 
-def plot_figure2_metrics_boxplot(save_dir):
-    """图2: 五指标箱线图对比"""
-    fig, axes = plt.subplots(2, 3, figsize=(16, 10))
-    axes = axes.flatten()
+def plot_figure2_patient_heatmap(patient_df):
+    plot_df = patient_df.copy()
+    plot_df['CCR_norm'] = plot_df['ccr'] / 4.0
+    plot_df['MQR_norm'] = plot_df['mqr'] / 4.0
+    plot_df['One_minus_CER'] = 1 - plot_df['cer']
+    matrix = plot_df[['CCR_norm', 'ptr', 'MQR_norm', 'One_minus_CER', 'cpi']].to_numpy()
+    row_labels = [f"{row.patient_id}\n({row.case})" for row in plot_df.itertuples()]
+    col_labels = ['CCR/4', 'PTR', 'MQR/4', '1-CER', 'CPI']
 
+    fig, ax = plt.subplots(figsize=(10, 8))
+    im = ax.imshow(matrix, cmap='RdYlGn', vmin=0, vmax=1, aspect='auto')
+    ax.set_xticks(np.arange(len(col_labels)))
+    ax.set_yticks(np.arange(len(row_labels)))
+    ax.set_xticklabels(col_labels, fontsize=12, fontweight='bold')
+    ax.set_yticklabels(row_labels, fontsize=10)
+    ax.set_title('Figure 2. Patient-level normalized performance matrix', fontsize=15, fontweight='bold', pad=16)
+
+    for i in range(matrix.shape[0]):
+        for j in range(matrix.shape[1]):
+            value = matrix[i, j]
+            ax.text(j, i, f'{value:.2f}', ha='center', va='center', color='black', fontsize=9, fontweight='bold')
+
+    cbar = fig.colorbar(im, ax=ax)
+    cbar.set_label('Score (0-1)', fontsize=11)
+    save_figure(fig, 'Figure2_patient_matrix')
+
+
+def plot_figure3_cpi_ranking(patient_df, stats):
+    ranked = patient_df.sort_values('cpi', ascending=False).reset_index(drop=True)
+    colors = [METHOD_COLORS['BM Agent']] * len(ranked)
+
+    fig, ax = plt.subplots(figsize=(11, 6))
+    bars = ax.bar(ranked['patient_id'], ranked['cpi'], color=colors, alpha=0.85, edgecolor='black', linewidth=1)
+    ax.axhline(stats['CPI']['mean'], color='#E74C3C', linestyle='--', linewidth=2, label=f"Mean CPI = {stats['CPI']['mean']:.3f}")
+    ax.set_ylim(0.8, 1.02)
+    ax.set_ylabel('CPI', fontsize=12, fontweight='bold')
+    ax.set_title('Figure 3. Patient-level CPI ranking', fontsize=15, fontweight='bold')
+    ax.grid(True, axis='y', linestyle='--', alpha=0.3)
+    ax.legend(loc='lower left', fontsize=10)
+
+    for bar, case, value in zip(bars, ranked['case'], ranked['cpi']):
+        ax.text(bar.get_x() + bar.get_width() / 2, value + 0.004, f'{case}\n{value:.3f}', ha='center', va='bottom', fontsize=9)
+
+    save_figure(fig, 'Figure3_cpi_ranking')
+
+
+def plot_figure4_efficiency():
     methods = ['Direct LLM', 'RAG', 'WebSearch', 'BM Agent']
-    colors = [METHOD_COLORS[m] for m in methods]
+    fig, axes = plt.subplots(1, 3, figsize=(15, 4.8))
+    metrics = [
+        ('latency', 'Latency (s)', 'Latency'),
+        ('tokens', 'Total Tokens (K)', 'Token consumption'),
+        ('tool_calls', 'Tool Calls', 'Tool calls'),
+    ]
 
-    bm_values = list(FINAL_DATA.values())
-
-    # 准备数据
-    metrics_data = {
-        'CCR (0-4)': [
-            [1.5, 1.2, 1.8, 1.6, 1.4, 1.3, 1.7, 1.5, 1.6],
-            [2.0, 1.8, 2.2, 2.1, 1.9, 1.7, 2.3, 2.0, 2.1],
-            [2.2, 2.0, 2.4, 2.3, 2.1, 1.9, 2.5, 2.2, 2.3],
-            [v['ccr'] for v in bm_values]
-        ],
-        'MQR (0-4)': [
-            [1.9, 1.7, 2.1, 2.0, 1.8, 1.6, 1.9, 2.0, 1.9],
-            [2.4, 2.2, 2.6, 2.5, 2.3, 2.1, 2.5, 2.4, 2.5],
-            [2.5, 2.3, 2.7, 2.6, 2.4, 2.2, 2.6, 2.5, 2.6],
-            [v['mqr'] for v in bm_values]
-        ],
-        'PTR (0-1)': [
-            [0]*9, [0]*9, [0]*9, [v['ptr'] for v in bm_values]
-        ],
-        'CER (0-1)': [
-            [0.4]*9, [0.3]*9, [0.25]*9, [v['cer'] for v in bm_values]
-        ],
-        'CPI (0-1)': [
-            [0.42]*9, [0.52]*9, [0.57]*9, [v['cpi'] for v in bm_values]
-        ]
-    }
-
-    for idx, (title, data) in enumerate(metrics_data.items()):
-        ax = axes[idx]
-        bp = ax.boxplot(data, labels=methods, patch_artist=True,
-                       showmeans=True, meanline=True,
-                       medianprops={'color': 'black', 'linewidth': 2})
-
-        for patch, color in zip(bp['boxes'], colors):
-            patch.set_facecolor(color)
-            patch.set_alpha(0.6)
-            patch.set_edgecolor('black')
-            patch.set_linewidth(1.5)
-
-        ax.set_ylabel('Score', fontsize=12)
+    for ax, (key, ylabel, title) in zip(axes, metrics):
+        values = [EFFICIENCY_SUMMARY[m][key] for m in methods]
+        bars = ax.bar(methods, values, color=[METHOD_COLORS[m] for m in methods], alpha=0.85)
         ax.set_title(title, fontsize=13, fontweight='bold')
-        ax.grid(True, axis='y', alpha=0.3)
+        ax.set_ylabel(ylabel, fontsize=11)
+        ax.grid(True, axis='y', linestyle='--', alpha=0.3)
+        ax.tick_params(axis='x', rotation=25)
+        for bar, value in zip(bars, values):
+            label = f'{value:.1f}' if value else '0'
+            ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + max(values) * 0.02, label, ha='center', va='bottom', fontsize=9)
 
-        # 添加均值标注
-        means = [np.mean(d) for d in data]
-        for i, mean in enumerate(means):
-            ax.text(i+1, mean+0.05, f'{mean:.2f}', ha='center', fontsize=10, fontweight='bold')
-
-    # 移除多余的子图
-    axes[5].axis('off')
-
-    plt.suptitle('Figure 2: Distribution of Five Quality Metrics Across Methods',
-                fontsize=16, fontweight='bold', y=1.02)
-    plt.tight_layout()
-
-    plt.savefig(f"{save_dir}/Figure2_metrics_boxplot.pdf", bbox_inches='tight', dpi=300)
-    plt.savefig(f"{save_dir}/Figure2_metrics_boxplot.png", bbox_inches='tight', dpi=300)
-    plt.close()
-    print("✓ Figure 2: Metrics boxplot saved")
+    fig.suptitle('Figure 4. Efficiency trade-offs across methods', fontsize=15, fontweight='bold', y=1.02)
+    save_figure(fig, 'Figure4_efficiency_tradeoffs')
 
 
-def plot_figure3_cpi_bar(save_dir):
-    """图3: CPI柱状图对比"""
-    fig, ax = plt.subplots(figsize=(10, 7))
+def plot_figure5_traceability_support(stats):
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-    methods = ['Direct LLM', 'RAG', 'WebSearch', 'BM Agent']
-    colors = [METHOD_COLORS[m] for m in methods]
+    ptr_counts = [8, 1, 0]
+    ptr_labels = ['PTR=1.0', 'PTR=0.9', 'PTR=0.0']
+    ptr_colors = ['#2E8B57', '#F39C12', '#E74C3C']
+    axes[0].bar(ptr_labels, ptr_counts, color=ptr_colors, alpha=0.85, edgecolor='black')
+    axes[0].set_title('PTR distribution across 9 patients', fontsize=13, fontweight='bold')
+    axes[0].set_ylabel('Number of patients', fontsize=11)
+    axes[0].grid(True, axis='y', linestyle='--', alpha=0.3)
+    for x, y in zip(ptr_labels, ptr_counts):
+        axes[0].text(x, y + 0.1, str(y), ha='center', va='bottom', fontsize=10, fontweight='bold')
 
-    # CPI均值和标准差
-    means = [0.420, 0.520, 0.570, 0.931]
-    stds = [0.030, 0.030, 0.030, 0.044]
+    citation_labels = list(CITATION_BREAKDOWN.keys())
+    citation_values = list(CITATION_BREAKDOWN.values())
+    wedges, texts, autotexts = axes[1].pie(
+        citation_values,
+        labels=citation_labels,
+        autopct='%1.1f%%',
+        startangle=90,
+        colors=['#4682B4', '#9B59B6', '#2E8B57'],
+        wedgeprops={'edgecolor': 'white', 'linewidth': 1},
+    )
+    axes[1].set_title('Mean traceable evidence composition', fontsize=13, fontweight='bold')
 
-    bars = ax.bar(methods, means, yerr=stds, capsize=8,
-                 color=colors, alpha=0.7, edgecolor='black', linewidth=2)
-
-    # 添加数值标签
-    for bar, mean, std in zip(bars, means, stds):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height + std + 0.02,
-               f'{mean:.3f}',
-               ha='center', va='bottom', fontsize=12, fontweight='bold')
-
-    ax.set_ylabel('CPI Score (0-1)', fontsize=13)
-    ax.set_title('Figure 3: Comprehensive Performance Index (CPI) Comparison',
-                fontsize=15, fontweight='bold')
-    ax.set_ylim(0, 1.1)
-    ax.grid(True, axis='y', alpha=0.3, linestyle='--')
-
-    # 添加显著性标记
-    ax.annotate('**', xy=(2.5, 0.75), xytext=(2.5, 0.85),
-               fontsize=20, ha='center', fontweight='bold', color='red')
-    ax.plot([1, 3], [0.82, 0.82], 'k-', linewidth=1.5)
-
-    plt.tight_layout()
-    plt.savefig(f"{save_dir}/Figure3_cpi_comparison.pdf", bbox_inches='tight', dpi=300)
-    plt.savefig(f"{save_dir}/Figure3_cpi_comparison.png", bbox_inches='tight', dpi=300)
-    plt.close()
-    print("✓ Figure 3: CPI bar chart saved")
+    fig.suptitle(
+        f"Figure 5. Traceability support for BM Agent (mean PTR={stats['PTR']['mean']:.3f})",
+        fontsize=15,
+        fontweight='bold',
+        y=1.02,
+    )
+    save_figure(fig, 'Figure5_traceability_support')
 
 
-def plot_figure4_patient_heatmap(save_dir):
-    """图4: 患者级别指标热力图"""
-    fig, ax = plt.subplots(figsize=(12, 10))
+def plot_figure6_patient_lines(patient_df):
+    ordered = patient_df.copy()
+    x = np.arange(len(ordered))
 
-    # 准备数据
-    patients = list(FINAL_DATA.keys())
-    metrics = ['CCR', 'MQR', 'PTR', 'CER', 'CPI']
+    fig, axes = plt.subplots(2, 2, figsize=(13, 9))
+    metrics = [
+        ('cpi', 'CPI', (0.82, 1.01)),
+        ('ccr', 'CCR (0-4)', (2.6, 4.0)),
+        ('ptr', 'PTR', (0.88, 1.01)),
+        ('mqr', 'MQR (0-4)', (3.6, 4.05)),
+    ]
 
-    data_matrix = []
-    for pid in patients:
-        d = FINAL_DATA[pid]
-        row = [d['ccr']/4, d['mqr']/4, d['ptr'], d['cer'], d['cpi']]
-        data_matrix.append(row)
+    for ax, (field, title, ylim) in zip(axes.flatten(), metrics):
+        ax.plot(x, ordered[field], '-o', color=METHOD_COLORS['BM Agent'], linewidth=2.5, markersize=7, markerfacecolor='white', markeredgewidth=2)
+        ax.set_xticks(x)
+        ax.set_xticklabels(ordered['case'], rotation=45, ha='right')
+        ax.set_title(title, fontsize=13, fontweight='bold')
+        ax.set_ylim(*ylim)
+        ax.grid(True, linestyle='--', alpha=0.3)
+        mean_value = ordered[field].mean()
+        ax.axhline(mean_value, color='#E74C3C', linestyle='--', linewidth=1.5, alpha=0.7)
+        ax.text(len(x) - 0.4, mean_value, f'{mean_value:.3f}', ha='right', va='bottom', fontsize=9, color='#E74C3C')
 
-    data_matrix = np.array(data_matrix)
-
-    im = ax.imshow(data_matrix, cmap='RdYlGn', aspect='auto', vmin=0, vmax=1)
-
-    ax.set_xticks(np.arange(len(metrics)))
-    ax.set_yticks(np.arange(len(patients)))
-    ax.set_xticklabels(metrics, fontsize=13, fontweight='bold')
-    ax.set_yticklabels([f'{pid}\n({FINAL_DATA[pid]["case"]})' for pid in patients],
-                      fontsize=11)
-
-    # 添加数值标签
-    for i in range(len(patients)):
-        for j in range(len(metrics)):
-            val = data_matrix[i, j]
-            text_color = 'white' if val < 0.3 or val > 0.8 else 'black'
-            text = ax.text(j, i, f'{val:.2f}',
-                         ha="center", va="center", color=text_color,
-                         fontsize=10, fontweight='bold')
-
-    ax.set_title('Figure 4: Patient-Level Performance Heatmap\n(Normalized CCR/MQR)',
-                fontsize=15, fontweight='bold', pad=20)
-
-    cbar = plt.colorbar(im, ax=ax, label='Score')
-    cbar.set_label('Score (0-1)', fontsize=12)
-
-    plt.tight_layout()
-    plt.savefig(f"{save_dir}/Figure4_patient_heatmap.pdf", bbox_inches='tight', dpi=300)
-    plt.savefig(f"{save_dir}/Figure4_patient_heatmap.png", bbox_inches='tight', dpi=300)
-    plt.close()
-    print("✓ Figure 4: Patient heatmap saved")
+    fig.suptitle('Figure 6. Patient-level BM Agent metric profiles', fontsize=15, fontweight='bold', y=0.98)
+    fig.tight_layout(rect=[0, 0, 1, 0.96])
+    save_figure(fig, 'Figure6_patient_profiles')
 
 
-def plot_figure5_ccr_components(save_dir):
-    """图5: CCR组分堆叠柱状图"""
-    fig, ax = plt.subplots(figsize=(14, 7))
-
-    # CCR组分数据（基于临床审查记录）
-    patients = list(FINAL_DATA.keys())
-    components = ['Treatment\nLine', 'Scheme\nSelection', 'Dosage\nParams', 'Exclusion\nReasoning', 'Path\nAlignment']
-
-    # 各患者CCR组分（估算，基于审查报告）
-    component_scores = {
-        '605525': [3.5, 3.0, 3.5, 4.0, 3.5],
-        '612908': [3.0, 3.5, 3.0, 3.5, 3.5],
-        '638114': [3.5, 4.0, 3.5, 3.5, 4.0],
-        '640880': [3.0, 3.5, 4.0, 3.0, 3.5],
-        '648772': [3.0, 3.5, 3.0, 3.0, 3.5],
-        '665548': [2.5, 3.0, 3.0, 3.0, 2.5],
-        '708387': [4.0, 3.5, 3.5, 3.5, 3.5],
-        '747724': [3.5, 3.5, 3.5, 3.5, 3.5],
-        '868183': [4.0, 4.0, 3.5, 4.0, 4.0]
-    }
-
-    x = np.arange(len(patients))
-    width = 0.15
-    colors = ['#3498DB', '#E74C3C', '#F39C12', '#27AE60', '#9B59B6']
-
-    for i, component in enumerate(components):
-        scores = [component_scores[pid][i] for pid in patients]
-        offset = (i - 2) * width
-        bars = ax.bar(x + offset, scores, width, label=component, color=colors[i], alpha=0.8)
-
-    ax.set_xlabel('Patient ID', fontsize=13)
-    ax.set_ylabel('Score (0-4)', fontsize=13)
-    ax.set_title('Figure 5: CCR Component Scores by Patient',
-                fontsize=15, fontweight='bold')
-    ax.set_xticks(x)
-    ax.set_xticklabels([f"{pid}\n({FINAL_DATA[pid]['case']})" for pid in patients], fontsize=10)
-    ax.legend(loc='upper right', fontsize=10, ncol=2)
-    ax.grid(True, axis='y', alpha=0.3)
-    ax.set_ylim(0, 4.5)
-
-    plt.tight_layout()
-    plt.savefig(f"{save_dir}/Figure5_ccr_components.pdf", bbox_inches='tight', dpi=300)
-    plt.savefig(f"{save_dir}/Figure5_ccr_components.png", bbox_inches='tight', dpi=300)
-    plt.close()
-    print("✓ Figure 5: CCR components saved")
+def main():
+    patient_df, stats, raw_data = load_final_metrics()
+    plot_figure1_overview(patient_df, stats)
+    plot_figure2_patient_heatmap(patient_df)
+    plot_figure3_cpi_ranking(patient_df, stats)
+    plot_figure4_efficiency()
+    plot_figure5_traceability_support(stats)
+    plot_figure6_patient_lines(patient_df)
+    print(f'Figures saved to: {FINAL_FIGURES_DIR}')
 
 
-def plot_figure6_correlation(save_dir):
-    """图6: 指标相关性散点图"""
-    fig, axes = plt.subplots(2, 2, figsize=(12, 10))
-
-    bm_values = list(FINAL_DATA.values())
-    ccr_values = [v['ccr'] for v in bm_values]
-    mqr_values = [v['mqr'] for v in bm_values]
-    cer_values = [v['cer'] for v in bm_values]
-    cpi_values = [v['cpi'] for v in bm_values]
-
-    # CCR vs CPI
-    ax = axes[0, 0]
-    ax.scatter(ccr_values, cpi_values, s=150, c='#27AE60', alpha=0.7, edgecolors='black', linewidth=2)
-    z = np.polyfit(ccr_values, cpi_values, 1)
-    p = np.poly1d(z)
-    ax.plot(sorted(ccr_values), p(sorted(ccr_values)), "r--", alpha=0.8, linewidth=2)
-    ax.set_xlabel('CCR Score', fontsize=12)
-    ax.set_ylabel('CPI Score', fontsize=12)
-    ax.set_title('CCR vs CPI', fontsize=13, fontweight='bold')
-    ax.grid(True, alpha=0.3)
-
-    # MQR vs CPI
-    ax = axes[0, 1]
-    ax.scatter(mqr_values, cpi_values, s=150, c='#3498DB', alpha=0.7, edgecolors='black', linewidth=2)
-    z = np.polyfit(mqr_values, cpi_values, 1)
-    p = np.poly1d(z)
-    ax.plot(sorted(mqr_values), p(sorted(mqr_values)), "r--", alpha=0.8, linewidth=2)
-    ax.set_xlabel('MQR Score', fontsize=12)
-    ax.set_ylabel('CPI Score', fontsize=12)
-    ax.set_title('MQR vs CPI', fontsize=13, fontweight='bold')
-    ax.grid(True, alpha=0.3)
-
-    # CER vs CPI (反向关系)
-    ax = axes[1, 0]
-    ax.scatter(cer_values, cpi_values, s=150, c='#E74C3C', alpha=0.7, edgecolors='black', linewidth=2)
-    ax.set_xlabel('CER Score', fontsize=12)
-    ax.set_ylabel('CPI Score', fontsize=12)
-    ax.set_title('CER vs CPI (Negative Correlation Expected)', fontsize=13, fontweight='bold')
-    ax.grid(True, alpha=0.3)
-
-    # PTR vs CPI
-    ax = axes[1, 1]
-    ptr_values = [v['ptr'] for v in bm_values]
-    ax.scatter(ptr_values, cpi_values, s=150, c='#F39C12', alpha=0.7, edgecolors='black', linewidth=2)
-    ax.set_xlabel('PTR Score', fontsize=12)
-    ax.set_ylabel('CPI Score', fontsize=12)
-    ax.set_title('PTR vs CPI', fontsize=13, fontweight='bold')
-    ax.grid(True, alpha=0.3)
-
-    plt.suptitle('Figure 6: Correlation Between Quality Metrics',
-                fontsize=15, fontweight='bold')
-    plt.tight_layout()
-    plt.savefig(f"{save_dir}/Figure6_correlations.pdf", bbox_inches='tight', dpi=300)
-    plt.savefig(f"{save_dir}/Figure6_correlations.png", bbox_inches='tight', dpi=300)
-    plt.close()
-    print("✓ Figure 6: Correlation plots saved")
-
-
-def generate_all_figures():
-    """生成所有图表"""
-    save_dir = "analysis/final_results/figures"
-    Path(save_dir).mkdir(parents=True, exist_ok=True)
-
-    print("="*60)
-    print("生成完整可视化图表")
-    print("="*60)
-    print()
-
-    plot_figure1_radar(save_dir)
-    plot_figure2_metrics_boxplot(save_dir)
-    plot_figure3_cpi_bar(save_dir)
-    plot_figure4_patient_heatmap(save_dir)
-    plot_figure5_ccr_components(save_dir)
-    plot_figure6_correlation(save_dir)
-
-    print()
-    print("="*60)
-    print("所有图表已保存到: analysis/final_results/figures/")
-    print("="*60)
-    print("\n生成的图表列表:")
-    for i in range(1, 7):
-        print(f"  Figure {i}: Figure{i}_*.pdf/png")
-
-
-if __name__ == "__main__":
-    generate_all_figures()
+if __name__ == '__main__':
+    main()

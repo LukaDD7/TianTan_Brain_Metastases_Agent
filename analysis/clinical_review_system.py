@@ -184,13 +184,13 @@ class ClinicalReview:
     @property
     def cpi(self) -> float:
         """综合性能指数"""
-        # CPI = 0.35×CCR + 0.25×PTR + 0.25×MQR + 0.15×(1-CER)
+        # CPI = 0.35×(CCR/4) + 0.25×PTR + 0.25×(MQR/4) + 0.15×(1-CER)
         ccr_norm = self.ccr.overall / 4.0  # 归一化到0-1
         mqr_norm = self.mqr.overall / 4.0
         return (0.35 * ccr_norm +
                 0.25 * self.ptr +
                 0.25 * mqr_norm +
-                0.15 * (1 - self.cer))
+                0.15 * (1 - self.cer.cer))
 
     def to_dict(self) -> Dict:
         """转换为字典"""
