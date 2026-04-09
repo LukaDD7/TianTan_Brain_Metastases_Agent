@@ -7,22 +7,42 @@
         "min": 104742.84768104553,
         "max": 260463.20462226868
       },
-      "input_tokens": null,
-      "output_tokens": null,
+      "input_tokens": {
+        "mean": 505.55555555555554,
+        "std": 58.66453594615556,
+        "min": 429,
+        "max": 580
+      },
+      "output_tokens": {
+        "mean": 4075.3333333333335,
+        "std": 253.12052465179508,
+        "min": 3795,
+        "max": 4587
+      },
       "tool_calls": null,
-      "io_ratio": null
+      "io_ratio": 0.12458261502638732
     },
     "RAG V2": {
       "latency": {
-        "mean": 137491.41224225363,
-        "std": 22624.22068239122,
-        "min": 99544.70729827881,
-        "max": 174213.18697929382
+        "mean": 95607.09794362386,
+        "std": 19435.51949464262,
+        "min": 73923.11477661133,
+        "max": 134051.15032196045
       },
-      "input_tokens": null,
-      "output_tokens": null,
+      "input_tokens": {
+        "mean": 505.55555555555554,
+        "std": 58.66453594615556,
+        "min": 429,
+        "max": 580
+      },
+      "output_tokens": {
+        "mean": 3622.222222222222,
+        "std": 224.35784908142716,
+        "min": 3320,
+        "max": 3981
+      },
       "tool_calls": null,
-      "io_ratio": null
+      "io_ratio": 0.1401358548760906
     },
     "Web Search V2": {
       "latency": {
@@ -31,10 +51,20 @@
         "min": 101237.07818984985,
         "max": 130060.47821044922
       },
-      "input_tokens": null,
-      "output_tokens": null,
+      "input_tokens": {
+        "mean": 505.55555555555554,
+        "std": 58.66453594615556,
+        "min": 429,
+        "max": 580
+      },
+      "output_tokens": {
+        "mean": 5750.222222222223,
+        "std": 531.6603186663873,
+        "min": 4908,
+        "max": 6387
+      },
       "tool_calls": null,
-      "io_ratio": null
+      "io_ratio": 0.08853141373432143
     },
     "BM Agent": {
       "latency": null,
@@ -63,168 +93,168 @@
     "direct_llm": {
       "605525": {
         "latency_ms": 229426.48935317993,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 468,
+        "output_tokens": 4083,
         "report_length": 5858
       },
       "612908": {
         "latency_ms": 104742.84768104553,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 579,
+        "output_tokens": 3796,
         "report_length": 5301
       },
       "638114": {
         "latency_ms": 167815.40274620056,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 482,
+        "output_tokens": 3960,
         "report_length": 5425
       },
       "640880": {
         "latency_ms": 260463.20462226868,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 515,
+        "output_tokens": 3795,
         "report_length": 4912
       },
       "648772": {
         "latency_ms": 148099.58791732788,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 580,
+        "output_tokens": 4128,
         "report_length": 5658
       },
       "665548": {
         "latency_ms": 168380.26809692383,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 449,
+        "output_tokens": 4587,
         "report_length": 6112
       },
       "708387": {
         "latency_ms": 121324.97024536133,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 475,
+        "output_tokens": 4034,
         "report_length": 4849
       },
       "747724": {
         "latency_ms": 139860.94641685486,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 429,
+        "output_tokens": 3966,
         "report_length": 5332
       },
       "868183": {
         "latency_ms": 104810.5616569519,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 573,
+        "output_tokens": 4329,
         "report_length": 6201
       }
     },
     "rag": {
       "605525": {
-        "latency_ms": 146328.5584449768,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 5323
+        "latency_ms": 89629.68158721924,
+        "input_tokens": 468,
+        "output_tokens": 3763,
+        "report_length": 4377
       },
       "612908": {
-        "latency_ms": 99544.70729827881,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 4036
+        "latency_ms": 81269.21105384827,
+        "input_tokens": 579,
+        "output_tokens": 3320,
+        "report_length": 3912
       },
       "638114": {
-        "latency_ms": 163805.69338798523,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 5641
+        "latency_ms": 73923.11477661133,
+        "input_tokens": 482,
+        "output_tokens": 3339,
+        "report_length": 4328
       },
       "640880": {
-        "latency_ms": 124097.2671508789,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 5268
+        "latency_ms": 89386.3615989685,
+        "input_tokens": 515,
+        "output_tokens": 3690,
+        "report_length": 4535
       },
       "648772": {
-        "latency_ms": 135155.95364570618,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 6131
+        "latency_ms": 88178.98607254028,
+        "input_tokens": 580,
+        "output_tokens": 3534,
+        "report_length": 4466
       },
       "665548": {
-        "latency_ms": 174213.18697929382,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 6029
+        "latency_ms": 134051.15032196045,
+        "input_tokens": 449,
+        "output_tokens": 3867,
+        "report_length": 4338
       },
       "708387": {
-        "latency_ms": 139945.55354118347,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 5735
+        "latency_ms": 90330.79075813293,
+        "input_tokens": 475,
+        "output_tokens": 3572,
+        "report_length": 4253
       },
       "747724": {
-        "latency_ms": 135282.306432724,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 6315
+        "latency_ms": 91713.34457397461,
+        "input_tokens": 429,
+        "output_tokens": 3534,
+        "report_length": 4507
       },
       "868183": {
-        "latency_ms": 119049.48329925537,
-        "input_tokens": 0,
-        "output_tokens": 0,
-        "report_length": 5445
+        "latency_ms": 121981.24074935913,
+        "input_tokens": 573,
+        "output_tokens": 3981,
+        "report_length": 5164
       }
     },
     "websearch": {
       "605525": {
         "latency_ms": 113408.7975025177,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 468,
+        "output_tokens": 5761,
         "report_length": 7636
       },
       "612908": {
         "latency_ms": 112473.32906723022,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 579,
+        "output_tokens": 5193,
         "report_length": 6164
       },
       "638114": {
         "latency_ms": 101267.45390892029,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 482,
+        "output_tokens": 5336,
         "report_length": 6332
       },
       "640880": {
         "latency_ms": 130060.47821044922,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 515,
+        "output_tokens": 6387,
         "report_length": 8072
       },
       "648772": {
         "latency_ms": 108408.3604812622,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 580,
+        "output_tokens": 6174,
         "report_length": 7267
       },
       "665548": {
         "latency_ms": 116555.17745018005,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 449,
+        "output_tokens": 6345,
         "report_length": 8690
       },
       "708387": {
         "latency_ms": 123034.36923027039,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 475,
+        "output_tokens": 6069,
         "report_length": 7612
       },
       "747724": {
         "latency_ms": 116932.5315952301,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 429,
+        "output_tokens": 4908,
         "report_length": 5717
       },
       "868183": {
         "latency_ms": 101237.07818984985,
-        "input_tokens": 0,
-        "output_tokens": 0,
+        "input_tokens": 573,
+        "output_tokens": 5579,
         "report_length": 6848
       }
     },

@@ -10,6 +10,7 @@
 
 import json
 import glob
+import re
 from pathlib import Path
 from typing import Dict, List
 import statistics
@@ -18,6 +19,23 @@ import statistics
 PATIENT_IDS = ['605525', '612908', '638114', '640880', '648772', '665548', '708387', '747724', '868183']
 
 ROOT = Path("/media/luzhenyang/project/TianTan_Brain_Metastases_Agent")
+
+
+def estimate_tokens(text: str) -> int:
+    """基于字符数估算token数量
+    估算规则：
+    - 中文字符：1.5 tokens/字
+    - 英文单词：1.3 tokens/词
+    - 标点符号：0.5 tokens/个
+    """
+    if not text:
+        return 0
+
+    cn_chars = len(re.findall(r'[\u4e00-\u9fff]', text))
+    en_words = len(re.findall(r'[a-zA-Z]+', text))
+    punct = len(re.findall(r'[^\w\u4e00-\u9fff\s]', text))
+
+    return int(cn_chars * 1.5 + en_words * 1.3 + punct * 0.5)
 
 
 def extract_baseline_metrics(method: str) -> Dict[str, Dict]:
@@ -44,11 +62,31 @@ def extract_baseline_metrics(method: str) -> Dict[str, Dict]:
             result_key = list(data.get('results', {}).keys())[0]
             result = data['results'][result_key]
 
+            # 获取报告内容用于估算tokens
+            report = result.get('report', '')
+            patient_input = data.get('patient_input_preview', '')
+
+            # 估算token（如果实际值不存在或为0）
+            stored_input_tokens = result.get('input_tokens', 0)
+            stored_output_tokens = result.get('output_tokens', 0)
+
+            if stored_input_tokens > 0:
+                input_tokens = stored_input_tokens
+            else:
+                # 估算输入token
+                input_tokens = estimate_tokens(patient_input)
+
+            if stored_output_tokens > 0:
+                output_tokens = stored_output_tokens
+            else:
+                # 估算输出token
+                output_tokens = estimate_tokens(report)
+
             results[pid] = {
                 'latency_ms': result.get('latency_ms', 0),
-                'input_tokens': result.get('input_tokens', 0),
-                'output_tokens': result.get('output_tokens', 0),
-                'report_length': len(result.get('report', '')),
+                'input_tokens': input_tokens,
+                'output_tokens': output_tokens,
+                'report_length': len(report),
             }
         except Exception as e:
             print(f"Error reading {file_path}: {e}")
@@ -143,34 +181,10 @@ def main():
     direct_metrics = extract_baseline_metrics("direct_llm")
 
     print("[2/4] 提取 RAG V2 指标...")
-    # 从已有的metrics文件读取
-    rag_metrics = {}
-    rag_file = ROOT / "analysis/set1_baseline_v2_metrics_analysis.json"
-    if rag_file.exists():
-        data = json.loads(rag_file.read_text())
-        for pid in PATIENT_IDS:
-            if pid in data.get('individual_results', {}):
-                rag_data = data['individual_results'][pid].get('rag', {})
-                rag_metrics[pid] = {
-                    'latency_ms': rag_data.get('latency_ms', 0),
-                    'input_tokens': 0,  # 未记录
-                    'output_tokens': 0,  # 未记录
-                    'report_length': rag_data.get('report_length', 0),
-                }
+    rag_metrics = extract_baseline_metrics("rag")
 
     print("[3/4] 提取 Web Search V2 指标...")
-    web_metrics = {}
-    if rag_file.exists():
-        data = json.loads(rag_file.read_text())
-        for pid in PATIENT_IDS:
-            if pid in data.get('individual_results', {}):
-                web_data = data['individual_results'][pid].get('websearch', {})
-                web_metrics[pid] = {
-                    'latency_ms': web_data.get('latency_ms', 0),
-                    'input_tokens': 0,  # 未记录
-                    'output_tokens': 0,  # 未记录
-                    'report_length': web_data.get('report_length', 0),
-                }
+    web_metrics = extract_baseline_metrics("websearch")
 
     print("[4/4] 提取 BM Agent 指标...")
     bm_metrics = extract_bm_agent_metrics()
@@ -343,14 +357,25 @@ def main():
 ## 数据来源说明
 
 - **Direct LLM**: baseline/set1_results/direct_llm/*_baseline_results.json
-- **RAG V2**: analysis/set1_baseline_v2_metrics_analysis.json
-- **Web Search V2**: analysis/set1_baseline_v2_metrics_analysis.json
+- **RAG V2**: baseline/set1_results/rag/*_baseline_results.json
+- **Web Search V2**: baseline/set1_results_v2/websearch/*_baseline_results.json
 - **BM Agent**: workspace/sandbox/execution_logs/*_structured.jsonl
 
 ## 备注
 
-- Direct LLM、RAG V2、Web Search V2的baseline结果中未记录input/output tokens
-- BM Agent的token数据从结构化日志中提取
+- **Direct LLM、RAG V2、Web Search V2的Token数据**：
+  - 由于Baseline运行未记录API返回的token使用量，采用基于字符数的估算方法
+  - 估算规则：中文字符1.5 tokens/字，英文单词1.3 tokens/词，标点符号0.5 tokens/个
+  - 实际API调用可能与此估算存在偏差，仅供参考
+
+- **BM Agent的Token数据**：
+  - 从结构化日志中直接提取，包含实际的API调用记录
+  - 输入token包括：系统提示、用户输入、工具返回结果等
+  - 反映了多轮工具调用和推理过程的总token消耗
+
+- **工具调用统计**：
+  - 仅适用于BM Agent（其他Baseline方法不使用工具调用）
+  - 包括文件读取、OncoKB查询、PubMed搜索等外部API调用
 """
 
     md_file = ROOT / "analysis/EFFICIENCY_METRICS_REPORT.md"

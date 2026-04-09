@@ -19,34 +19,34 @@
 | 方法 | Mean ± SD | Range |
 |------|-----------|-------|
 | Direct LLM | 160547.1 ± 53832.7 | 104743 - 260463 |
-| RAG V2 | 137491.4 ± 22624.2 | 99545 - 174213 |
+| RAG V2 | 95607.1 ± 19435.5 | 73923 - 134051 |
 | Web Search V2 | 113708.6 ± 9439.8 | 101237 - 130060 |
 
 ### 2. 单例平均输入 (tokens)
 
 | 方法 | Mean ± SD | Range |
 |------|-----------|-------|
-| Direct LLM | N/A | N/A |
-| RAG V2 | N/A | N/A |
-| Web Search V2 | N/A | N/A |
+| Direct LLM | 506 ± 59 | 429 - 580 |
+| RAG V2 | 506 ± 59 | 429 - 580 |
+| Web Search V2 | 506 ± 59 | 429 - 580 |
 | BM Agent | 690224 ± 357916 | 331158 - 1513558 |
 
 ### 3. 单例平均输出 (tokens)
 
 | 方法 | Mean ± SD | Range |
 |------|-----------|-------|
-| Direct LLM | N/A | N/A |
-| RAG V2 | N/A | N/A |
-| Web Search V2 | N/A | N/A |
+| Direct LLM | 4075 ± 253 | 3795 - 4587 |
+| RAG V2 | 3622 ± 224 | 3320 - 3981 |
+| Web Search V2 | 5750 ± 532 | 4908 - 6387 |
 | BM Agent | 7670 ± 5924 | 2299 - 20239 |
 
 ### 4. 输入/输出比值
 
 | 方法 | Mean |
 |------|------|
-| Direct LLM | N/A |
-| RAG V2 | N/A |
-| Web Search V2 | N/A |
+| Direct LLM | 0.12 |
+| RAG V2 | 0.14 |
+| Web Search V2 | 0.09 |
 | BM Agent | 118.09 |
 
 ### 5. 底层环境调用总频次 (tool_calls)
@@ -61,11 +61,22 @@
 ## 数据来源说明
 
 - **Direct LLM**: baseline/set1_results/direct_llm/*_baseline_results.json
-- **RAG V2**: analysis/set1_baseline_v2_metrics_analysis.json
-- **Web Search V2**: analysis/set1_baseline_v2_metrics_analysis.json
+- **RAG V2**: baseline/set1_results/rag/*_baseline_results.json
+- **Web Search V2**: baseline/set1_results_v2/websearch/*_baseline_results.json
 - **BM Agent**: workspace/sandbox/execution_logs/*_structured.jsonl
 
 ## 备注
 
-- Direct LLM、RAG V2、Web Search V2的baseline结果中未记录input/output tokens
-- BM Agent的token数据从结构化日志中提取
+- **Direct LLM、RAG V2、Web Search V2的Token数据**：
+  - 由于Baseline运行未记录API返回的token使用量，采用基于字符数的估算方法
+  - 估算规则：中文字符1.5 tokens/字，英文单词1.3 tokens/词，标点符号0.5 tokens/个
+  - 实际API调用可能与此估算存在偏差，仅供参考
+
+- **BM Agent的Token数据**：
+  - 从结构化日志中直接提取，包含实际的API调用记录
+  - 输入token包括：系统提示、用户输入、工具返回结果等
+  - 反映了多轮工具调用和推理过程的总token消耗
+
+- **工具调用统计**：
+  - 仅适用于BM Agent（其他Baseline方法不使用工具调用）
+  - 包括文件读取、OncoKB查询、PubMed搜索等外部API调用
