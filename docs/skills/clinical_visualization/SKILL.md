@@ -2,23 +2,36 @@
 
 ## 简介
 
-本SKILL用于基于临床专家审查结果生成对比可视化图表，支持RAG V2 vs Web Search V2等多方法对比。
+本SKILL用于基于临床专家审查结果生成对比可视化图表，支持**4种方法**的对比：
+1. Direct LLM V2
+2. RAG V2
+3. Web Search V2
+4. BM Agent
 
 ## 核心功能
 
-### 1. 支持的图表类型
+### 1. 支持的图表类型（4方法对比）
 
 | 图表 | 文件名 | 说明 |
 |------|--------|------|
-| 雷达图 | Figure1_radar_comparison_*.png | 多指标综合对比 |
-| CPI对比 | Figure2_cpi_comparison_*.png | 分患者CPI柱状图 |
-| Mean±SD对比 | Figure3_metrics_meansd_*.png | 五指标统计对比 |
-| 提升幅度 | Figure4_improvement_percentage_*.png | 百分比提升图 |
-| 热力图 | Figure5_patient_heatmap_*.png | 患者级指标热力图 |
-| 引用分解 | Figure6_citation_breakdown_*.png | 引用来源分析 |
+| 雷达图 | Figure1_four_method_radar_*.png | 4方法多指标雷达对比 |
+| CPI对比 | Figure2_cpi_four_methods_*.png | 分患者CPI柱状图（4方法） |
+| Mean±SD对比 | Figure3_four_methods_meansd_*.png | 五指标统计对比（4方法） |
+| CPI均值 | Figure4_cpi_mean_comparison_*.png | CPI均值柱状图 |
+| 提升幅度 | Figure5_improvement_vs_direct_*.png | 相对于Direct LLM的提升 |
+| PTR对比 | Figure6_ptr_comparison_*.png | 可追溯率对比 |
 
 ### 2. 输入数据格式
 
+```
+analysis/
+├── reviews_direct_v2/work_<patient_id>/review_results.json
+├── reviews_rag_v2/work_<patient_id>/review_results.json
+├── reviews_websearch_v2/work_<patient_id>/review_results.json
+└── reviews_bm_agent/work_<patient_id>/review_results.json
+```
+
+每个review_results.json包含：
 ```json
 {
   "patient_id": "868183",
@@ -35,14 +48,22 @@
 - **格式**: PNG (300 DPI) + PDF (矢量)
 - **命名**: `{图表名}_YYYY-MM-DD.{格式}`
 - **字体**: 支持中文 (SimHei/DejaVu Sans)
-- **尺寸**: 论文级别 (适合期刊投稿)
+- **颜色编码**:
+  - Direct LLM: 印度红 (#CD5C5C)
+  - RAG V2: 钢蓝色 (#4682B4)
+  - Web Search V2: 海绿色 (#2E8B57)
+  - BM Agent: 金黄色 (#DAA520)
 
 ## 使用方法
 
 ### 命令行调用
 
 ```bash
+# 2方法对比（RAG vs Web Search）
 python3 analysis/generate_visualization_YYYY-MM-DD.py
+
+# 4方法对比（Direct/RAG/Web/BM）
+python3 analysis/generate_four_methods_visualization.py
 ```
 
 ### Python API
@@ -50,9 +71,14 @@ python3 analysis/generate_visualization_YYYY-MM-DD.py
 ```python
 from clinical_visualization import load_all_data, plot_figure1_radar_comparison
 
-rag_df, web_df = load_all_data()
-stats = calculate_statistics(rag_df, web_df)
-plot_figure1_radar_comparison(rag_df, web_df, stats)
+# 加载4方法数据
+dfs = load_all_data()  # 返回Dict[str, DataFrame]
+
+# 计算统计
+stats = calculate_statistics(dfs)
+
+# 生成图表
+plot_figure1_radar_comparison(stats)
 ```
 
 ## 文件结构
@@ -62,44 +88,33 @@ clinical_visualization/
 ├── metadata.json          # Skill元数据
 ├── SKILL.md              # 本文件
 └── scripts/
-    └── generate_visualization.py  # 主脚本
+    ├── generate_visualization.py           # 2方法对比脚本
+    └── generate_four_methods_visualization.py  # 4方法对比脚本
 ```
 
-## 命名规范
+## 4方法对比示例结果
 
-### 输入目录
-```
-analysis/
-├── reviews_rag_v2/
-│   └── work_<patient_id>/
-│       └── review_results.json
-└── reviews_websearch_v2/
-    └── work_<patient_id>/
-        └── review_results.json
-```
+**Set-1 Batch (2026-04-09)**:
 
-### 输出目录
-```
-analysis/final_figures/
-├── Figure1_radar_comparison_YYYY-MM-DD.png
-├── Figure1_radar_comparison_YYYY-MM-DD.pdf
-├── Figure2_cpi_comparison_YYYY-MM-DD.png
-├── ...
-└── VISUALIZATION_SUMMARY_YYYY-MM-DD.md
-```
+| 方法 | Mean CPI | Mean PTR | 特点 |
+|------|----------|----------|------|
+| Direct LLM | 0.419 | 0.000 | 无真实引用 |
+| RAG V2 | 0.616 | 0.125 | Parametric Knowledge过多 |
+| Web Search V2 | 0.712 | 0.386 | PubMed引用丰富 |
+| BM Agent | **0.931** | **0.982** | 引用规范完整 |
 
 ## 配置参数
 
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
 | DPI | 300 | 输出分辨率 |
-| 颜色-RAG | #4682B4 | 钢蓝色 |
-| 颜色-Web | #2E8B57 | 海绿色 |
-| 字体大小 | 10-14 | 根据图表调整 |
+| 患者数 | 9 | Set-1 Batch样本量 |
+| 指标数 | 5 | CPI/CCR/MQR/CER/PTR |
 
 ## 版本历史
 
-- v1.0.0 (2026-04-09): 初始版本，支持6种图表类型
+- v1.1.0 (2026-04-09): 增加4方法对比支持
+- v1.0.0 (2026-04-09): 初始版本，支持2方法对比
 
 ---
 

