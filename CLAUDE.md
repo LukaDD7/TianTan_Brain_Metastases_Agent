@@ -4,7 +4,111 @@
 **"We build intellectual Agent, not LLM with skill."**
 本项目致力于打造具备高度自主规划能力（Autonomous Planning）的医疗多智能体系统，而非被死板代码限制的执行器。
 
-## 2. 最高协作铁律 (The Iron Laws of AI Collaboration)
+## 2. 量化评估指标定义 (Evaluation Metrics Definitions)
+
+### 2.1 临床决策一致性准确率 (Clinical Consistency Rate, CCR)
+
+**公式**:
+```
+CCR = (S_line + S_scheme + S_dose + S_reject + S_align) / 5 ∈ [0, 4]
+```
+
+**子项定义**:
+- **S_line** (Treatment Line): 治疗线判定准确性 (0-4分)
+- **S_scheme** (Scheme Selection): 首选方案选择合理性 (0-4分)
+- **S_dose** (Dosage Params): 剂量参数准确性 (0-4分)
+- **S_reject** (Exclusion Reasoning): 排他性论证充分性 (0-4分)
+- **S_align** (Clinical Path Alignment): 临床路径一致性 (0-4分)
+
+**评分标准**:
+- 4分: 完全符合/准确
+- 3分: 基本正确/小瑕疵
+- 2分: 部分正确/需调整
+- 1分: 明显错误
+- 0分: 严重错误/遗漏
+
+---
+
+### 2.2 物理可追溯率 (Physical Traceability Rate, PTR)
+
+**公式**:
+```
+PTR = (1/N) × Σ(i=1 to N) V_trace(c_i) ∈ [0, 1]
+```
+
+**示性函数 V_trace(c_i)**:
+- **1**: 附带合规引用标签，且二次API检索完全吻合
+- **0.5**: 引用数据存在但格式非标准 (如仅标注"[1]")
+- **0**: 无引用、捏造虚假出处或查证不符
+
+**引用格式白名单**:
+- `[PubMed: PMID XXXXXXXX]` - PubMed文献
+- `[OncoKB: Level X]` / `[OncoKB: Oncogenic]` - OncoKB数据库
+- `[Local: <文件>, Line <行号>]` / `[Local: <文件>, Section: <章节>]` - 本地指南
+- `[Web: <URL>]` - 网络来源 (部分可追溯)
+- `[Parametric Knowledge: <说明>]` - 参数知识 (部分可追溯，需诚实标注)
+
+**严禁格式**:
+- `[1, 45]` 等数字引用 (不可追溯)
+
+---
+
+### 2.3 MDT报告规范度 (MDT Quality Rate, MQR)
+
+**公式**:
+```
+MQR = (S_complete + S_applicable + S_format + S_citation + S_uncertainty) / 5 ∈ [0, 4]
+```
+
+**子项定义**:
+- **S_complete** (Module Completeness): 8模块完整性 (0-4分)
+- **S_applicable** (Module Applicability): 模块适用性判断 (0-4分)
+- **S_format** (Structured Format): 结构化程度 (0-4分)
+- **S_citation** (Citation Format): 引用格式规范性 (0-4分)
+- **S_uncertainty** (Uncertainty Handling): 不确定性处理 (0-4分)
+
+---
+
+### 2.4 临床错误率 (Clinical Error Rate, CER)
+
+**公式**:
+```
+CER = min( (Σ_j w_j × n_j) / 15, 1.0 ) ∈ [0, 1]
+```
+
+**错误分级与权重**:
+- **Critical (严重错误)**: w = 3.0 - 可能危及生命或导致严重并发症
+- **Major (主要错误)**: w = 2.0 - 显著影响治疗效果或预后
+- **Minor (次要错误)**: w = 1.0 - 轻微影响治疗质量
+
+**归一化常数**: W_max = 15 (最大可容忍累积错误权重)
+
+---
+
+### 2.5 综合性能指数 (Composite Performance Index, CPI)
+
+**公式**:
+```
+CPI = 0.35 × (CCR/4) + 0.25 × PTR + 0.25 × (MQR/4) + 0.15 × (1 - CER) ∈ [0, 1]
+```
+
+**权重分配说明**:
+| 指标 | 权重 | 归一化 | 说明 |
+|------|------|--------|------|
+| CCR | 35% | CCR/4 | 临床决策一致性最重要 |
+| PTR | 25% | 直接使用 | 物理可追溯性体现证据可靠性 |
+| MQR | 25% | MQR/4 | 报告质量影响可读性和可用性 |
+| CER | 15% | (1-CER) | 错误率越低越好 (已通过权重放大) |
+
+**临床意义**: CPI是单一标量，用于全局比较不同系统架构的综合性能。CCR权重最高(35%)，凸显诊断与方案推荐正确性的核心地位；PTR和MQR各占25%，体现证据可靠性和格式规范性的重要性；CER权重15%，因已在分子层面经过严重错误(权重3.0)的放大惩罚。
+
+**代码实现位置**:
+- `analysis/verify_and_calculate_metrics.py:37-58` (calculate_cpi函数)
+- 注意: CCR和MQR进入CPI前需先除以4归一化到[0,1]
+
+---
+
+## 3. 最高协作铁律 (The Iron Laws of AI Collaboration)
 
 ### 2.1 严禁无头测试 (No Headless Execution)
 本系统（特别是 `interactive_main.py`）包含流式输出与人机交互 (HITL) 环节。
@@ -38,7 +142,7 @@
 
 任何试图添加 Subagents 或恢复旧三层架构的改动都将被驳回。
 
-## 3. 架构核心与入口 (Architecture & Entrypoint)
+## 4. 架构核心与入口 (Architecture & Entrypoint)
 
 ### 3.1 主入口声明
 目前系统的唯一合法主入口为：**`interactive_main.py`**。
@@ -86,7 +190,7 @@
 * **L3 主控 Agent (Qwen)**：运行时的**单一智能体**，直接读取 Skills 并执行。
 * **Skills**：原子化能力单元，通过 `execute` 工具被主 Agent 调用。
 
-## 4. 环境与测试规范 (Environment & Commands)
+## 5. 环境与测试规范 (Environment & Commands)
 
 ### 4.1 虚拟环境
 * **项目专用环境**：`tiantanBM_agent`
@@ -100,42 +204,49 @@
 
 ---
 
-## 5. 批量评估验证状态 (Batch Evaluation Verification)
+## 6. 批量评估验证状态 (Batch Evaluation Verification)
 
-### 5.1 评估完成情况 (2026-03-24)
+### 5.1 评估状态 (2026-04-07)
 
-**已完成**: 9例患者 BM Agent 完整评估 + 3种Baseline方法
-- 患者ID: 605525, 612908, 638114, 640880, 648772, 665548, 708387, 747724, 868183
-- 数据归档: `analysis/samples/{patient_id}/`
+**当前状态**: Set-1批次测试中（3/9已完成）
 
-### 5.2 严格验证结果
+**已完成患者** (报告生成成功，日志命名正确):
+| 患者ID | 报告时间 | 关键特征 | 状态 |
+|--------|----------|----------|------|
+| 605525 | 2026-04-07 20:13 | 结肠癌KRAS G12V，六线治疗 | ✅ 已完成 |
+| 612908 | 2026-04-07 22:22 | 肺癌EGFR突变，埃克替尼耐药 | ✅ 已完成 |
+| 638114 | 2026-04-07 23:21 | 肺腺癌EGFR 19del+T790M，奥西替尼耐药后进展 | ✅ 已完成 |
 
-**已验证指标** (✅ 通过独立API查询验证):
+**待测试患者**: 640880, 648772, 665548, 708387, 747724, 868183 (6例)
 
-| 指标 | 验证方法 | 结果 | 状态 |
-|------|----------|------|------|
-| **PTR** | 正则提取 + 人工抽查 | 0.889 (8/9完全可追溯) | ✅ |
-| **OncoKB引用** | API独立查询 (query_oncokb.py) | 3/3 抽样通过 | ✅ |
-| **PubMed PMID** | API存在性验证 (search_pubmed.py) | 9/9 抽样通过 | ✅ |
-| **Token消耗** | 执行日志交叉验证 | 与CSV一致 | ✅ |
-| **Latency** | 执行日志时间戳验证 | 与CSV一致 | ✅ |
-| **工具调用** | 执行日志grep统计 | 平均41.6次/例 | ✅ |
+**历史数据已归档**: `analysis/archived/2026-03-24/`
+- 9例患者历史数据（2026-03-24批次）
+- 包含BM Agent报告、Baseline结果、执行日志
 
-**OncoKB 验证详情** (抽样):
-- STK11 p.G279Cfs*6 (868183): LEVEL_4, Likely Oncogenic ✅
-- GNAS p.R201C (868183): Oncogenic ✅
-- KRAS G12V (605525): LEVEL_R1 (Cetuximab/Panitumumab耐药) ✅
+**已确认修复项**:
+- ✅ 日志文件命名：现在包含日期和患者ID (session_YYYYMMDD_{patient_id}_{uuid}_complete.log)
+- ✅ 无信息泄露：Agent直接读取输入文件，未提前读取patient persona
+- ✅ 患者画像位置：已修复路径问题，位于 `workspace/sandbox/memories/personas/`
 
-**PubMed 验证详情** (抽样):
-- PMID 33427654: CCTG SC.24/TROG 17.06 (脊柱转移SBRT) ✅
-- PMID 40232811: EVIDENS研究 (Nivolumab二线NSCLC) ✅
-- PMID 33264544: KEYNOTE-177 (MSI-H结直肠癌) ✅
-- PMID 36379002: DESTINY-Gastric01 (T-DXd HER2-low胃癌) ✅
+**待修复项（批次测试后）**:
+- ⏳ Patient Persona更新机制：write_file工具未注册，需添加专用update_patient_persona工具
 
-**待验证指标** (⏳ 需临床专家人工评审):
-- **CCR** (Clinical Consistency Rate): 治疗线判定准确性、方案匹配率
-- **MQR** (MDT Quality Rate): 8模块完整性、模块适用性判断
-- **CER** (Clinical Error Rate): 严重/主要/次要错误数
+### 5.2 严格验证状态
+
+**状态**: 待重新验证 (历史数据已归档)
+
+**历史验证结果** (2026-03-24批次，仅供参考):
+- PTR: 0.889 (8/9完全可追溯)
+- OncoKB引用: 3/3 抽样通过
+- PubMed PMID: 9/9 抽样通过
+
+**待重新验证指标**:
+- [ ] PTR (Physical Traceability Rate)
+- [ ] OncoKB引用准确性
+- [ ] PubMed引用真实性
+- [ ] CCR (Clinical Consistency Rate)
+- [ ] MQR (MDT Quality Rate)
+- [ ] CER (Clinical Error Rate)
 
 ### 5.3 数据归档位置
 
@@ -207,16 +318,16 @@ conda run -n tiantanBM_agent python skills/pubmed_search_skill/scripts/search_pu
 conda run -n tiantanBM_agent python analysis/unified_analysis.py
 ```
 
-## 5. 联网与检索规范 (Web Access Rules)
+## 7. 联网与检索规范 (Web Access Rules)
 * **绝对禁止使用本地无头浏览器（如 Puppeteer）**。
 * **统一使用 Jina Reader 渲染**：如果需要 AI 助手读取网页，请将目标网址拼接在 `https://r.jina.ai/` 之后。
 
-## 6. 项目状态与版本管理 (Project Management Rules)
+## 8. 项目状态与版本管理 (Project Management Rules)
 * **状态对齐**：在开始任何新的代码编写或重构前，必须先读取 `ROADMAP.md` 和 `CHANGELOG.md`。
 * **主动打卡**：每完成一个子任务，必须主动修改 `ROADMAP.md`。
 * **原子化提交**：功能确认后，使用 `git add .` 和 `git commit -m "..."`，保持 Git Log 纯净。
 
-## 7. 技能调优与 Eval 规范 (Skill Tuning & Eval)
+## 9. 技能调优与 Eval 规范 (Skill Tuning & Eval)
 
 ### 7.1 触发器调优 (Trigger Tuning)
 每个 Skill 在 `metadata.json` 和 `SKILL.md` 中的 `description` 必须被写成**强触发器**：明确说明”输入什么、输出什么、什么时候必须调用它”。
@@ -253,7 +364,7 @@ conda run -n tiantanBM_agent python analysis/unified_analysis.py
 - 必须提供修正建议
 - 严重错误必须阻止报告生成
 
-## 8. 报告质量审查协议 (Report Quality Review Protocol)
+## 10. 报告质量审查协议 (Report Quality Review Protocol)
 
 ### 8.1 审查触发条件
 当用户要求审查BM Agent生成的报告时，必须执行以下完整审查流程：
@@ -409,7 +520,7 @@ grep -oE 'PMID [0-9]+' {report_file} | awk '{print $2}'
 - 临床推理：优秀 ✅ 六线治疗判定准确
 - 模块适配：优秀 ✅ Module 6正确标记为N/A
 
-## 9. 智能指南检索协议 (Deep Guide Retrieval Protocol)
+## 11. 智能指南检索协议 (Deep Guide Retrieval Protocol)
 
 ### 9.1 核心问题分析
 
@@ -711,8 +822,192 @@ Agent Thought:
 | 准确性 | 依赖文本匹配 | 利用VLM理解表格 |
 | 引用质量 | 容易混淆来源 | 明确标注页码和章节 |
 
-## 10. 启动序列 (Boot Sequence)
-每次新会话启动，在回答用户任何问题前，Claude Code 你**必须静默执行以下思考**：
+## 12. 患者数据处理器 (Patient Data Processor)
+
+### 10.1 设计原则
+**患者输入数据处理器 (patient_data_processor)** 是医疗AI评估数据准备的标准化组件，严格遵循以下原则：
+
+1. **输入特征与标签的严格物理隔离**：白名单字段（输入）与黑名单字段（标签）互斥
+2. **不可变性（Immutability）**：原始数据只读，绝不修改字段内容
+3. **双重信息泄露检查机制**：
+   - **第一层 - 字段级检查（代码自动）**：白名单过滤，只保留 `ALLOWED_FEATURES` 中定义的16个字段
+   - **第二层 - 语义级检查（Claude Code LLM）**：Claude Code 读取输出文件，通过大语言模型语义理解检查内容
+4. **四级验证体系**：预处理 → 处理中 → 后处理 → 集成验证
+5. **完整审计追踪**：MD5哈希、时间戳、移除字段记录、语义检查标记
+
+### 10.2 双重信息泄露检查机制
+
+#### 第一层 - 字段级检查（自动）
+由 Python 代码自动执行：
+```python
+ALLOWED_FEATURES = {
+    '住院号', '入院时间', '年龄', '性别', '主诉', '现病史', '既往史',
+    '头部MRI', '胸部CT', '颈椎MRI', '胸椎MRI', '腰椎MRI',
+    '腹盆CT', '腹盆MRI', '腹部超声', '浅表淋巴结超声'
+}
+
+BLACKLIST_FEATURES = {
+    '入院诊断', '出院诊断', '诊疗经过', '出院时间'  # 严禁混入输入
+}
+```
+
+**执行方式**：
+- 白名单过滤：只保留允许的字段
+- 黑名单移除：强制移除敏感字段
+- 未知字段警告：记录并忽略未定义字段
+
+#### 第二层 - 语义级检查（Claude Code LLM）
+⚠️ **关键要求**：此层检查**必须由 Claude Code 通过大语言模型的语义理解能力执行**，而非简单的关键词匹配。
+
+**Claude Code 需要执行**：
+1. **读取生成的输出文件**（如 `patient_640880_input.txt`）
+2. **语义分析以下字段内容**：
+   - `现病史`：检查是否包含完整治疗经过
+   - `主诉`：检查是否包含术后时间和治疗信息
+   - `既往史`：检查是否包含可推断治疗线的信息
+
+3. **识别隐含治疗信息**（语义理解，非关键词匹配）：
+   - **治疗线数暗示**：如"术后多西他赛+奈达铂化疗4周期"→暗示已完成一线化疗
+   - **治疗方式暗示**：如"伽玛刀治疗后半年余"→暗示接受过放疗
+   - **疗效评估暗示**：如"病变稳定"、"较前增大"等
+   - **用药细节**：即使不在黑名单字段中，也要识别
+
+**语义检查示例**：
+```
+现病史内容：
+"患者2016-3确诊肺癌...术后多西他赛+奈达铂化疗4周期...
+2020.4行右额顶转移瘤术...2020-5-25开始阿法替尼靶向治疗至今..."
+
+Claude Code 语义分析：
+⚠️ WARNING: 现病史包含完整治疗经过（化疗周期、靶向药物、时间线）
+⚠️ WARNING: 可推断患者已接受一线化疗+靶向治疗
+```
+
+**审计记录**：
+```json
+{
+  "patient_id": "640880",
+  "removed_fields": ["入院诊断", "诊疗经过"],  // 第一层
+  "requires_semantic_review": true,             // 第二层标记
+  "semantic_review_queue": [                    // 需要LLM检查的字段
+    {"field": "现病史", "reason": "文本字段，需要语义级检查"},
+    {"field": "主诉", "reason": "文本字段，需要语义级检查"}
+  ]
+}
+```
+
+### 10.3 两层检查的区别
+
+| 维度 | 第一层 - 字段级 | 第二层 - 语义级 |
+|------|----------------|----------------|
+| **执行者** | Python代码自动 | Claude Code (LLM) |
+| **检查对象** | 字段名 | 字段内容 |
+| **检查方式** | 白名单/黑名单匹配 | 语义理解分析 |
+| **处理能力** | 机械过滤 | 理解上下文含义 |
+| **示例** | 移除"入院诊断"字段 | 识别"化疗4周期"暗示治疗线 |
+| **记录方式** | `removed_fields` | `semantic_review_queue` |
+
+### 10.4 使用方式
+
+```bash
+# 处理单个患者（自动生成语义检查标记）
+python -m skills.patient_data_processor.cli process --patient-id 640880
+
+# 批量处理全部患者
+python -m skills.patient_data_processor.cli batch
+
+# 验证现有文件（标记需要语义检查的字段）
+python -m skills.patient_data_processor.cli verify --file workspace/sandbox/patient_640880_input.txt
+```
+
+### 10.5 Claude Code 语义检查工作流
+
+当 processor 标记 `requires_semantic_review: true` 时，Claude Code 必须：
+
+1. **读取输出文件**：
+   ```python
+   read_file("workspace/sandbox/patient_{id}_input.txt")
+   ```
+
+2. **检查标记的字段**：
+   对 `semantic_review_queue` 中的每个字段进行语义分析
+
+3. **生成语义审查报告**：
+   - 识别隐含的治疗信息
+   - 评估信息泄露风险等级
+   - 提供处理建议
+
+4. **记录审查结果**：
+   更新审计记录，标记已通过语义检查
+
+## 13. Claude Code 专用工具
+
+### 11.1 Patient Data Processor (PDP)
+
+**位置**: `/media/luzhenyang/project/TianTan_Brain_Metastases_Agent/tools/patient_data_processor/`
+
+**用途**: 将原始临床数据（Excel）转换为BM Agent标准化输入格式
+
+**使用者**: Claude Code (你) - **不是给BM Agent用的**
+
+**核心功能**:
+1. 双层数据隔离检查
+   - 第一层（字段级）：白名单过滤 + 黑名单移除
+   - 第二层（语义级）：LLM检查"本次诊疗经过"混入
+2. 重复住院号处理：自动添加 `_V2`, `_V3` 后缀
+3. 生成详细统计报告
+
+**何时使用**:
+- 当用户说"处理患者数据"、"生成输入文件"、"准备测试数据"时
+- 当需要转换 `46个病例_诊疗经过.xlsx` 到 `patient_*_input.txt` 时
+
+**使用方法**:
+```bash
+# 批量处理
+conda run -n tiantanBM_agent python -m tools.patient_data_processor.scripts.cli batch \
+    --source "patients_folder/46个病例_诊疗经过.xlsx" \
+    --output "workspace/sandbox"
+
+# 查看报告
+cat workspace/processing_logs/FILTERING_COMPARISON_REPORT.md
+```
+
+**关键概念**（必须牢记）:
+- ✅ **既往治疗史**: 患者之前接受的治疗（保留）
+- ❌ **本次诊疗经过**: 患者本次住院期间的治疗（必须移除）
+
+## 14. 重新测试前需修复的问题 (2026-04-05)
+
+### 12.1 分析代码问题
+
+**已删除的过期文件** (2026-04-05):
+- `analysis/reports/comparison_report.md` - placeholder报告
+- `analysis/UNIFIED_EVALUATION_REPORT_v2.md` - 旧版本
+- `analysis/generate_final_visualizations.py` / `generate_figures_v2.py` / `generate_figures_paper_final.py`
+- `analysis/revisualize_with_clinical_data.py` / `generate_patient_line_charts.py`
+- `analysis/论文Results章节_重构版_v2.md` / `论文Results表格_Word粘贴版.md` / `论文Results章节_Word粘贴版.md`
+- `analysis/final_figures/archive_2026-03-26/` - 旧图表归档
+
+**代码审查发现的问题**:
+1. `generate_clinical_reviews.py` - CPI计算权重与标准公式不符
+2. `generate_final_figures.py` - BASELINE_SUMMARY硬编码估计值
+3. `batch_cer_assessment.py` - 使用预估数据而非实际审查
+4. `verify_and_calculate_metrics.py` - RAW_SCORES硬编码需更新
+
+### 12.2 重新测试流程
+
+```
+1. 运行BM Agent生成新报告 → analysis/samples/{patient_id}/
+2. 人工审查CCR/MQR/CER → 更新评分
+3. 计算PTR → 自动从报告中提取
+4. 运行verify_and_calculate_metrics.py → 生成final_metrics.json
+5. 运行generate_final_figures.py → 生成新图表
+6. 更新Baseline数据（如有新运行）
+```
+
+### 12.3 启动序列更新
+每次新会话启动，Claude Code你**必须静默执行以下思考**：
 1. 读取并理解 `ARCHITECTURE.md`。
 2. 读取 `CHANGELOG.md` 确认最新进度。
 3. 牢记绝不能在后台运行 `interactive_main.py` 或测试脚本。
+4. **检查是否需要重新测试**（分析代码已清理，准备新批次）。

@@ -65,14 +65,15 @@ class ExecutionLogger:
         self.session_id = session_id
         self.start_time = datetime.now()
         self.log_entries: List[Dict[str, Any]] = []
+        self.patient_id: Optional[str] = None
+        self._finalized = False
 
-        # 主日志文件（人类可读）
+        # 临时日志文件（无患者ID时）
         self.main_log_path = os.path.join(
             EXECUTION_LOGS_DIR,
             f"session_{session_id}_complete.log"
         )
 
-        # 结构化JSON日志
         self.json_log_path = os.path.join(
             EXECUTION_LOGS_DIR,
             f"session_{session_id}_structured.jsonl"
@@ -82,6 +83,37 @@ class ExecutionLogger:
         self.audit_log_path = os.path.join(SANDBOX_DIR, "execution_audit_log.txt")
 
         self._write_header()
+
+    def set_patient_id(self, patient_id: str):
+        """设置患者ID并重命名日志文件"""
+        if self._finalized or not patient_id:
+            return
+
+        self.patient_id = patient_id
+        date_str = self.start_time.strftime("%Y%m%d")
+
+        # 新的文件名: session_20250407_605525_{uuid}_complete.log
+        new_main = os.path.join(
+            EXECUTION_LOGS_DIR,
+            f"session_{date_str}_{patient_id}_{self.session_id}_complete.log"
+        )
+        new_json = os.path.join(
+            EXECUTION_LOGS_DIR,
+            f"session_{date_str}_{patient_id}_{self.session_id}_structured.jsonl"
+        )
+
+        # 重命名文件
+        try:
+            if os.path.exists(self.main_log_path):
+                os.rename(self.main_log_path, new_main)
+            if os.path.exists(self.json_log_path):
+                os.rename(self.json_log_path, new_json)
+            self.main_log_path = new_main
+            self.json_log_path = new_json
+            self._finalized = True
+            print(f"📁 日志文件已归档: session_{date_str}_{patient_id}_{self.session_id}*")
+        except Exception as e:
+            print(f"⚠️  日志重命名失败: {e}")
 
     def _write_header(self):
         """写入日志头部信息"""
@@ -903,9 +935,12 @@ if __name__ == "__main__":
             file_read_success = False
             for potential_path in potential_paths:
                 paths_to_try = [
-                    potential_path,
+                    potential_path,  # 直接路径（支持绝对路径）
                     os.path.join(SANDBOX_DIR, potential_path),
                     os.path.join(os.getcwd(), potential_path),
+                    os.path.join(PROJECT_ROOT, potential_path),
+                    os.path.join(PROJECT_ROOT, "patient_input", "Set-1", potential_path),
+                    os.path.join(PROJECT_ROOT, "patient_input", "Set-2，0402", potential_path),
                 ]
 
                 for path in paths_to_try:
@@ -948,6 +983,8 @@ if __name__ == "__main__":
 
             # 记录用户输入
             execution_logger.log_user_input(user_input, patient_id)
+            if patient_id:
+                execution_logger.set_patient_id(patient_id)
             print(f"\n⏳ Agent 正在思考... (Patient ID: {patient_id or 'N/A'})")
 
             events = agent.stream(

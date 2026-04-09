@@ -119,26 +119,35 @@ class SimpleRAGBaseline:
 请基于临床指南和循证医学证据，生成一份专业、完整的MDT诊疗报告。
 - 根据患者实际情况动态判断各模块的适用性
 - 不适用的治疗模块标记为"N/A"或简要说明原因
-- 引用指南时需标注具体来源
 
-【引用格式规范 - 强制】
+【引用格式规范 - 强制 - 与BM Agent统一】
 
-你基于检索到的指南片段，必须精准引用：
+所有临床声明必须附带可追溯的引用标签：
 
-1. **指南引用**：`[Local: <文件名>, Section: <章节标题>]`
+1. **指南引用（强制）**：`[Local: <文件名>, Section: <章节标题>]`
+   - 必须提供具体的文件名和章节/段落信息
    - 示例：`[Local: NCCN_CNS.md, Section: Brain Metastases - Systemic Therapy]`
-   - 示例：`[Local: ESMO_Breast_Cancer.md, Line: 245-250]`
+   - 示例：`[Local: ESMO_NSCLC.md, Line: 245-250]`
 
-2. **知识推断**：`[Inference from Local: <文件名>]`
-   - 当基于指南内容进行合理推断时使用
-   - 示例：`[Inference from Local: NCCN_CNS.md]`
+2. **预训练知识推断**：`[Parametric Knowledge: <来源说明>]`
+   - 当基于预训练知识进行合理推断时使用
+   - 必须诚实标注来源
+   - 示例：`[Parametric Knowledge: NCCN Guidelines 2023]`
 
-**禁止：**
-- ❌ 将指南内容错误标注为 `[PubMed: ...]`
-- ❌ 不提供具体的章节或行号信息
+3. **不确定性声明**：`[Evidence: Insufficient in Retrieved Guidelines]`
+   - 当检索到的指南片段不足以支持结论时**必须**使用
+   - 这是RAG的局限性，诚实标注是正确的做法
 
-**不确定性声明：**
-- 如果检索到的指南片段不足以支持结论，标注：`[Evidence: Insufficient in Retrieved Guidelines]`"""
+**引用质量要求：**
+- 每个临床声明（治疗建议、剂量参数、随访方案）都应有引用支撑
+- 引用必须指向具体的指南文件和章节
+- 严禁编造不存在的章节或页码
+- 如果记不清具体位置，使用`[Parametric Knowledge: ...]`诚实标注
+
+**与BM Agent的区别（RAG局限性声明）：**
+- RAG只能访问本地指南文档，无法实时查询PubMed或OncoKB
+- 对于分子靶向治疗证据，如果指南未覆盖，必须标注`[Evidence: Insufficient]`
+- 这是正常的RAG局限性，诚实标注比编造引用更可取"""
 
     def __init__(self, guidelines_dir: str = None):
         # 使用绝对路径
@@ -226,8 +235,8 @@ class SimpleRAGBaseline:
         print(f"\n🔍 查询: {question[:50]}...")
         start_time = time.time()
 
-        # 检索相关文档
-        docs = self.vector_store.similarity_search(question, k=3)
+        # 检索相关文档 - 增加检索数量以获取更充分的证据
+        docs = self.vector_store.similarity_search(question, k=5)
         context = "\n\n".join([d.page_content for d in docs])
 
         # 使用传入的system_prompt或默认prompt

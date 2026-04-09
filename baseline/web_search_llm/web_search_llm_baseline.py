@@ -78,39 +78,62 @@ class WebSearchLLMBaseline:
 
 请通过网络搜索获取最新循证医学证据，生成一份专业、完整的MDT诊疗报告。
 - 根据患者实际情况动态判断各模块的适用性
-- 不适用的治疗模块标记为"N/A"或简要说明原因（如无手术计划时，Module 6可标记为N/A或改为"围放疗期管理"）
+- 不适用的治疗模块标记为"N/A"或简要说明原因
 - 如果不确定，请明确说明"需临床医师进一步评估"
 
-【引用格式规范 - 强制】
+【网络搜索要求 - 强制 - 必须充分检索】
 
-你的优势是实时网络搜索，必须充分利用：
+**检索充分性要求：**
+1. **必须对每个临床关键问题进行多次搜索**：
+   - 治疗线判定（一线/二线/后线）
+   - 推荐治疗方案（化疗/靶向/免疫）
+   - 剂量参数（mg/m², Gy, fraction）
+   - 分子靶向证据（突变-药物关联）
 
-1. **广泛搜索**：对每个临床声明，主动搜索循证医学证据
-2. **精准知识**：获取分子肿瘤学知识（突变-药物关联、耐药机制）
-3. **准确引用**：使用以下格式标注来源
+2. **检索策略**：
+   - 使用`web_search`工具进行**多次独立搜索**
+   - 每次搜索聚焦一个具体问题
+   - 搜索关键词应具体（如"非小细胞肺癌 二线治疗 培美曲塞 剂量"）
 
-**引用格式要求：**
+3. **最少搜索次数**：
+   - 每个报告至少进行 **5-8次独立搜索**
+   - 覆盖：治疗方案、剂量、副作用管理、随访指南
 
-- **PubMed文献**：`[PubMed: PMID XXXXXXXX]`
-  - 必须提供具体PMID数字
-  - 示例：`[PubMed: PMID 15117980]`
+【引用格式规范 - 强制 - 与BM Agent统一】
 
-- **临床试验**：`[ClinicalTrial: NCT号]`
-  - 示例：`[ClinicalTrial: NCT03526900]`
+所有临床声明必须附带可追溯的引用标签：
 
-- **指南/共识**：`[Guideline: 指南名称, 年份]`
-  - 示例：`[Guideline: NCCN CNS, 2024]`
+1. **PubMed文献（优先）**：`[PubMed: PMID XXXXXXXX]`
+   - **必须通过搜索获取真实PMID**
+   - 必须提供具体PMID数字
+   - 示例：`[PubMed: PMID 39322625]`
 
-- **网页来源**：`[Web: URL, Accessed: YYYY-MM-DD]`
-  - 示例：`[Web: https://oncotarget.com/..., Accessed: 2024-03-24]`
+2. **临床试验**：`[ClinicalTrial: NCT号]`
+   - 示例：`[ClinicalTrial: NCT03526900]`
+
+3. **指南/共识**：`[Guideline: 指南名称, 年份]`
+   - 示例：`[Guideline: NCCN CNS, 2024]`
+   - 如果通过搜索找到具体页码/章节，应注明
+
+4. **网页来源**：`[Web: URL, Accessed: YYYY-MM-DD]`
+   - 仅当PubMed不可用时使用
+   - 必须提供完整URL和访问日期
+   - 示例：`[Web: https://www.nccn.org/..., Accessed: 2026-04-09]`
 
 **禁止：**
+- ❌ 基于参数知识编造PMID
 - ❌ 使用 `[1,45]` 等无法直接验证的数字引用
-- ❌ 声称有PMID但不提供具体号码
-- ❌ 引用无法访问的URL
+- ❌ 声称有引用但不提供具体标识符
 
-**不确定性声明：**
-- 如果找不到可靠来源，明确标注：`[Evidence: Insufficient, Search: "关键词" returned no high-quality sources]`"""
+**不确定性声明（诚实性要求）：**
+- 如果搜索后找不到可靠来源，明确标注：
+  `[Evidence: Insufficient, Search: "关键词" returned no high-quality sources]`
+- 如果记不清具体PMID，使用`[Parametric Knowledge: ...]`诚实标注
+
+**引用验证提示：**
+- 你的每次搜索都会被记录到`search_sources`中
+- 报告中的每个PMID都应能通过PubMed验证
+- 如果无法通过搜索获得PMID，不要编造，使用网页来源或诚实标注 `[Evidence: Insufficient]`"""
 
     def query(self, question: str, system_prompt: str = None, save_full_output: bool = False) -> dict:
         """
@@ -151,7 +174,7 @@ class WebSearchLLMBaseline:
                     "type": "web_search",
                     "web_search": {
                         "enable": True,
-                        "search_mode": "standard"  # standard or deep
+                        "search_mode": "deep"  # 使用deep模式获取更充分的证据
                     }
                 }
             ],

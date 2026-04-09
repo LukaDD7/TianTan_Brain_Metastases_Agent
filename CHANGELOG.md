@@ -6,6 +6,132 @@
 
 ---
 
+## [Unreleased] - 2026-04-05
+
+### 分析代码清理与重新测试准备
+
+#### 删除过期分析文件
+**删除的文件**:
+- `analysis/reports/comparison_report.md` - placeholder报告（包含"PLACEHOLDER"标记）
+- `analysis/UNIFIED_EVALUATION_REPORT_v2.md` - 被v2.1_SD取代的旧版本
+- `analysis/generate_final_visualizations.py` - 早期可视化脚本
+- `analysis/generate_figures_v2.py` - 图表版本迭代脚本
+- `analysis/generate_figures_paper_final.py` - 论文最终版图表脚本
+- `analysis/revisualize_with_clinical_data.py` - 临床数据重可视化脚本
+- `analysis/generate_patient_line_charts.py` - 患者折线图脚本
+- `analysis/论文Results章节_重构版_v2.md` - 旧版本Results章节
+- `analysis/论文Results表格_Word粘贴版.md` - 旧版本表格
+- `analysis/论文Results章节_Word粘贴版.md` - 旧版本Results章节
+- `analysis/final_figures/archive_2026-03-26/` - 旧图表归档目录
+
+**保留的核心文件**:
+- `analysis/unified_analysis.py` - 主分析脚本
+- `analysis/verify_and_calculate_metrics.py` - 指标计算验证（需更新数据）
+- `analysis/generate_final_figures.py` - 最终图表生成（需确认Baseline值）
+- `analysis/clinical_review_system.py` - 临床审查系统框架
+- `analysis/UNIFIED_EVALUATION_REPORT_v2.1_SD.md` - 含SD统计的最终报告模板
+- `analysis/论文Results章节_最终版.md` - 论文Results章节最终稿
+
+#### 代码审查结果
+**发现的问题**:
+1. `generate_clinical_reviews.py` - CPI计算权重与标准公式不符（需修正）
+2. `generate_final_figures.py` - BASELINE_SUMMARY硬编码估计值（需实际运行更新）
+3. `batch_cer_assessment.py` - 使用预估数据而非实际审查（需重新审查）
+4. `verify_and_calculate_metrics.py` - RAW_SCORES硬编码（需更新为新评分）
+
+**公式一致性**: ✅ 已验证
+- CPI公式与论文一致: `0.35×CCR/4 + 0.25×PTR + 0.25×MQR/4 + 0.15×(1-CER)`
+
+#### 重新测试准备
+**状态**: 准备重新测试所有案例
+
+**历史数据归档**: `analysis/archived/2026-03-24/`
+- 9例患者历史数据（2026-03-24批次）
+- 包含BM Agent报告、Baseline结果、执行日志
+
+**重新测试流程**:
+1. 修复系统中的已知问题
+2. 重新运行所有9例患者的BM Agent评估
+3. 同步更新3种Baseline方法结果
+4. 重新进行临床专家人工审查（CCR/MQR/CER）
+5. 自动生成PTR（从报告中提取引用）
+6. 重新生成所有图表和报告
+
+**待重新测试患者**: 605525, 612908, 638114, 640880, 648772, 665548, 708387, 747724, 868183
+
+---
+
+## [Unreleased] - 2026-04-02
+
+### Patient Data Processor v2.0 架构重构
+
+#### 关键架构变更：双重检查机制
+**第一层 - 字段级检查（代码自动）**
+- 白名单过滤：保留16个允许字段
+- 黑名单移除：移除入院诊断、出院诊断、诊疗经过、出院时间
+- 记录方式：`removed_fields` 列表
+
+**第二层 - 语义级检查（Claude Code LLM）⚠️**
+- **执行者**：Claude Code 通过大语言模型语义理解能力
+- **检查对象**：现病史、主诉、既往史等文本字段内容
+- **检查方式**：语义理解，非关键词匹配
+- **识别能力**：
+  - 治疗线数暗示（如"化疗4周期"→一线化疗）
+  - 治疗方式暗示（如"伽玛刀治疗后"→放疗史）
+  - 疗效评估暗示（如"病变稳定"）
+  - 用药细节（药物名称、剂量、周期）
+- **记录方式**：`semantic_review_queue` + `requires_semantic_review` 标记
+
+#### 核心实现变更
+- **移除**：`SENSITIVE_KEYWORDS` 常量（23个关键词）
+- **移除**：`DOSAGE_PATTERNS` 常量（5个正则模式）
+- **移除**：代码自动关键词匹配逻辑
+- **新增**：`_detect_leakage()` 方法改为标记需要LLM检查
+- **新增**：`AuditRecord.semantic_review_queue` 字段
+- **新增**：`AuditRecord.requires_semantic_review` 标记
+- **新增**：`ProcessingResult.requires_agent_review` 标记
+
+#### 审计记录格式更新
+```json
+{
+  "patient_id": "640880",
+  "removed_fields": ["入院诊断", "诊疗经过"],
+  "requires_semantic_review": true,
+  "semantic_review_queue": [
+    {"field": "现病史", "requires_llm_review": true},
+    {"field": "主诉", "requires_llm_review": true}
+  ]
+}
+```
+
+#### Claude Code 语义检查工作流
+1. Processor 处理完成后标记 `requires_semantic_review: true`
+2. Claude Code 读取输出文件
+3. 对 `semantic_review_queue` 中的字段进行语义分析
+4. 生成语义审查报告（识别隐含治疗信息）
+5. 更新审计记录，标记已通过语义检查
+
+#### 测试验证结果
+```
+✓ 模块导入成功
+✓ 处理器初始化成功 (v2.0.0)
+✓ 单个患者处理成功 (640880)
+✓ 第一层检查正常：移除 ['入院诊断', '诊疗经过', '出院时间']
+✓ 第二层标记正常：requires_semantic_review=True
+✓ 语义检查队列：2个字段（现病史、主诉）
+```
+
+#### 架构对比
+| 维度 | 旧架构（关键词匹配） | 新架构（LLM语义） |
+|------|---------------------|------------------|
+| 执行者 | Python代码 | Claude Code LLM |
+| 检查方式 | 正则匹配 | 语义理解 |
+| 误报率 | 高（匹配无关文本） | 低（理解上下文） |
+| 漏检率 | 高（无法识别暗示） | 低（理解隐含信息） |
+| 处理能力 | 机械 | 智能 |
+
+---
+
 ## [Unreleased] - 2026-03-25
 
 ### 统一评估报告 v2.1 (含SD统计) 发布
