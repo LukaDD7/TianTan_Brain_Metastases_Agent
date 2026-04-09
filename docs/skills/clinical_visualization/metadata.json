@@ -1,0 +1,41 @@
+{
+  "name": "clinical_visualization",
+  "version": "1.0.0",
+  "description": "基于临床专家审查结果生成对比可视化图表。输入：reviews_rag_v2/和reviews_websearch_v2/目录下的review_results.json；输出：final_figures/目录下的高分辨率图表(PNG+PDF)。支持雷达图、柱状图对比、热力图等多种图表类型。",
+  "author": "Claude Code",
+  "created": "2026-04-09",
+  "updated": "2026-04-09",
+  "tags": ["visualization", "clinical-review", "comparison", "matplotlib"],
+  "entry_point": "scripts/generate_visualization.py",
+  "inputs": [
+    {
+      "name": "reviews_rag_v2",
+      "type": "directory",
+      "description": "RAG V2审查结果目录",
+      "required": true
+    },
+    {
+      "name": "reviews_websearch_v2",
+      "type": "directory",
+      "description": "Web Search V2审查结果目录",
+      "required": true
+    }
+  ],
+  "outputs": [
+    {
+      "name": "final_figures",
+      "type": "directory",
+      "description": "输出图表目录，包含PNG和PDF格式"
+    },
+    {
+      "name": "visualization_summary",
+      "type": "file",
+      "description": "可视化汇总报告(Markdown)"
+    }
+  ],
+  "dependencies": [
+    "matplotlib",
+    "numpy",
+    "pandas"
+  ]
+}

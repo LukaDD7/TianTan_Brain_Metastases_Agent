@@ -1,0 +1,103 @@
+{
+  "patient_id": "708387",
+  "case_id": "Case9",
+  "review_date": "2026-04-09",
+  "method": "RAG V2",
+  "patient_context": {
+    "tumor_type": "肺腺鳞癌/未分化癌（MET扩增/融合）",
+    "stage": "T2N0M1 IV期（脑、肝转移）",
+    "metastasis_sites": [
+      "脑（术后）",
+      "肝",
+      "腹腔淋巴结"
+    ],
+    "molecular_profile": "MET拷贝数变异（扩增）, MET基因融合(M13M15)",
+    "treatment_lines": 1,
+    "current_status": "SD（术后辅助化疗2周期后）",
+    "performance_status": "ECOG 1",
+    "comorbidities": [
+      "肺间质纤维化",
+      "间质性肺炎",
+      "COPD",
+      "胃溃疡术后"
+    ]
+  },
+  "citation_verification": {
+    "local": [
+      {
+        "citation": "[Local: Patient Medical Record, Section: 既往史]",
+        "claim": "患者既往史信息",
+        "result": "fail",
+        "match_score": 0,
+        "note": "章节为患者输入数据，非指南引用"
+      },
+      {
+        "citation": "[Local: Patient Medical Record, Section: 病理诊断]",
+        "claim": "病理诊断及免疫组化结果",
+        "result": "fail",
+        "match_score": 0,
+        "note": "章节为患者输入数据，非指南引用"
+      }
+    ],
+    "pubmed": [],
+    "oncokb": [],
+    "insufficient_markers": 5
+  },
+  "ccr": {
+    "score": 2.6,
+    "max": 4.0,
+    "breakdown": {
+      "s_line": 3,
+      "s_scheme": 3,
+      "s_dose": 2,
+      "s_reject": 3,
+      "s_align": 2
+    }
+  },
+  "mqr": {
+    "score": 3.2,
+    "max": 4.0,
+    "breakdown": {
+      "s_complete": 4,
+      "s_applicable": 4,
+      "s_format": 4,
+      "s_citation": 1,
+      "s_uncertainty": 3
+    }
+  },
+  "cer": {
+    "score": 0.267,
+    "errors": [
+      {
+        "level": "Major",
+        "weight": 2.0,
+        "description": "患者输入数据被错误标注为指南引用（多次出现）",
+        "citation": "[Local: Patient Medical Record, Section: 既往史]"
+      },
+      {
+        "level": "Major",
+        "weight": 2.0,
+        "description": "Parametric Knowledge标注过多（超过10处）",
+        "citation": "[Parametric Knowledge: NCCN NSCLC Guidelines v2023]"
+      },
+      {
+        "level": "Minor",
+        "weight": 1.0,
+        "description": "检索指南缺乏MET变异NSCLC脑转移的针对性证据",
+        "citation": "N/A"
+      }
+    ]
+  },
+  "ptr": {
+    "score": 0.05,
+    "details": {
+      "local_citations": 2,
+      "parametric_knowledge": 12,
+      "insufficient_markers": 5,
+      "total_claims": 32,
+      "has_real_search": true,
+      "retrieved_docs": 5
+    }
+  },
+  "cpi": 0.55
+}

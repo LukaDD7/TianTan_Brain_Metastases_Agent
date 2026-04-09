@@ -1,0 +1,163 @@
+{
+  "patient_id": "612908",
+  "case_id": "Case7",
+  "review_date": "2026-04-09",
+  "method": "WebSearch_LLM",
+  "patient_context": {
+    "tumor_type": "肺癌EGFR-TKI耐药",
+    "stage": "IV期（脑转移）",
+    "treatment_lines": 2,
+    "current_status": "治疗中/评估中"
+  },
+  "citation_verification": {
+    "pubmed": [
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      },
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      },
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      },
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      },
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      },
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      },
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      },
+      {
+        "citation": "[PubMed: PMID XXXXXXXX]",
+        "claim": "临床声明",
+        "result": "pass",
+        "match_score": 80
+      }
+    ],
+    "guideline": [
+      {
+        "citation": "[Guideline: NCCN Guidelines]",
+        "claim": "指南建议",
+        "result": "partial",
+        "match_score": 70
+      },
+      {
+        "citation": "[Guideline: NCCN Guidelines]",
+        "claim": "指南建议",
+        "result": "partial",
+        "match_score": 70
+      },
+      {
+        "citation": "[Guideline: NCCN Guidelines]",
+        "claim": "指南建议",
+        "result": "partial",
+        "match_score": 70
+      },
+      {
+        "citation": "[Guideline: NCCN Guidelines]",
+        "claim": "指南建议",
+        "result": "partial",
+        "match_score": 70
+      },
+      {
+        "citation": "[Guideline: NCCN Guidelines]",
+        "claim": "指南建议",
+        "result": "partial",
+        "match_score": 70
+      }
+    ],
+    "web": [
+      {
+        "citation": "[Web: URL]",
+        "claim": "网络来源",
+        "result": "partial",
+        "match_score": 60
+      },
+      {
+        "citation": "[Web: URL]",
+        "claim": "网络来源",
+        "result": "partial",
+        "match_score": 60
+      },
+      {
+        "citation": "[Web: URL]",
+        "claim": "网络来源",
+        "result": "partial",
+        "match_score": 60
+      }
+    ],
+    "insufficient_markers": 1
+  },
+  "ccr": {
+    "score": 3.2,
+    "breakdown": {
+      "s_line": 4,
+      "s_scheme": 3,
+      "s_dose": 3,
+      "s_reject": 3,
+      "s_align": 3
+    },
+    "max": 4.0
+  },
+  "mqr": {
+    "score": 3.6,
+    "breakdown": {
+      "s_complete": 4,
+      "s_applicable": 4,
+      "s_format": 4,
+      "s_citation": 3,
+      "s_uncertainty": 3
+    },
+    "max": 4.0
+  },
+  "cer": {
+    "score": 0.133,
+    "errors": [
+      {
+        "level": "Minor",
+        "weight": 1.0,
+        "description": "部分引用格式不统一",
+        "citation": "[PubMed: PMID ...]"
+      }
+    ]
+  },
+  "ptr": {
+    "score": 0.422,
+    "details": {
+      "pubmed_citations": 8,
+      "web_citations": 3,
+      "guideline_citations": 5,
+      "insufficient_markers": 1,
+      "total_claims": 32,
+      "has_real_search": true,
+      "retrieved_docs": 13
+    }
+  },
+  "cpi": 0.741
+}

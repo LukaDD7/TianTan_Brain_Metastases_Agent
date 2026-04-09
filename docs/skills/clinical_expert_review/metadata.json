@@ -1,0 +1,86 @@
+{
+  "name": "clinical_expert_review",
+  "description": "对AI生成的MDT报告进行临床专家级审查，评估CCR、MQR、CER、PTR和CPI指标，提供引用溯源验证",
+  "version": "1.0.0",
+  "type": "analysis",
+  "tags": ["medical", "review", "citation", "validation", "metrics"],
+  "inputs": {
+    "baseline_file": {
+      "type": "file",
+      "description": "Baseline结果JSON文件路径",
+      "pattern": "*_baseline_results.json"
+    },
+    "method": {
+      "type": "string",
+      "description": "Baseline方法",
+      "enum": ["rag", "websearch", "bm_agent"]
+    },
+    "patient_id": {
+      "type": "string",
+      "description": "患者ID"
+    }
+  },
+  "outputs": {
+    "review_results": {
+      "type": "file",
+      "description": "结构化审查结果JSON",
+      "pattern": "review_results.json"
+    },
+    "review_report": {
+      "type": "file",
+      "description": "人类可读审查报告",
+      "pattern": "clinical_expert_review_report.md"
+    }
+  },
+  "output_directory_structure": {
+    "base": "analysis/reviews_<method>_<version>/",
+    "patient_work_dir": "work_<patient_id>/",
+    "files": [
+      "review_results.json",
+      "clinical_expert_review_report.md"
+    ],
+    "summary": "SUMMARY_REPORT.md"
+  },
+  "metrics": {
+    "CCR": {
+      "full_name": "Clinical Consistency Rate",
+      "range": "0-4",
+      "weight_in_CPI": 0.35,
+      "sub_metrics": ["s_line", "s_scheme", "s_dose", "s_reject", "s_align"]
+    },
+    "MQR": {
+      "full_name": "MDT Quality Rate",
+      "range": "0-4",
+      "weight_in_CPI": 0.25,
+      "sub_metrics": ["s_complete", "s_applicable", "s_format", "s_citation", "s_uncertainty"]
+    },
+    "CER": {
+      "full_name": "Clinical Error Rate",
+      "range": "0-1",
+      "weight_in_CPI": 0.15,
+      "error_weights": {
+        "Critical": 3.0,
+        "Major": 2.0,
+        "Minor": 1.0
+      }
+    },
+    "PTR": {
+      "full_name": "Physical Traceability Rate",
+      "range": "0-1",
+      "weight_in_CPI": 0.25,
+      "citation_weights": {
+        "PubMed": 1.0,
+        "Guideline": 0.8,
+        "Local": 0.8,
+        "Web": 0.5,
+        "Parametric": 0.0,
+        "Insufficient": 0.0
+      }
+    },
+    "CPI": {
+      "full_name": "Composite Performance Index",
+      "range": "0-1",
+      "formula": "0.35×(CCR/4) + 0.25×PTR + 0.25×(MQR/4) + 0.15×(1-CER)"
+    }
+  }
+}

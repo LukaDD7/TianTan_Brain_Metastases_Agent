@@ -1,0 +1,103 @@
+{
+  "patient_id": "665548",
+  "case_id": "Case4",
+  "review_date": "2026-04-09",
+  "method": "RAG V2",
+  "patient_context": {
+    "tumor_type": "贲门中-低分化腺癌",
+    "stage": "T4NxM1 IV期（脑、肝、肺转移）",
+    "metastasis_sites": [
+      "脑（多发）",
+      "肝",
+      "肺",
+      "门静脉癌栓"
+    ],
+    "molecular_profile": "Her2(1+), pMMR/MSS, 无靶向突变",
+    "treatment_lines": 4,
+    "current_status": "PD（四线治疗中）",
+    "performance_status": "ECOG 1",
+    "comorbidities": [
+      "胃溃疡病史",
+      "上消化道出血史",
+      "静脉血栓史"
+    ]
+  },
+  "citation_verification": {
+    "local": [
+      {
+        "citation": "[Local: Provided_Text_Snippets.md, Section: KEYNOTE-158 Study]",
+        "claim": "PD-1在MSI-H人群中获益显著，MSS患者获益有限",
+        "result": "pass",
+        "match_score": 80,
+        "note": "确实检索到KEYNOTE-158研究相关内容"
+      },
+      {
+        "citation": "[Local: Provided_Text_Snippets.md, Section: Head MRI Report]",
+        "claim": "MRI显示颅内病灶周围水肿范围增大",
+        "result": "fail",
+        "match_score": 0,
+        "note": "章节为患者输入数据，非指南引用"
+      }
+    ],
+    "pubmed": [],
+    "oncokb": [],
+    "insufficient_markers": 4
+  },
+  "ccr": {
+    "score": 2.8,
+    "max": 4.0,
+    "breakdown": {
+      "s_line": 4,
+      "s_scheme": 3,
+      "s_dose": 2,
+      "s_reject": 3,
+      "s_align": 2
+    }
+  },
+  "mqr": {
+    "score": 3.4,
+    "max": 4.0,
+    "breakdown": {
+      "s_complete": 4,
+      "s_applicable": 4,
+      "s_format": 4,
+      "s_citation": 2,
+      "s_uncertainty": 3
+    }
+  },
+  "cer": {
+    "score": 0.2,
+    "errors": [
+      {
+        "level": "Minor",
+        "weight": 1.0,
+        "description": "患者输入数据被标注为指南引用",
+        "citation": "[Local: Provided_Text_Snippets.md, Section: Head MRI Report]"
+      },
+      {
+        "level": "Minor",
+        "weight": 1.0,
+        "description": "Parametric Knowledge标注过多",
+        "citation": "[Parametric Knowledge: NCCN Gastric Cancer Guidelines]"
+      },
+      {
+        "level": "Minor",
+        "weight": 1.0,
+        "description": "检索指南主要涉及肺癌/乳腺癌，缺乏胃癌特异性证据",
+        "citation": "N/A"
+      }
+    ]
+  },
+  "ptr": {
+    "score": 0.107,
+    "details": {
+      "local_citations": 4,
+      "parametric_knowledge": 10,
+      "insufficient_markers": 4,
+      "total_claims": 30,
+      "has_real_search": true,
+      "retrieved_docs": 5
+    }
+  },
+  "cpi": 0.604
+}

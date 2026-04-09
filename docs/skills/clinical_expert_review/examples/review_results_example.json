@@ -1,0 +1,161 @@
+{
+  "patient_id": "868183",
+  "case_id": "Case3",
+  "review_date": "2026-04-09",
+  "method": "RAG V2",
+  "data_sources": {
+    "baseline_file": "baseline/set1_results_v2/rag/868183_baseline_results.json",
+    "patient_input": "patient_input/Set-1/868183/patient_868183_input.txt",
+    "output_directory": "analysis/reviews_rag_v2/work_868183/"
+  },
+  "patient_context": {
+    "tumor_type": "肺腺鳞癌/未分化癌（MET扩增/融合）",
+    "stage": "T2N0M1 IV期（脑、肝转移）",
+    "metastasis_sites": ["脑（术后）", "肝", "腹腔淋巴结"],
+    "molecular_profile": "MET拷贝数变异（扩增）, MET基因融合(M13M15)",
+    "treatment_lines": 2,
+    "current_status": "SD（术后辅助化疗2周期后）",
+    "performance_status": "ECOG 1",
+    "comorbidities": ["肺间质纤维化", "间质性肺炎", "COPD", "胃溃疡术后"]
+  },
+  "citation_verification": {
+    "local": [
+      {
+        "citation": "[Local: Patient Medical Record, Section: 既往史]",
+        "claim": "患者既往史信息",
+        "result": "fail",
+        "match_score": 0,
+        "note": "章节为患者输入数据，非指南引用。验证方法：检查retrieved_docs中的source字段，Patient Medical Record不在检索文档列表中。"
+      },
+      {
+        "citation": "[Local: Patient Medical Record, Section: 病理诊断]",
+        "claim": "病理诊断及免疫组化结果",
+        "result": "fail",
+        "match_score": 0,
+        "note": "章节为患者输入数据，非指南引用。"
+      }
+    ],
+    "pubmed": [],
+    "oncokb": [],
+    "insufficient_markers": 5
+  },
+  "ccr": {
+    "score": 2.600,
+    "max": 4.0,
+    "breakdown": {
+      "s_line": {
+        "score": 3,
+        "max": 4,
+        "rationale": "治疗线判定基本正确，患者为二线治疗（术后辅助化疗后）"
+      },
+      "s_scheme": {
+        "score": 3,
+        "max": 4,
+        "rationale": "MET抑制剂推荐合理，但缺乏具体剂量依据"
+      },
+      "s_dose": {
+        "score": 2,
+        "max": 4,
+        "rationale": "剂量参数缺乏引用支撑，Parametric Knowledge使用过多"
+      },
+      "s_reject": {
+        "score": 3,
+        "max": 4,
+        "rationale": "排他性论证基本充分，列出了被拒绝方案及理由"
+      },
+      "s_align": {
+        "score": 2,
+        "max": 4,
+        "rationale": "临床路径部分偏离，未充分考虑肺间质纤维化对靶向治疗的影响"
+      }
+    }
+  },
+  "mqr": {
+    "score": 3.200,
+    "max": 4.0,
+    "breakdown": {
+      "s_complete": {
+        "score": 4,
+        "max": 4,
+        "rationale": "8个模块均完整"
+      },
+      "s_applicable": {
+        "score": 4,
+        "max": 4,
+        "rationale": "模块适用性判断正确，Module 6标记为N/A（无手术计划）"
+      },
+      "s_format": {
+        "score": 4,
+        "max": 4,
+        "rationale": "格式规范，使用Markdown表格和列表"
+      },
+      "s_citation": {
+        "score": 2,
+        "max": 4,
+        "rationale": "引用格式不规范，存在虚假章节引用（Patient Imaging Report等）"
+      },
+      "s_uncertainty": {
+        "score": 3,
+        "max": 4,
+        "rationale": "主动标注Evidence Insufficient，但部分不确定性未充分说明"
+      }
+    }
+  },
+  "cer": {
+    "score": 0.333,
+    "errors": [
+      {
+        "level": "Major",
+        "weight": 2.0,
+        "description": "患者输入数据被错误标注为指南引用（多次出现）",
+        "citation": "[Local: Patient Medical Record, Section: 既往史]",
+        "impact": "违反引用规范，患者输入数据不得标注为指南引用"
+      },
+      {
+        "level": "Major",
+        "weight": 2.0,
+        "description": "Parametric Knowledge标注过多（超过10处），缺乏具体指南支撑",
+        "citation": "[Parametric Knowledge: NCCN NSCLC Guidelines v2023]",
+        "impact": "降低证据可追溯性，临床声明缺乏可靠来源"
+      },
+      {
+        "level": "Minor",
+        "weight": 1.0,
+        "description": "检索指南缺乏MET变异NSCLC脑转移的针对性证据",
+        "citation": "N/A",
+        "impact": "影响治疗方案选择的循证支持强度"
+      }
+    ]
+  },
+  "ptr": {
+    "score": 0.240,
+    "details": {
+      "local_citations": 2,
+      "parametric_knowledge": 12,
+      "insufficient_markers": 5,
+      "total_claims": 32,
+      "has_real_search": true,
+      "retrieved_docs": 5,
+      "calculation": "Local: 2×0.8=1.6, Parametric: 12×0.0=0, Insufficient: 5×0.0=0, PTR=1.6/32=0.240"
+    }
+  },
+  "cpi": 0.625,
+  "cpi_calculation": {
+    "ccr_component": 0.35 * (2.6/4) ,
+    "ptr_component": 0.25 * 0.240,
+    "mqr_component": 0.25 * (3.2/4),
+    "cer_component": 0.15 * (1-0.333),
+    "formula": "CPI = 0.35×(CCR/4) + 0.25×PTR + 0.25×(MQR/4) + 0.15×(1-CER)"
+  },
+  "reviewer_notes": [
+    "引用溯源验证方法：提取baseline文件中的retrieved_docs数组，与报告引用进行交叉验证",
+    "虚假章节检测：Patient Imaging Report, Patient History, Patient Pathology等章节不存在于检索文档中",
+    "患者数据误标：患者输入的影像/病理数据被标注为Local指南引用，违反引用规范",
+    "Parametric Knowledge问题：12处Parametric Knowledge标注，缺乏具体来源支撑"
+  ],
+  "recommendations": [
+    "修复引用问题：杜绝虚假章节引用，患者输入数据不得标注为指南引用",
+    "增强证据检索：增加PubMed文献检索，减少Parametric Knowledge依赖",
+    "提高可追溯性：每个临床声明应有明确引用，章节标注应使用具体标题"
+  ]
+}
