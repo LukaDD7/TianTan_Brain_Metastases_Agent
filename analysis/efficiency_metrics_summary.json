@@ -19,7 +19,12 @@
         "min": 3795,
         "max": 4587
       },
-      "tool_calls": null,
+      "env_calls": {
+        "mean": 0,
+        "std": 0.0,
+        "min": 0,
+        "max": 0
+      },
       "io_ratio": 0.12458261502638732
     },
     "RAG V2": {
@@ -30,10 +35,10 @@
         "max": 134051.15032196045
       },
       "input_tokens": {
-        "mean": 505.55555555555554,
-        "std": 58.66453594615556,
-        "min": 429,
-        "max": 580
+        "mean": 617.5555555555555,
+        "std": 53.38096831060465,
+        "min": 545,
+        "max": 695
       },
       "output_tokens": {
         "mean": 3622.222222222222,
@@ -41,8 +46,13 @@
         "min": 3320,
         "max": 3981
       },
-      "tool_calls": null,
-      "io_ratio": 0.1401358548760906
+      "env_calls": {
+        "mean": 1,
+        "std": 0.0,
+        "min": 1,
+        "max": 1
+      },
+      "io_ratio": 0.17107129910658916
     },
     "Web Search V2": {
       "latency": {
@@ -52,19 +62,24 @@
         "max": 130060.47821044922
       },
       "input_tokens": {
-        "mean": 505.55555555555554,
-        "std": 58.66453594615556,
-        "min": 429,
-        "max": 580
+        "mean": 40251.555555555555,
+        "std": 4762.091980188726,
+        "min": 34551,
+        "max": 51419
       },
       "output_tokens": {
-        "mean": 5750.222222222223,
-        "std": 531.6603186663873,
-        "min": 4908,
-        "max": 6387
+        "mean": 5509.888888888889,
+        "std": 415.0669959309113,
+        "min": 4988,
+        "max": 6123
       },
-      "tool_calls": null,
-      "io_ratio": 0.08853141373432143
+      "env_calls": {
+        "mean": 3,
+        "std": 0.0,
+        "min": 3,
+        "max": 3
+      },
+      "io_ratio": 7.336486683226607
     },
     "BM Agent": {
       "latency": null,
@@ -80,7 +95,7 @@
         "min": 2299,
         "max": 20239
       },
-      "tool_calls": {
+      "env_calls": {
         "mean": 44.77777777777778,
         "std": 10.86022303842994,
         "min": 30,
@@ -95,224 +110,284 @@
         "latency_ms": 229426.48935317993,
         "input_tokens": 468,
         "output_tokens": 4083,
-        "report_length": 5858
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "612908": {
         "latency_ms": 104742.84768104553,
         "input_tokens": 579,
         "output_tokens": 3796,
-        "report_length": 5301
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "638114": {
         "latency_ms": 167815.40274620056,
         "input_tokens": 482,
         "output_tokens": 3960,
-        "report_length": 5425
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "640880": {
         "latency_ms": 260463.20462226868,
         "input_tokens": 515,
         "output_tokens": 3795,
-        "report_length": 4912
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "648772": {
         "latency_ms": 148099.58791732788,
         "input_tokens": 580,
         "output_tokens": 4128,
-        "report_length": 5658
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "665548": {
         "latency_ms": 168380.26809692383,
         "input_tokens": 449,
         "output_tokens": 4587,
-        "report_length": 6112
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "708387": {
         "latency_ms": 121324.97024536133,
         "input_tokens": 475,
         "output_tokens": 4034,
-        "report_length": 4849
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "747724": {
         "latency_ms": 139860.94641685486,
         "input_tokens": 429,
         "output_tokens": 3966,
-        "report_length": 5332
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       },
       "868183": {
         "latency_ms": 104810.5616569519,
         "input_tokens": 573,
         "output_tokens": 4329,
-        "report_length": 6201
+        "env_calls": 0,
+        "env_calls_type": "N/A"
       }
     },
     "rag": {
       "605525": {
         "latency_ms": 89629.68158721924,
-        "input_tokens": 468,
+        "input_tokens": 592,
         "output_tokens": 3763,
-        "report_length": 4377
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "612908": {
         "latency_ms": 81269.21105384827,
-        "input_tokens": 579,
+        "input_tokens": 680,
         "output_tokens": 3320,
-        "report_length": 3912
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "638114": {
         "latency_ms": 73923.11477661133,
-        "input_tokens": 482,
+        "input_tokens": 613,
         "output_tokens": 3339,
-        "report_length": 4328
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "640880": {
         "latency_ms": 89386.3615989685,
-        "input_tokens": 515,
+        "input_tokens": 642,
         "output_tokens": 3690,
-        "report_length": 4535
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "648772": {
         "latency_ms": 88178.98607254028,
-        "input_tokens": 580,
+        "input_tokens": 655,
         "output_tokens": 3534,
-        "report_length": 4466
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "665548": {
         "latency_ms": 134051.15032196045,
-        "input_tokens": 449,
+        "input_tokens": 573,
         "output_tokens": 3867,
-        "report_length": 4338
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "708387": {
         "latency_ms": 90330.79075813293,
-        "input_tokens": 475,
+        "input_tokens": 563,
         "output_tokens": 3572,
-        "report_length": 4253
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "747724": {
         "latency_ms": 91713.34457397461,
-        "input_tokens": 429,
+        "input_tokens": 545,
         "output_tokens": 3534,
-        "report_length": 4507
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       },
       "868183": {
         "latency_ms": 121981.24074935913,
-        "input_tokens": 573,
+        "input_tokens": 695,
         "output_tokens": 3981,
-        "report_length": 5164
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 3
       }
     },
     "websearch": {
       "605525": {
         "latency_ms": 113408.7975025177,
-        "input_tokens": 468,
-        "output_tokens": 5761,
-        "report_length": 7636
+        "input_tokens": 41673,
+        "output_tokens": 5710,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "612908": {
         "latency_ms": 112473.32906723022,
-        "input_tokens": 579,
-        "output_tokens": 5193,
-        "report_length": 6164
+        "input_tokens": 39129,
+        "output_tokens": 4988,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "638114": {
         "latency_ms": 101267.45390892029,
-        "input_tokens": 482,
-        "output_tokens": 5336,
-        "report_length": 6332
+        "input_tokens": 34551,
+        "output_tokens": 5010,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "640880": {
         "latency_ms": 130060.47821044922,
-        "input_tokens": 515,
-        "output_tokens": 6387,
-        "report_length": 8072
+        "input_tokens": 40185,
+        "output_tokens": 6123,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "648772": {
         "latency_ms": 108408.3604812622,
-        "input_tokens": 580,
-        "output_tokens": 6174,
-        "report_length": 7267
+        "input_tokens": 36088,
+        "output_tokens": 5346,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "665548": {
         "latency_ms": 116555.17745018005,
-        "input_tokens": 449,
-        "output_tokens": 6345,
-        "report_length": 8690
+        "input_tokens": 40040,
+        "output_tokens": 6080,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "708387": {
         "latency_ms": 123034.36923027039,
-        "input_tokens": 475,
-        "output_tokens": 6069,
-        "report_length": 7612
+        "input_tokens": 40745,
+        "output_tokens": 5616,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "747724": {
         "latency_ms": 116932.5315952301,
-        "input_tokens": 429,
-        "output_tokens": 4908,
-        "report_length": 5717
+        "input_tokens": 51419,
+        "output_tokens": 5234,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       },
       "868183": {
         "latency_ms": 101237.07818984985,
-        "input_tokens": 573,
-        "output_tokens": 5579,
-        "report_length": 6848
+        "input_tokens": 38434,
+        "output_tokens": 5482,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "has_real_usage": true
       }
     },
     "bm_agent": {
       "605525": {
+        "latency_ms": 0,
         "input_tokens": 581855,
         "output_tokens": 4344,
-        "tool_calls": 44,
-        "log_file": "session_20260407_605525_3be3a5dc-ceb9-4206-8aff-b8c0f68ca2f5_structured.jsonl"
+        "env_calls": 44,
+        "env_calls_type": "tool_call"
       },
       "612908": {
+        "latency_ms": 0,
         "input_tokens": 615865,
         "output_tokens": 3549,
-        "tool_calls": 48,
-        "log_file": "session_20260407_612908_e68e53b3-15dc-40bd-95c6-8f0e3a7402fc_structured.jsonl"
+        "env_calls": 48,
+        "env_calls_type": "tool_call"
       },
       "638114": {
+        "latency_ms": 0,
         "input_tokens": 445975,
         "output_tokens": 3033,
-        "tool_calls": 47,
-        "log_file": "session_20260407_638114_b3dd58a4-8028-4f1f-8d25-5c6ecded76ed_structured.jsonl"
+        "env_calls": 47,
+        "env_calls_type": "tool_call"
       },
       "640880": {
+        "latency_ms": 0,
         "input_tokens": 966623,
         "output_tokens": 13389,
-        "tool_calls": 37,
-        "log_file": "session_20260408_640880_c55c4f10-b7b8-4883-aa29-0e72f3382ca6_structured.jsonl"
+        "env_calls": 37,
+        "env_calls_type": "tool_call"
       },
       "648772": {
+        "latency_ms": 0,
         "input_tokens": 730414,
         "output_tokens": 7905,
-        "tool_calls": 57,
-        "log_file": "session_20260408_648772_2a8eb49f-2e3d-4606-8c2b-9d015f2eeebc_structured.jsonl"
+        "env_calls": 57,
+        "env_calls_type": "tool_call"
       },
       "665548": {
+        "latency_ms": 0,
         "input_tokens": 498005,
         "output_tokens": 4782,
-        "tool_calls": 49,
-        "log_file": "session_20260408_665548_177f7ba7-7bf4-45c1-95b4-40b0c044c156_structured.jsonl"
+        "env_calls": 49,
+        "env_calls_type": "tool_call"
       },
       "708387": {
+        "latency_ms": 0,
         "input_tokens": 331158,
         "output_tokens": 9489,
-        "tool_calls": 30,
-        "log_file": "session_20260408_708387_2707294c-1898-4986-92c5-c76ae81a0674_structured.jsonl"
+        "env_calls": 30,
+        "env_calls_type": "tool_call"
       },
       "747724": {
+        "latency_ms": 0,
         "input_tokens": 528564,
         "output_tokens": 2299,
-        "tool_calls": 30,
-        "log_file": "session_20260408_747724_37c353ed-055a-4eba-b5a6-13cd5c304926_structured.jsonl"
+        "env_calls": 30,
+        "env_calls_type": "tool_call"
       },
       "868183": {
+        "latency_ms": 0,
         "input_tokens": 1513558,
         "output_tokens": 20239,
-        "tool_calls": 61,
-        "log_file": "session_20260408_868183_980fc6c2-e4ef-4f80-8de9-e29d4f7bc636_structured.jsonl"
+        "env_calls": 61,
+        "env_calls_type": "tool_call"
       }
     }
+  },
+  "notes": {
+    "websearch_tokens": "Real API usage from full_output.usage",
+    "rag_tokens": "Estimated (patient input + retrieved docs)",
+    "direct_llm_tokens": "Estimated from character count",
+    "bm_agent_tokens": "Summed from structured logs"
   }
 }

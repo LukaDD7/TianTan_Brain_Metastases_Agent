@@ -7,10 +7,19 @@
 | 指标 | 说明 | 数据来源 |
 |------|------|----------|
 | 平均端到端延迟 | 从输入到生成完整报告的时间 | baseline结果中的latency_ms |
-| 单例平均输入 | LLM输入token总数 | BM Agent日志 / Baseline记录 |
-| 单例平均输出 | LLM输出token总数 | BM Agent日志 / Baseline记录 |
+| 单例平均输入 | LLM输入token总数 | API usage / 估算 |
+| 单例平均输出 | LLM输出token总数 | API usage / 估算 |
 | 输入/输出比值 | 输入token数 / 输出token数 | 计算得出 |
-| 底层环境调用总频次 | 工具调用次数（文件读取、搜索等） | BM Agent日志统计 |
+| 底层环境调用 | 外部工具/搜索调用次数 | 各方法特定 |
+
+## Token数据来源说明
+
+| 方法 | 输入Tokens | 输出Tokens | 说明 |
+|------|------------|------------|------|
+| Direct LLM | 估算 | 估算 | 无API usage记录，基于字符数估算 |
+| RAG V2 | 估算 | 估算 | 输入=患者输入+检索文档 |
+| **Web Search V2** | **真实API数据** | **真实API数据** | 从full_output.usage读取 |
+| BM Agent | 日志累加 | 日志累加 | 从structured.jsonl累加 |
 
 ## 结果汇总
 
@@ -24,59 +33,82 @@
 
 ### 2. 单例平均输入 (tokens)
 
-| 方法 | Mean ± SD | Range |
-|------|-----------|-------|
-| Direct LLM | 506 ± 59 | 429 - 580 |
-| RAG V2 | 506 ± 59 | 429 - 580 |
-| Web Search V2 | 506 ± 59 | 429 - 580 |
-| BM Agent | 690224 ± 357916 | 331158 - 1513558 |
+| 方法 | Mean ± SD | Range | 来源 |
+|------|-----------|-------|------|
+| Direct LLM | 506 ± 59 | 429 - 580 | 估算 |
+| RAG V2 | 618 ± 53 | 545 - 695 | 估算 |
+| Web Search V2 | 40252 ± 4762 | 34551 - 51419 | 真实API |
+| BM Agent | 690224 ± 357916 | 331158 - 1513558 | 估算 |
 
 ### 3. 单例平均输出 (tokens)
 
-| 方法 | Mean ± SD | Range |
-|------|-----------|-------|
-| Direct LLM | 4075 ± 253 | 3795 - 4587 |
-| RAG V2 | 3622 ± 224 | 3320 - 3981 |
-| Web Search V2 | 5750 ± 532 | 4908 - 6387 |
-| BM Agent | 7670 ± 5924 | 2299 - 20239 |
+| 方法 | Mean ± SD | Range | 来源 |
+|------|-----------|-------|------|
+| Direct LLM | 4075 ± 253 | 3795 - 4587 | 估算 |
+| RAG V2 | 3622 ± 224 | 3320 - 3981 | 估算 |
+| Web Search V2 | 5510 ± 415 | 4988 - 6123 | 真实API |
+| BM Agent | 7670 ± 5924 | 2299 - 20239 | 估算 |
 
 ### 4. 输入/输出比值
 
-| 方法 | Mean |
-|------|------|
-| Direct LLM | 0.12 |
-| RAG V2 | 0.14 |
-| Web Search V2 | 0.09 |
-| BM Agent | 118.09 |
+| 方法 | Mean | 说明 |
+|------|------|------|
+| Direct LLM | 0.12 |  |
+| RAG V2 | 0.17 |  |
+| Web Search V2 | 7.34 | 搜索上下文增加输入 |
+| BM Agent | 118.09 | 高比值源于多轮工具调用 |
 
-### 5. 底层环境调用总频次 (tool_calls)
+### 5. 底层环境调用统计
 
-| 方法 | Mean ± SD | Range |
-|------|-----------|-------|
-| Direct LLM | N/A | N/A |
-| RAG V2 | N/A | N/A |
-| Web Search V2 | N/A | N/A |
-| BM Agent | 44.8 ± 10.9 | 30 - 61 |
+| 方法 | 调用次数 | 类型说明 |
+|------|----------|----------|
+| Direct LLM | 0 | 无环境调用（纯参数知识） |
+| RAG V2 | 1次 | 单次检索，固定3篇文档 |
+| Web Search V2 | 3次 | 固定3次网络搜索 |
+| BM Agent | 44.8±10.9次 | 文件读取、OncoKB、PubMed等工具调用 |
 
-## 数据来源说明
+## 关键发现
 
-- **Direct LLM**: baseline/set1_results/direct_llm/*_baseline_results.json
-- **RAG V2**: baseline/set1_results/rag/*_baseline_results.json
-- **Web Search V2**: baseline/set1_results_v2/websearch/*_baseline_results.json
-- **BM Agent**: workspace/sandbox/execution_logs/*_structured.jsonl
+1. **Web Search V2的真实Token数据**：
+   - 输入: 40,252±4,762 tokens（远高于估算值506）
+   - 输出: 5,510±415 tokens
+   - I/O比值: 7.34（搜索上下文显著增加输入）
 
-## 备注
+2. **BM Agent的高I/O比值**（118.09）：
+   - 源于多轮工具调用和复杂推理
+   - 平均44.8次工具调用，是Web Search的15倍
 
-- **Direct LLM、RAG V2、Web Search V2的Token数据**：
-  - 由于Baseline运行未记录API返回的token使用量，采用基于字符数的估算方法
-  - 估算规则：中文字符1.5 tokens/字，英文单词1.3 tokens/词，标点符号0.5 tokens/个
-  - 实际API调用可能与此估算存在偏差，仅供参考
+3. **RAG的固定模式**：
+   - 单次检索（3篇文档）
+   - I/O比值0.17，接近Direct LLM
 
-- **BM Agent的Token数据**：
-  - 从结构化日志中直接提取，包含实际的API调用记录
-  - 输入token包括：系统提示、用户输入、工具返回结果等
-  - 反映了多轮工具调用和推理过程的总token消耗
+## 数据来源
 
-- **工具调用统计**：
-  - 仅适用于BM Agent（其他Baseline方法不使用工具调用）
-  - 包括文件读取、OncoKB查询、PubMed搜索等外部API调用
+- **Direct LLM**: `baseline/set1_results/direct_llm/*_baseline_results.json`
+- **RAG V2**: `baseline/set1_results/rag/*_baseline_results.json`
+- **Web Search V2**: `baseline/set1_results_v2/websearch/*_baseline_results.json`
+  - Token数据: `full_output.usage`
+  - 搜索次数: 统计`full_output.output`中`web_search_call`类型
+- **BM Agent**: `workspace/sandbox/execution_logs/*_structured.jsonl`
+
+## 提取代码参考
+
+### Web Search Token提取
+```python
+full_output = result['full_output']
+input_tokens = full_output['usage']['input_tokens']   # 真实值
+output_tokens = full_output['usage']['output_tokens'] # 真实值
+search_count = sum(1 for item in full_output['output']
+                   if item['type'] == 'web_search_call')  # =3
+```
+
+### BM Agent Token提取
+```python
+for line in structured_jsonl:
+    record = json.loads(line)
+    if 'usage' in record:
+        total_input += record['usage']['input_tokens']
+        total_output += record['usage']['output_tokens']
+    if record['type'] == 'tool_call':
+        tool_calls += 1
+```
