@@ -1,0 +1,713 @@
+{
+  "analysis_date": "2026-04-09T12:53:44.337023",
+  "patients": [
+    "605525",
+    "612908",
+    "638114",
+    "640880",
+    "648772",
+    "665548",
+    "708387",
+    "747724",
+    "868183"
+  ],
+  "individual_results": {
+    "605525": {
+      "patient_id": "605525",
+      "case_id": "Case8",
+      "rag": {
+        "ccr": 3.0,
+        "ccr_breakdown": {
+          "s_line": 3,
+          "s_scheme": 3,
+          "s_dose": 3,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 0.4553846153846154,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 6,
+          "parametric_count": 2,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.7388461538461538,
+        "latency_ms": 146328.5584449768,
+        "report_length": 5323
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.14526315789473684,
+        "ptr_breakdown": {
+          "pubmed_count": 2,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.7138157894736842,
+        "latency_ms": 113408.7975025177,
+        "report_length": 7636
+      }
+    },
+    "612908": {
+      "patient_id": "612908",
+      "case_id": "Case7",
+      "rag": {
+        "ccr": 3.2,
+        "ccr_breakdown": {
+          "s_line": 3,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 1.0,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 9,
+          "parametric_count": 14,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.8925000000000001,
+        "latency_ms": 99544.70729827881,
+        "report_length": 4036
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.8400000000000001,
+        "ptr_breakdown": {
+          "pubmed_count": 12,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.8875000000000001,
+        "latency_ms": 112473.32906723022,
+        "report_length": 6164
+      }
+    },
+    "638114": {
+      "patient_id": "638114",
+      "case_id": "Case6",
+      "rag": {
+        "ccr": 3.2,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 3,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 1.0,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 13,
+          "parametric_count": 20,
+          "insufficient_count": 3,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.6,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 3,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.905,
+        "latency_ms": 163805.69338798523,
+        "report_length": 5641
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.8666666666666667,
+        "ptr_breakdown": {
+          "pubmed_count": 13,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 0,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.0,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 3,
+          "s_uncertainty": 3
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.8691666666666668,
+        "latency_ms": 101267.45390892029,
+        "report_length": 6332
+      }
+    },
+    "640880": {
+      "patient_id": "640880",
+      "case_id": "Case2",
+      "rag": {
+        "ccr": 3.0,
+        "ccr_breakdown": {
+          "s_line": 3,
+          "s_scheme": 3,
+          "s_dose": 3,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 0.8400000000000001,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 10,
+          "parametric_count": 8,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.06666666666666667,
+        "errors": [
+          [
+            "Minor",
+            1.0,
+            "提及剂量但无具体数值"
+          ]
+        ],
+        "cpi": 0.825,
+        "latency_ms": 124097.2671508789,
+        "report_length": 5268
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.73,
+        "ptr_breakdown": {
+          "pubmed_count": 13,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 4,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.86,
+        "latency_ms": 130060.47821044922,
+        "report_length": 8072
+      }
+    },
+    "648772": {
+      "patient_id": "648772",
+      "case_id": "Case1",
+      "rag": {
+        "ccr": 3.2,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 3,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 1.0,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 24,
+          "parametric_count": 18,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.06666666666666667,
+        "errors": [
+          [
+            "Minor",
+            1.0,
+            "提及剂量但无具体数值"
+          ]
+        ],
+        "cpi": 0.8825000000000001,
+        "latency_ms": 135155.95364570618,
+        "report_length": 6131
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.5044444444444445,
+        "ptr_breakdown": {
+          "pubmed_count": 8,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 3,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.8036111111111112,
+        "latency_ms": 108408.3604812622,
+        "report_length": 7267
+      }
+    },
+    "665548": {
+      "patient_id": "665548",
+      "case_id": "Case4",
+      "rag": {
+        "ccr": 3.2,
+        "ccr_breakdown": {
+          "s_line": 3,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 0.9866666666666666,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 8,
+          "parametric_count": 25,
+          "insufficient_count": 3,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.6,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 3,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.9016666666666666,
+        "latency_ms": 174213.18697929382,
+        "report_length": 6029
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.3733333333333333,
+        "ptr_breakdown": {
+          "pubmed_count": 7,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.7708333333333334,
+        "latency_ms": 116555.17745018005,
+        "report_length": 8690
+      }
+    },
+    "708387": {
+      "patient_id": "708387",
+      "case_id": "Case9",
+      "rag": {
+        "ccr": 3.4,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 1.0,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 13,
+          "parametric_count": 10,
+          "insufficient_count": 6,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.91,
+        "latency_ms": 139945.55354118347,
+        "report_length": 5735
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.14105263157894735,
+        "ptr_breakdown": {
+          "pubmed_count": 2,
+          "local_count": 0,
+          "parametric_count": 1,
+          "insufficient_count": 1,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.6,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 3,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.7252631578947368,
+        "latency_ms": 123034.36923027039,
+        "report_length": 7612
+      }
+    },
+    "747724": {
+      "patient_id": "747724",
+      "case_id": "Case10",
+      "rag": {
+        "ccr": 3.2,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 3,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 0.58,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 0,
+          "parametric_count": 27,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.6,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 3,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.7999999999999999,
+        "latency_ms": 135282.306432724,
+        "report_length": 6315
+      },
+      "websearch": {
+        "ccr": 3.4,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 3,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.02,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 1,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 2.8,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 1,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.6275,
+        "latency_ms": 116932.5315952301,
+        "report_length": 5717
+      }
+    },
+    "868183": {
+      "patient_id": "868183",
+      "case_id": "Case3",
+      "rag": {
+        "ccr": 3.2,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 3,
+          "s_reject": 3,
+          "s_align": 3
+        },
+        "ptr": 0.8784615384615385,
+        "ptr_breakdown": {
+          "pubmed_count": 0,
+          "local_count": 11,
+          "parametric_count": 7,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 5,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.8621153846153846,
+        "latency_ms": 119049.48329925537,
+        "report_length": 5445
+      },
+      "websearch": {
+        "ccr": 3.6,
+        "ccr_breakdown": {
+          "s_line": 4,
+          "s_scheme": 3,
+          "s_dose": 4,
+          "s_reject": 4,
+          "s_align": 3
+        },
+        "ptr": 0.5105882352941177,
+        "ptr_breakdown": {
+          "pubmed_count": 8,
+          "local_count": 0,
+          "parametric_count": 0,
+          "insufficient_count": 2,
+          "has_real_search": true,
+          "search_calls": 3,
+          "pubmed_weight": 1.0
+        },
+        "mqr": 3.4,
+        "mqr_breakdown": {
+          "s_complete": 4.0,
+          "s_applicable": 2,
+          "s_format": 3,
+          "s_citation": 4,
+          "s_uncertainty": 4
+        },
+        "cer": 0.0,
+        "errors": [],
+        "cpi": 0.8051470588235294,
+        "latency_ms": 101237.07818984985,
+        "report_length": 6848
+      }
+    }
+  },
+  "summary": {
+    "rag": {
+      "ccr": {
+        "mean": 3.177777777777778,
+        "sd": 0.12018504251546631
+      },
+      "ptr": {
+        "mean": 0.8600569800569801,
+        "sd": 0.2053347428875971
+      },
+      "mqr": {
+        "mean": 3.466666666666667,
+        "sd": 0.10000000000000009
+      },
+      "cer": {
+        "mean": 0.014814814814814815,
+        "sd": 0.02939723678960656
+      },
+      "cpi": {
+        "mean": 0.857514245014245,
+        "sd": 0.058390634523450245
+      },
+      "latency_ms": {
+        "mean": 137491.41224225363,
+        "sd": 22624.22068239122
+      }
+    },
+    "websearch": {
+      "ccr": {
+        "mean": 3.577777777777778,
+        "sd": 0.06666666666666672
+      },
+      "ptr": {
+        "mean": 0.4590387188013607,
+        "sd": 0.314066424926372
+      },
+      "mqr": {
+        "mean": 3.311111111111111,
+        "sd": 0.24720661623652213
+      },
+      "cer": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "cpi": {
+        "mean": 0.7847596797003402,
+        "sd": 0.08485993018394877
+      },
+      "latency_ms": {
+        "mean": 113708.61951510112,
+        "sd": 9439.808776825554
+      }
+    }
+  },
+  "version": "v2_improved"
+}

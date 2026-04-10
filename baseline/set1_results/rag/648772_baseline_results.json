@@ -1,0 +1,37 @@
+{
+  "patient_id": "648772",
+  "case_id": "Case1",
+  "patient_input_preview": "住院号 648772。\n入院时间 2020年07月20日。\n年龄 49。\n性别 男。\n主诉 恶性肿瘤术后2年余，间断头晕头痛半年。\n现病史 患者2年内因颈部恶性黑色素瘤行多次手术：颈前肿物切除术及双侧颈部、锁骨上、左侧颊部淋巴结清扫，半年前患者无明显诱因出现头晕头痛，头痛性质为闷痛，程度可忍受，位于右额顶部，无放散，伴头晕，无恶心呕吐，无四肢乏力麻木，无视力下降，无四肢活动障碍，就诊于当地医院，行头CT检查发现颅内占位性病变，门诊以“颅内占位性病变”收入院。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n，体重\n无明显变化\n。\n既往史 平素健康状况:\n良好\n。患者2年半前因甲状腺癌行右甲状腺根治术，术后口服优甲乐；1年前因恶性黑色素瘤颈淋巴结转移行颈淋巴结清扫术。\n否认高血压史、冠心病史\n，\n否认糖尿病史、脑血管病史、精神病史\n，\n否认肝炎史、疟疾史、结核史\n,\n否认手术史、外伤史、输血史\n，\n否认过敏史\n，\n预防接种史不详\n。\n头部MRI 右额侧见半环形T1WI高T2WI低信号，内信号不均匀，相应于FLAIR上呈混杂稍高信号，周围可见片状T1WI高T2WI低信号，DWI/ADC...",
+  "results": {
+    "rag": {
+      "method": "RAG",
+      "patient_id": "648772",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 648772\n**报告日期：** 2020 年 07 月 20 日\n**诊疗团队：** 神经外科、肿瘤内科、放疗科、病理科、影像科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者男性，49 岁，因“恶性肿瘤术后 2 年余，间断头晕头痛半年”入院。\n  - 既往确诊恶性黑色素瘤（颈部）及甲状腺癌，多次行颈部淋巴结清扫术。\n  - 本次入院主要针对新发颅内占位性病变。\n\n- **临床症状评估**\n  - **主诉：** 间断头晕头痛半年，右额顶部闷痛，可忍受。\n  - **神经系统查体：** 无恶心呕吐，无四肢乏力麻木，无视力下降及活动障碍（KPS 评分预计≥70 分）。\n  - **评估结论：** 症状相对轻微，未出现严重颅内高压或局灶性神经功能缺损，具备积极治疗条件。\n\n- **既往病史与合并症分析**\n  - 甲状腺癌术后（口服优甲乐），恶性黑色素瘤术后（颈淋巴结转移史）。\n  - 否认高血压、糖尿病、心脏病史，身体状况良好（ECOG 评分预计 0-1 分）。\n  - 合并鼻窦炎及鼻窦囊肿，与颅内病变无关。\n\n- **影像学初步印象**\n  - **头部 MRI：** 右额叶见 20x25x16mm 占位，不规则分叶状实性中度强化，周围水肿。\n  - **诊断印象：** 右额叶转移瘤（黑色素瘤可能性大）。\n  - **依据：** 结合黑色素瘤病史及影像学强化特征，符合血行转移表现。\n\n---\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 原发灶为皮肤/颈部恶性黑色素瘤，具有高侵袭性及高脑转移倾向。\n  - 既往已行多次颈部清扫术，目前颈部局部控制情况需结合本次全身评估确认。\n\n- **分子分型与靶向治疗敏感性评估**\n  - 黑色素瘤脑转移患者强烈建议进行 BRAF V600 突变检测。\n  - **证据说明：** 提供的指南片段未包含黑色素瘤分子分型具体指导。`[Evidence: Insufficient in Retrieved Guidelines]`\n  - **专家建议：** 需补充 BRAF/NRAS/c-KIT 基因检测，以指导后续靶向治疗。\n\n- **原发灶治疗策略建议**\n  - 目前主要威胁为颅内进展，优先处理颅内病灶。\n  - 若全身其他部位无活跃进展，可暂不对原发灶区域进行激进干预，重点在于全身系统治疗控制微转移。\n\n---\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - 黑色素瘤脑转移的标准系统治疗包括免疫检查点抑制剂（如 PD-1 抑制剂）或靶向治疗（BRAF/MEK 抑制剂，若突变阳性）。\n  - **指南依据：** 提供的文献片段仅提及“允许任何形式的系统治疗”，未具体推荐药物方案。`[Local: Brain_Mets_Evidence_Table.md, Section: ANZMTG 01.07]`\n  - **专家建议：** 鉴于指南片段证据不足，建议参照现行 NCCN 或 CSCO 指南，优先考虑免疫联合治疗或靶向治疗入脑方案。`[Evidence: Insufficient in Retrieved Guidelines]`\n\n- **药物选择与剂量考量**\n  - 若 BRAF V600E 阳性：推荐达拉非尼 + 曲美替尼等组合。\n  - 若野生型：推荐纳武利尤单抗 + 伊匹木单抗等免疫组合。\n  - **注意：** 具体剂量需根据体表面积及肝肾功能调整，提供的指南片段未涉及具体药代动力学参数。`[Evidence: Insufficient in Retrieved Guidelines]`\n\n- **围手术期用药参数**\n  - 术前建议使用地塞米松减轻瘤周水肿。\n  - 若无癫痫发作史，不常规推荐预防性抗癫痫药，除非手术涉及皮层功能区。\n\n---\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - 治疗后前 2 年，每 2-3 个月复查头部增强 MRI。\n  - **依据：** 研究显示 12 个月局部失败率及远处颅内失败率是关键评估节点。`[Local: Brain_Mets_Evidence_Table.md, Section: ANZMTG 01.07]`\n  - Aoyama 研究指出单纯 SRS 组 12 个月复发率较高（76.4%），提示需密切监测。`[Local: Brain_Mets_Evidence_Table.md, Section: Aoyama et al.]`\n\n- **肿瘤标志物监测**\n  - 监测 S-100B 蛋白及 LDH 水平，辅助评估肿瘤负荷。\n  - **证据说明：** 提供的指南片段未提及具体标志物监测频率。`[Evidence: Insufficient in Retrieved Guidelines]`\n\n- **神经系统功能评估**\n  - 每次随访评估 KPS 评分及认知功能（尤其是若接受全脑放疗）。\n  - 关注头痛、头晕症状变化。\n\n---\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **其他可行但未被选择的方案**\n  - **方案 A：单纯全脑放疗（WBRT）**\n    - **排他性论证：** 虽然 WBRT 可降低远处颅内失败率（ANZMTG 研究：42.0% vs 50.5%），但中位总生存期（OS）无显著获益（16.5 个月 vs 13 个月，p=0.86）。`[Local: Brain_Mets_Evidence_Table.md, Section: ANZMTG 01.07]`\n    - **决策：** 为避免 WBRT 带来的神经认知毒性，且患者为单发/寡转移（目前影像显示右额单发为主），优选手术或 SRS。\n  - **方案 B：单纯支持治疗**\n    - **排他性论证：** 患者 ECOG 评分良好，预期寿命>3 个月，积极治疗可显著延长生存。\n\n- **选择当前方案而非替代方案的循证依据**\n  - 推荐**手术切除 + 术后腔隙 SRS** 或 **单纯 SRS**（若手术风险高）。\n  - **依据：** Aoyama 研究显示 SRS  alone 与 WBRT+SRS 相比，OS 相似（7.5 个月 vs 8 个月），但 WBRT 组复发率更低。考虑到患者年轻（49 岁），保护认知功能至关重要，故倾向于避免预防性 WBRT。`[Local: Brain_Mets_Evidence_Table.md, Section: Aoyama et al.]`\n\n---\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - 完善全身评估（胸腹盆 CT/PET-CT）排除其他广泛转移。\n  - 停用抗凝药物，控制血压。\n  - **证据说明：** 提供的指南片段未包含具体术前准备流程。`[Evidence: Insufficient in Retrieved Guidelines]`\n\n- **术后护理注意事项**\n  - 监测意识状态及肢体活动。\n  - 术后 24-48 小时内复查头部 CT 排除出血。\n  - 切口护理，预防感染。\n\n- **并发症预防策略**\n  - 预防深静脉血栓（DVT）。\n  - 应激性溃疡预防。\n  - **证据说明：** 具体并发症预防策略未在提供的指南片段中详述。`[Evidence: Insufficient in Retrieved Guidelines]`\n\n---\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - **必检项目：** BRAF V600E/K。\n  - **可选项目：** NRAS, c-KIT, NF1。\n  - **证据说明：** 提供的指南片段未涉及黑色素瘤分子病理检测标准。`[Evidence: Insufficient in Retrieved Guidelines]`\n\n- **靶向治疗指导意义**\n  - BRAF 突变阳性患者可从靶向治疗中获益，且部分药物具有血脑屏障穿透能力。\n  - **推断：** 基于黑色素瘤诊疗常规，分子分型直接决定二线及系统治疗策略。`[Inference from Local: Brain_Mets_Evidence_Table.md]` (注：指南仅提及允许系统治疗，未详述分子指导)\n\n- **预后分子标志物**\n  - LDH 水平升高提示预后不良。\n  - 脑转移灶数目及体积影响预后（本患者单发较大，属中等风险）。\n\n---\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - **T+0 周：** 入院完善检查，多学科讨论（MDT）。\n  - **T+1 周：** 行右额叶肿瘤切除术 或 立体定向放射外科（SRS）治疗。\n    - *决策依据：* 病灶 2.5cm，有占位效应，手术可迅速减压并获取病理。\n  - **T+3 周：** 术后恢复，启动全身系统治疗（免疫/靶向）。\n  - **T+4 周：** 术后首次复查 MRI，评估残留及水肿情况。\n\n- **关键决策节点**\n  - **节点 1：** 手术 vs SRS。若患者希望最大程度保留神经功能且病灶位置深在，选 SRS；若需减压及病理确诊，选手术。本患者病灶较大（25mm）且有症状，倾向手术。\n  - **节点 2：** 术后是否追加 WBRT。基于 ANZMTG 数据，不建议常规追加 WBRT，推荐腔隙 SRS 或密切观察。`[Local: Brain_Mets_Evidence_Table.md, Section: ANZMTG 01.07]`\n\n- **多学科协作流程**\n  - 神经外科主导局部控制。\n  - 肿瘤内科主导系统治疗及基因检测。\n  - 放疗科评估术后辅助放疗必要性。\n  - 影像科负责疗效评估（RANO 标准）。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组\n**免责声明：** 本报告基于提供的有限指南片段及患者信息生成，部分系统治疗及分子病理建议因提供的指南证据不足已标注，实际临床决策请结合最新完整指南及患者具体情况。",
+      "reasoning": "",
+      "sources": [
+        "Brain_metastasis/Brain_metastasis.md",
+        "Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review/Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review.md",
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# viewpoint  \n\n# BRAIN METASTASIS...",
+          "source": "Brain_metastasis/Brain_metastasis.md"
+        },
+        {
+          "content": "# BREAST CANCER BRAIN METASTASIS...",
+          "source": "Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review/Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review.md"
+        },
+        {
+          "content": "<html><body><table><tr><td>STUDY id, AUTHORS, YEAR, SIZE, DESIGN</td><td>TREATMENT SETTING AND INTERVENTIONS STUDIED</td><td>KEY OUTCOMES</td></tr><tr><td>anzmtg 01.07: HONG ET AL,38 215 PATIENTS, PHA...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md"
+        }
+      ],
+      "latency_ms": 88178.98607254028,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "timestamp": "2026-04-08T21:04:54.046617"
+    }
+  },
+  "evaluation_timestamp": "2026-04-08T21:04:54.046633"
+}

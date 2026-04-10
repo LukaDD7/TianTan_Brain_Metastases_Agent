@@ -1,0 +1,37 @@
+{
+  "patient_id": "747724",
+  "case_id": "Case10",
+  "patient_input_preview": "住院号 747724。\n入院时间 2023年12月07日。\n年龄 45。\n性别 女。\n主诉 确诊乳腺癌5年余，发现脑转移1年余。\n现病史 2017.11患者发现左侧乳腺肿物，大小约3.1*1.8cm，腋窝淋巴结转移。行左乳腺肿物穿刺活检提示：浸润性小叶癌，免疫组化：ER(+),PR(+),HER-2(3+),KI-67(10%+)。临床分期cT2N1M0，IIB期。\n新辅助治疗：于2017.11.22、2017.12.13、2018.1.3、2018.1.23行4周期AC方案化疗，具体为：吡柔比星80mg+环磷酰胺1000mg静点。2018.2.13至2018.4.26行4周期TH方案化疗，具体为：多西他赛170mg+曲妥珠单抗（567mg-314mg-420mg-420mg）静点。新辅助治疗后复查乳腺肿物PR，\n手术治疗：2018.5.16行乳腺癌改良根治术，病理结果提示：（左）乳腺改良根治标本；乳腺组织中可见导管原位癌残留，周围灶状淋巴细胞浸润，乳头未见癌侵犯，周围及基底切缘未见癌，腋窝淋巴结未见癌转移（0/15），（左前哨）淋巴结未见癌转移（0/2），免疫组化提示：ER(50%+...",
+  "results": {
+    "rag": {
+      "method": "RAG",
+      "patient_id": "747724",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 747724\n**报告日期：** 2023 年 12 月 07 日\n**患者姓名：** [隐私保护]\n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 45 岁女性，确诊乳腺癌 5 年余，脑转移 1 年余。\n  - 本次入院旨在继续临床试验方案治疗及评估当前疗效。\n  - 一般状况良好，饮食睡眠可，体重无明显变化，ECOG 评分预计 0-1 分。\n\n- **临床症状评估**\n  - **主诉：** 确诊乳腺癌 5 年余，发现脑转移 1 年余。\n  - **现病史：** 患者既往经历多线治疗（化疗、靶向、内分泌、射频消融）。2022 年 6 月发现脑转移（右侧小脑半球），入组 ZN-A-1041 临床试验（TKI+ 曲妥珠单抗 + 卡培他滨）。截至目前已完成 23 周期治疗。\n  - **神经系统症状：** 目前无明确头痛、呕吐、肢体无力或癫痫发作主诉。\n\n- **既往病史与合并症分析**\n  - **手术史：** 2018 年乳腺癌改良根治术；2021 年双侧卵巢及子宫切除术；2021 年肝脏射频消融术。\n  - **合并症：** 不均匀脂肪肝，胆囊腺肌症，左肾外侧缘积液（稳定），动脉粥样硬化。\n  - **治疗相关毒性史：** 曾出现胆红素升高 2 级（已恢复），白细胞降低 2 级（经升白及剂量调整后恢复）。\n\n- **影像学初步印象**\n  - **头部 MRI：** 右侧额叶脑白质病变（Fazekas Ⅰ级），未见异常强化灶。既往脑转移灶（右侧小脑）目前评估为完全缓解（CR）。\n  - **胸腹盆 CT：** 肝 S7 消融术后改变较前缩小，无新发强化灶；多发骨转移灶稳定；肺部轻度间质性病变较前减轻。\n  - **总体评估：** 颅内及全身病灶均达到完全缓解（CR）或部分缓解（PR）状态，病情稳定。\n\n---\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 原发灶为左侧乳腺浸润性小叶癌，免疫组化：ER(+), PR(+/-), HER-2(3+)。\n  - 2018 年手术后病理显示乳腺及淋巴结未见癌残留（pCR）。\n\n- **原发灶治疗策略建议**\n  - **N/A**（原发灶已行根治性手术及放疗，目前局部控制良好，无复发迹象）。\n  - 当前治疗重点为转移灶（脑、骨、肝）的系统性控制。\n\n---\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - **推荐方案：** 继续当前临床试验方案：ZN-A-1041 (1000mg bid, d1-21) + 曲妥珠单抗 (q3w) + 卡培他滨 (1.5g 早，1.0g 晚，d1-14)。\n  - **依据：** 患者目前颅内及全身病灶达到 CR/PR，疗效显著。该方案机制类似于指南推荐的小分子 TKI 联合抗 HER2 治疗，具有较好的血脑屏障穿透能力。\n  - **指南支持：** 对于 HER2 阳性乳腺癌脑转移患者，系统性治疗应选择具有 CNS 活性的方案。类似方案（如 Tucatinib + 曲妥珠单抗 + 卡培他滨）在脑转移患者中反应率可达 47%，中位缓解持续时间 6.8 个月 `[Local: Breast_Cancer_Brain_Metastasis_Evidence.md, Section: Systemic Therapy Options for HER2+ Brain Metastases]`。\n\n- **药物选择与剂量考量**\n  - **卡培他滨：** 鉴于既往出现白细胞降低 2 级及胆红素升高 2 级，建议维持当前减量剂量（早 1.5g/晚 1.0g），并密切监测血常规及肝功能。\n  - **ZN-A-1041：** 按试验方案维持，注意神经系统毒性监测。\n  - **曲妥珠单抗：** 维持标准剂量静脉输注。\n\n- **围手术期用药参数**\n  - **N/A**（当前无手术计划）。\n\n---\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - **头部增强 MRI：** 每 2-3 个月复查一次，重点监测颅内病灶有无复发或新发病灶。\n  - **全身评估（CT/骨扫描）：** 每 3 个治疗周期（约 9 周）复查一次，评估肝、骨转移情况。\n\n- **肿瘤标志物监测**\n  - 每周期治疗前检测 CEA、CA15-3 等乳腺癌相关肿瘤标志物。\n\n- **神经系统功能评估**\n  - 每次随访进行简易神经系统查体，关注认知功能、肢体肌力及平衡能力。\n  - 若出现新发神经症状，随时行急诊 MRI 检查。\n\n---\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **其他可行但未被选择的方案**\n  1.  **立体定向放射外科 (SRS) 或 全脑放疗 (WBRT)：**\n      - **排他性论证：** 患者目前颅内病灶已达 CR，且无症状。指南指出对于已接受全身治疗且颅内控制良好的患者，可暂缓放疗以避免神经认知毒性。既往随机试验显示，在某些情况下添加替莫唑胺等药物并未显著改善 OS 或 PFS，提示需权衡放疗获益与毒性 `[Local: Breast_Cancer_Brain_Metastasis_Evidence.md, Section: Randomized Trials in Breast Cancer Brain Metastases]`。\n  2.  **切换为 T-DXd (Destiny-BREAST 01 方案)：**\n      - **排他性论证：** 虽然 T-DXd 在经治 HER2+ 脑转移患者中显示 41% 的 CNS 反应率 `[Local: Breast_Cancer_Brain_Metastasis_Evidence.md, Section: Systemic Therapy Options for HER2+ Brain Metastases]`，但患者当前方案疗效极佳（CR），且正在参与临床试验，无进展证据，故不作为当前首选，留作后线储备。\n  3.  **高剂量曲妥珠单抗 + 帕妥珠单抗 (Patricia 研究方案)：**\n      - **排他性论证：** 该方案颅内 ORR 仅为 11% `[Local: Breast_Cancer_Brain_Metastasis_Evidence.md, Section: Antibody and ADC Efficacy in CNS]`，远低于患者当前方案疗效，不予考虑。\n\n- **选择当前方案而非替代方案的循证依据**\n  - 患者已证实对当前含 TKI 成分的联合方案高度敏感（颅内病灶从 25mm 缩小至消失）。\n  - 指南支持对于 HER2+ 脑转移，优先选择能穿透血脑屏障的小分子 TKI 联合方案 `[Inference from Local: Breast_Cancer_Brain_Metastasis_Evidence.md]`。\n\n---\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - **N/A**（近期无神经外科或骨科手术计划）。\n\n- **术后护理注意事项**\n  - **N/A**。\n\n- **并发症预防策略**\n  - **骨髓抑制：** 既往有白细胞降低史，建议预防性使用升白药物，每周期监测血常规。\n  - **肝功能损伤：** 既往有胆红素升高史，每周期监测肝功，若再次出现≥2 级毒性，需暂停卡培他滨并对症处理。\n  - **心脏毒性：** 长期使用曲妥珠单抗，建议每 3 个月监测左室射血分数（LVEF）。\n\n---\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - **HER2 状态：** 免疫组化 3+，阳性。这是当前靶向治疗（曲妥珠单抗、ZN-A-1041）的核心依据。\n  - **激素受体：** ER(+), PR(-/+)。既往内分泌治疗疗效不佳，目前以靶向 + 化疗为主。\n\n- **靶向治疗指导意义**\n  - HER2 阳性状态决定了抗 HER2 治疗的必要性。大分子单抗（如曲妥珠单抗）穿透血脑屏障能力有限，因此联合小分子 TKI（如 ZN-A-1041）或 ADC 药物是关键策略 `[Local: Breast_Cancer_Brain_Metastasis_Evidence.md, Section: Antibody and ADC Efficacy in CNS]`。\n\n- **预后分子标志物**\n  - **Ki-67：** 既往检测为 5%-10%，提示增殖指数相对较低，可能与较好的治疗反应相关。\n  - **[Evidence: Insufficient in Retrieved Guidelines]** 关于 ZN-A-1041 特定的耐药基因突变谱，当前检索指南中无具体数据，建议关注临床试验后续生物标志物分析结果。\n\n---\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - **2023.12 - 2024.03：** 继续当前临床试验方案治疗（第 24-27 周期）。\n  - **2024.03：** 进行全面疗效评估（MRI + CT）。若维持 CR/PR，继续治疗直至疾病进展或不可耐受毒性。\n  - **若进展：** 退出临床试验，考虑切换为 T-DXd 或局部放疗（SRS）。\n\n- **关键决策节点**\n  1.  **毒性耐受性：** 若出现≥3 级不良反应（如严重骨髓抑制、肝损伤），需暂停用药或永久停药。\n  2.  **颅内进展：** 若孤立性颅内进展，可考虑挽救性 SRS 而不停止全身治疗。\n  3.  **全身进展：** 若全身多部位进展，需更换全身治疗方案。\n\n- **多学科协作流程**\n  - **肿瘤内科：** 主导药物治疗及临床试验管理。\n  - **影像科：** 确保 MRI 扫描序列标准化，以便准确对比颅内病灶变化。\n  - **神经外科/放疗科：** 待命，若出现颅内进展或占位效应，及时介入评估局部治疗。\n\n---\n**报告签署：**\n**MDT 首席专家：** [签名]\n**日期：** 2023 年 12 月 07 日",
+      "reasoning": "",
+      "sources": [
+        "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md",
+        "Update_on_the_Management_of_Brain_Metastasis/Update_on_the_Management_of_Brain_Metastasis.md",
+        "NCCN_Clinical_Practice_Guidelines_in_Oncology_Central_Nervous_System_Cancers/NCCN_Clinical_Practice_Guidelines_in_Oncology_Central_Nervous_System_Cancers.md"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "RANDOMIZED TRIALS IN PATIENTS WITH BRAIN METASTASES FROMBREAST CANCER. TWO RANDOMIZED TRIALS44,51 WERE IDENTIFIEDTHAT MET INCLUSION CRITERIA SPECIFICALLY CONDUCTED IN PATIENTSWITH BRAIN METASTASES FRO...",
+          "source": "ASCO_SNO_ASTRO_Brain_Metastases/ASCO_SNO_ASTRO_Brain_Metastases.md"
+        },
+        {
+          "content": "RESPONSE RATE OF 47% WITH TUCATINIB IN BRAIN METASTASES PATIENTS WITH A MEDIAN DURATION OF RESPONSE OF 6.8 MONTHS; RESPECTIVE GUESSES IN PATIENTS JUST RECEIVING TRASTUZUMAB AND CAPECITABINE WERE 3 MON...",
+          "source": "Update_on_the_Management_of_Brain_Metastasis/Update_on_the_Management_of_Brain_Metastasis.md"
+        },
+        {
+          "content": "TRASTUZUMAB, A LARGE MONOCLONAL ANTIBODY, IS USED FOR TREATMENT OF her2- POSITIVE BREAST CANCER, BUT IT DOES NOT PENETRATE THE bbb. THEREFORE, THERE ARE CONCERNS ABOUT RISK OF BREAST CANCER METASTASIZ...",
+          "source": "NCCN_Clinical_Practice_Guidelines_in_Oncology_Central_Nervous_System_Cancers/NCCN_Clinical_Practice_Guidelines_in_Oncology_Central_Nervous_System_Cancers.md"
+        }
+      ],
+      "latency_ms": 91713.34457397461,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "timestamp": "2026-04-08T21:10:10.144607"
+    }
+  },
+  "evaluation_timestamp": "2026-04-08T21:10:10.144641"
+}

@@ -1,0 +1,37 @@
+{
+  "patient_id": "612908",
+  "case_id": "Case7",
+  "patient_input_preview": "住院号 612908。\n入院时间 2022年03月31日。\n年龄 53。\n性别 女。\n主诉 脑转移癌术后2年半。\n现病史 患者2年半前因“突发四肢抽搐，双眼上吊，口吐白沫、小便失禁并意识障碍，持续数分钟好转”，急诊送往北京友好医院及北京国康医院，考虑癫痫大发作，给予药物治疗（具体不详），并给予行头部磁共振提示左额叶占位性病变，周围脑组织水肿明显，后于我科在B超下行左额开颅肿瘤切除术，术后病理回报“转移性腺癌”。后于宣武医院右肺肺癌手术。1月前言语不清、记忆力减退，1天前出现右手活动不利，失语，后自行缓解，偶伴左顶头痛、呕吐，后于我院行MRI检查“怀疑肿瘤复发”。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二便\n如常\n，体重\n无明显变化\n。\n既往史 2019年7月30日于我院行左额开颅肿瘤切除术。2019年9月于宣武医院右肺肺癌手术，术后艾克替尼治疗至今。曾于1999年因产后子宫大出血于东明县医院输“B”型血，输血量不详\n否认高血压史、冠心病史\n，\n否认糖尿病史、脑血管病史、精神病史\n，\n否认肝炎史、疟疾史、结核史\n,\n否认外伤史\n，\n否认过敏史\n，\n预防接种史不详\n。\n头部MRI 平扫+...",
+  "results": {
+    "rag": {
+      "method": "RAG",
+      "patient_id": "612908",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**患者住院号：** 612908\n**入院时间：** 2022 年 03 月 31 日\n**报告日期：** 2022 年 04 月 01 日\n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者女性，53 岁。主诉“脑转移癌术后 2 年半”。\n  - 既往于 2019 年 7 月行左额开颅肿瘤切除术（病理：转移性腺癌），2019 年 9 月行右肺肺癌手术。\n  - 目前口服艾克替尼治疗至今。\n  - 本次因言语不清、记忆力减退、右手活动不利及头痛呕吐入院。\n\n- **临床症状评估**\n  - 神经系统症状：近期出现失语、右侧肢体活动不利（短暂性脑缺血发作样症状或癫痫部分性发作），伴左顶头痛、呕吐，提示颅内压增高及局部神经功能受损。\n  - 全身状态：饮食睡眠可，体重无明显变化，KPS 评分预计≥70 分。\n\n- **既往病史与合并症分析**\n  - 肿瘤病史：肺癌术后、脑转移术后。\n  - 合并症：鼻窦炎（影像学提示），无高血压、糖尿病、心脏病史。\n  - 输血史：1999 年产后出血输血史。\n\n- **影像学初步印象**\n  - 头部 MRI：左额叶术后改变，左额顶叶可见两处异常强化灶（最大约 10×16×16mm），伴周围水肿及中线移位，提示肿瘤复发。\n  - 胸部 CT：左肺上叶多发磨玻璃密度小结节（最大 8×7mm），右肺术后状态。\n  - 影像评估依据：增强 MRI 是评估脑转移瘤范围及水肿的金标准，需关注强化灶与水肿关系 `[Local: Retrieved_Guidelines.md, Section: Figure 3 Description]`。\n\n---\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 既往病理提示“转移性腺癌”，结合肺部手术史及艾克替尼治疗史，高度怀疑原发灶为肺腺癌。\n  - 本次胸部 CT 提示左肺上叶新发结节，需鉴别为肺内转移还是第二原发灶。\n\n- **分子分型与靶向治疗敏感性评估**\n  - 患者长期服用艾克替尼（一代 EGFR-TKI），目前出现进展，提示可能产生耐药突变（如 T790M 或其他旁路激活）。\n  - **证据说明：** 检索到的指南片段主要涉及小细胞肺癌（SCLC）及乳腺癌，针对肺腺癌 EGFR 耐药后的具体分子分型指导证据不足 `[Evidence: Insufficient in Retrieved Guidelines]`。\n\n- **原发灶治疗策略建议**\n  - 建议行左肺结节穿刺活检或再次基因检测，明确病理及分子状态。\n  - 若确认为进展性肺转移，需调整全身治疗方案。\n\n---\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - 当前艾克替尼治疗已失败（颅内及肺部同时进展）。\n  - 建议方案：若基因检测提示 T790M 阳性，推荐更换为三代 TKI（如奥希替尼）；若阴性，考虑含铂双药化疗±抗血管生成药物。\n  - **参考依据：** 虽检索指南主要描述 SCLC 患者使用依托泊苷/奈达铂及安罗替尼联合免疫治疗 `[Local: Retrieved_Guidelines.md, Section: SCLC Case Report]`，但非小细胞肺癌（NSCLC）进展后同样遵循“全身控制 + 局部处理”原则 `[Inference from Local: Retrieved_Guidelines.md]`。\n\n- **药物选择与剂量考量**\n  - 需根据患者体能状态（PS 评分）及肝肾功能调整剂量。\n  - 注意药物入脑能力，优选血脑屏障透过率高的靶向药物。\n  - **证据说明：** 检索指南中关于具体靶向药物剂量及选择主要针对 SCLC 及乳腺癌，肺腺癌具体用药参数证据不足 `[Evidence: Insufficient in Retrieved Guidelines]`。\n\n- **围手术期用药参数**\n  - 若行再次手术，术前需停用抗血管生成药物至少 1 周以降低出血风险。\n  - 术后根据病理及恢复情况重启全身治疗。\n\n---\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - 治疗开始后每 2-3 个月复查头部增强 MRI 及胸部 CT。\n  - 参考 SCLC 脑转移患者治疗后进行性监测的经验，放疗或系统治疗后约 3 个月需确认疗效 `[Local: Retrieved_Guidelines.md, Section: SCLC Case Report]`。\n\n- **肿瘤标志物监测**\n  - 监测 CEA、CYFRA21-1、NSE 等指标变化。\n\n- **神经系统功能评估**\n  - 每次随访评估 KPS 评分及神经系统体征（如肢体肌力、语言功能）。\n  - 关注癫痫发作情况，必要时调整抗癫痫药物。\n\n---\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **其他可行但未被选择的方案**\n  - **方案 A：继续原方案（艾克替尼）治疗。**\n    - 排他理由：患者已在用药期间出现颅内及肺部进展，属于明确耐药，继续原药无效。\n  - **方案 B：单纯全脑放疗（WBRT）。**\n    - 排他理由：患者为寡转移复发（左额顶两处病灶），且既往可能接受过放疗（病史未明确提及但需核查），首选局部精确治疗（手术或 SRS）以保护认知功能。\n  - **方案 C：单纯化疗。**\n    - 排他理由：对于驱动基因阳性患者，靶向治疗优先；且化疗入脑效果有限，需联合局部治疗。\n\n- **选择当前方案而非替代方案的循证依据**\n  - 针对复发灶，局部控制（手术/放疗）联合全身系统治疗是延长生存的关键。\n  - 预后因素分析显示，全身状态及转移灶控制情况直接影响总生存期 `[Local: Retrieved_Guidelines.md, Section: 3.4. Prognostic Factors]`。\n\n---\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - 完善心肺功能评估，控制鼻窦炎（影像学提示粘膜增厚），预防术后颅内感染。\n  - 使用脱水药物（如甘露醇）控制颅内压，预防脑疝。\n\n- **术后护理注意事项**\n  - 监测意识瞳孔变化，预防癫痫发作。\n  - 切口护理，预防感染。\n\n- **并发症预防策略**\n  - 预防深静脉血栓（DVT）。\n  - 预防应激性溃疡。\n  - **证据说明：** 检索指南中未详细提及神经外科围手术期具体护理规范，本方案基于常规神经外科诊疗原则制定 `[Evidence: Insufficient in Retrieved Guidelines]`。\n\n---\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - 重点检测：EGFR (19/21 外显子及 T790M)、ALK、ROS1、MET 扩增等。\n  - 建议行液体活检（CSF 或血液）结合组织活检，提高检出率。\n\n- **靶向治疗指导意义**\n  - 明确耐药机制是选择后续靶向药（如三代 TKI 或双抗）的关键。\n  - **证据说明：** 检索指南主要涉及 SCLC 及乳腺癌，缺乏肺腺癌特定基因突变指导靶向治疗的详细章节 `[Evidence: Insufficient in Retrieved Guidelines]`。\n\n- **预后分子标志物**\n  - 某些分子标志物可能与脑转移倾向及预后相关，需结合病理结果综合判断 `[Inference from Local: Retrieved_Guidelines.md]`。\n\n---\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - **第 1 周：** 完善基因检测，控制颅内压，多学科讨论确定局部治疗方式（手术 vs 伽马刀）。\n  - **第 2-4 周：** 实施局部治疗（若手术则术后恢复），根据基因结果调整全身用药。\n  - **第 3 个月：** 首次疗效评估（MRI+CT）。\n\n- **关键决策节点**\n  - 基因检测结果回报节点：决定全身用药方向。\n  - 局部治疗后恢复情况：决定何时重启全身治疗。\n\n- **多学科协作流程**\n  - 神经外科主导局部病灶处理。\n  - 肿瘤内科主导全身药物方案。\n  - 放疗科评估放射治疗可行性。\n  - 影像科提供精确病灶定位及疗效评估 `[Inference from Local: Retrieved_Guidelines.md]`。\n\n---\n**免责声明：** 本报告基于提供的患者信息及检索到的指南片段生成。由于检索指南主要涉及小细胞肺癌及乳腺癌，部分肺腺癌特异性治疗建议依据通用肿瘤学原则推断，具体用药请遵循最新非小细胞肺癌临床指南。",
+      "reasoning": "",
+      "sources": [
+        "Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review/Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review.md",
+        "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md",
+        "Brain_Metastases_from_Colorectal_Cancer_A_Systematic_Review_of_the_Literature_and_Meta-Analysis_to_Establish_a_Guideline_for_Daily_Treatment/Brain_Metastases_from_Colorectal_Cancer_A_Systematic_Review_of_the_Literature_and_Meta-Analysis_to_Establish_a_Guideline_for_Daily_Treatment.md"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "# BREAST CANCER BRAIN METASTASIS...",
+          "source": "Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review/Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review.md"
+        },
+        {
+          "content": "DIAGNOSIS AND TREATMENT WITH TORIPALIMAB IN A PATIENT WITH sclcWITH BRAIN METASTASES (104). THE PATIENT WAS DIAGNOSED WITHLOCALIZED STAGE SMALL CELL CARCINOMA OF THE LEFT LOWER LUNG ANDRECEIVED 6 CYCL...",
+          "source": "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md"
+        },
+        {
+          "content": "![](images/489d1f3e1f6089159a5b627b555618fb6902554c8e4e075122cb0641b3ef9770.jpg)  \nFIGURE 3. CEREBRAL ct AND mri SCANS OF A PATIENT WITH bm, A 62-YEAR-OLD PATIENT PRESENTING WITH LEFT FRONTAL EDEMA IN...",
+          "source": "Brain_Metastases_from_Colorectal_Cancer_A_Systematic_Review_of_the_Literature_and_Meta-Analysis_to_Establish_a_Guideline_for_Daily_Treatment/Brain_Metastases_from_Colorectal_Cancer_A_Systematic_Review_of_the_Literature_and_Meta-Analysis_to_Establish_a_Guideline_for_Daily_Treatment.md"
+        }
+      ],
+      "latency_ms": 81269.21105384827,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "timestamp": "2026-04-08T21:00:42.555818"
+    }
+  },
+  "evaluation_timestamp": "2026-04-08T21:00:42.555832"
+}

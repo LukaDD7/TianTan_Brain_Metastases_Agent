@@ -1,0 +1,37 @@
+{
+  "patient_id": "708387",
+  "case_id": "Case9",
+  "patient_input_preview": "住院号 708387。\n入院时间 2022年01月11日。\n年龄 55。\n性别 男。\n主诉 脑转移瘤术后3月余，确诊肺恶性肿瘤2月余。\n现病史 患者于2021-9无明显诱因出现左腿无力，伴有头痛，伴有恶心呕吐，伴四肢乏力，伴反应迟缓，伴有里急后重，无头晕，无四肢抽搐，无意识障碍，无言语不利，于2021-9-23就诊于秦皇岛第一医院，行头颅MRI提示“1.右侧额顶叶占位性病变，考虑：高级别胶质瘤可能。不除外转移瘤，2.双侧额顶叶、侧脑室旁多发脑缺血灶”常规治疗5天，后转诊于我院急诊，行颅脑MR报告诊断：右额颞顶占位：胶质瘤可能性大；脑内多发缺血性白质病变；脑疝征象。2021年10月11日在全麻下行右颞顶开颅显微镜下幕上深部肿物切除术，瘤体大小约5.5X5.5X5.0cm，病理诊断：高度恶性肿瘤，结合免疫组化符合转移癌，免疫组化结果：GFAP（-），Olig-2（-），Ki-67（约40-70%），ATRX（+），P53（偶+），IDH1（-），BRAFV600E（-），EMA（+），CK（+），CD68（散在+），CD34（血管+），HMB45（-），Melan A（-），CK8/18（...",
+  "results": {
+    "rag": {
+      "method": "RAG",
+      "patient_id": "708387",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 708387  \n**诊疗日期：** 2022 年 01 月 11 日  \n**诊疗团队：** 神经外科、肿瘤内科、放疗科、病理科、影像科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者男性，55 岁，因“脑转移瘤术后 3 月余，确诊肺恶性肿瘤 2 月余”入院。\n  - 既往行右颞顶开颅肿物切除术（2021-10-11），病理证实为转移癌。\n  - 目前一般状况尚可，饮食睡眠正常，体重稳定。\n\n- **临床症状评估**\n  - 术前曾有左腿无力、头痛、恶心呕吐及反应迟缓。\n  - 目前无新发神经系统定位体征，无癫痫发作，无意识障碍。\n  - 既往有肺间质纤维化、COPD 病史，需警惕呼吸系统症状波动。\n\n- **既往病史与合并症分析**\n  - 2015 年胃大部切除术（胃溃疡）。\n  - 2021 年确诊肺间质纤维化、间质性肺炎、COPD。\n  - 2021 年 11 月肠镜提示结肠炎可能（腹泻史）。\n  - 无高血压、糖尿病、冠心病史。\n\n- **影像学初步印象**\n  - **头颅 MRI：** 术后改变，术区边缘强化略显增多但较前（2021-11-18）未见明显改变，考虑术后肉芽组织或残留病灶稳定；脑内多发缺血性白质病变。\n  - **胸部 CT：** 左肺上叶斑片状高密度影较前范围减小、密度减低（治疗有效）；双肺间质性病变、肺气肿。\n  - **腹盆 CT：** 原左上腹结节较前显示不明确；右侧心膈角淋巴结增大。\n\n---\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 病理诊断：转移性分化差的癌，倾向于分化差的腺鳞癌或未分化癌。\n  - 免疫组化：CK7(+), CK5/6(+), P63(+), TTF-1(-), NapsinA(-)。\n  - 原发灶定位：左肺上叶（PET-CT 及 CT 证实）。\n\n- **分子分型与靶向治疗敏感性评估**\n  - **关键发现：** MET 基因检出拷贝数变异（扩增）及基因融合（M13M15 融合）。\n  - **敏感性评估：** MET 扩增及融合通常对 MET 抑制剂（如赛沃替尼、卡马替尼等）敏感。\n  - **指南依据：** 检索到的指南片段主要涉及免疫治疗及无驱动基因突变患者，针对 MET 特异性靶向治疗的直接证据在提供的参考指南中不足 `[Evidence: Insufficient in Retrieved Guidelines]`。但基于分子病理结果，靶向治疗应作为优先考量。\n\n- **原发灶治疗策略建议**\n  - 鉴于肺部病灶经化疗后缩小，且存在全身转移（脑、潜在腹腔/淋巴结），局部放疗暂非首选，优先全身系统性控制。\n  - 若后续肺部病灶进展或症状明显，可考虑局部放疗，但需权衡肺间质纤维化带来的放射性肺炎风险。\n\n---\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - **当前状态：** 已完成 2 周期一线化疗（培美曲塞 + 顺铂），肺部病灶缩小，脑部病灶术后稳定。\n  - **推荐方案：** 鉴于检出 MET 融合及扩增，建议切换至 MET 靶向治疗方案。若不可及，可考虑免疫治疗联合抗血管生成药物。\n  - **参考依据：** 类似病例报道显示，对于无驱动基因突变的晚期肺腺癌，免疫单药（如阿替利珠单抗）可显示显著疗效 `[Local: NSCLC_Atezolizumab_Case.md, Section: Systemic Therapy]`。但本患者存在驱动基因突变，免疫治疗优先级低于靶向治疗。\n  - **小细胞肺癌参考：** 对于伴有脑转移的肺癌患者，系统治疗联合局部治疗是常见策略，如化疗后维持治疗或免疫维持 `[Local: SCLC_Toripalimab_Case.md, Section: Treatment Course]`。\n\n- **药物选择与剂量考量**\n  - **MET 抑制剂：** 建议咨询药物可及性，按标准剂量给药。\n  - **免疫治疗：** 若选择免疫治疗（如托瑞利珠单抗或阿替利珠单抗），需密切监测间质性肺炎风险，因患者既往有肺纤维化病史。参考 SCLC 脑转移案例，免疫治疗可作为维持或复发后的选择 `[Local: SCLC_Toripalimab_Case.md, Section: Maintenance Therapy]`。\n  - **化疗：** 暂不继续铂类双药化疗，可考虑培美曲塞单药维持或暂停化疗观察靶向疗效。\n\n- **围手术期用药参数（如适用）**\n  - 目前无计划手术，N/A。\n\n---\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - **头颅增强 MRI：** 每 2-3 个月复查一次，监测术区及新发病灶。参考病例显示，脑转移复发可在治疗结束后数月内发生，需密切监测 `[Local: SCLC_Toripalimab_Case.md, Section: Follow-up]`。\n  - **胸部/腹部 CT：** 每 2-3 个月复查，评估肺部原发灶及腹腔淋巴结。\n\n- **肿瘤标志物监测**\n  - 定期监测 CEA、CYFRA21-1、NSE 等，结合影像学评估疗效。\n\n- **神经系统功能评估**\n  - 每次随访评估 KPS 评分及神经系统定位体征（肌力、病理征等）。\n\n---\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **全脑预防性放疗 (PCI)**\n  - **未选择原因：** 患者已行脑转移瘤切除术，且为非小细胞肺癌（倾向腺鳞癌/未分化），PCI 在非小细胞肺癌中获益不明确，且患者存在肺间质纤维化，全身耐受性需考量。\n  - **循证依据：** 参考小细胞肺癌案例，PCI 常用于 SCLC 达到 CR 后，但本患者病理非 SCLC `[Local: SCLC_Toripalimab_Case.md, Section: Radiation Therapy]`。\n\n- **单纯继续化疗**\n  - **未选择原因：** 已完成 2 周期，且存在明确驱动基因突变（MET），靶向治疗预期疗效优于单纯化疗。\n  - **循证依据：** 对于有驱动基因突变的患者，靶向治疗通常优于免疫或单纯化疗 `[Inference from Local: NSCLC_Atezolizumab_Case.md]`（该案例强调无驱动基因突变时使用免疫治疗）。\n\n- **再次开颅手术**\n  - **未选择原因：** 目前头颅 MRI 显示术区稳定，无明确复发占位效应，无需再次手术。\n\n---\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - N/A（目前无手术计划）。\n\n- **术后护理注意事项**\n  - N/A。\n\n- **并发症预防策略**\n  - **间质性肺炎预防：** 患者既往有肺间质纤维化、COPD 病史，使用免疫检查点抑制剂或某些靶向药时需高度警惕药物性间质性肺炎。\n  - **血栓预防：** 恶性肿瘤术后及卧床风险，建议评估凝血功能，必要时物理预防。\n\n---\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - **MET 扩增：** 检出拷贝数变异。\n  - **MET 融合：** 检出 NM_001127500.3_M13M15 融合。\n  - **其他：** EGFR、ALK 等常见驱动基因未提及阳性，TTF-1 阴性提示非典型肺腺癌。\n\n- **靶向治疗指导意义**\n  - MET 融合/扩增是明确的靶点，指导使用 MET 抑制剂。\n  - 免疫组化显示 PD-L1 状态未知，若考虑免疫治疗需补充检测。\n\n- **预后分子标志物**\n  - Ki-67 约 40-70%，提示肿瘤增殖活性高，预后相对较差，需积极治疗。\n  - 参考乳腺癌脑转移指南，分子分型对预后评估至关重要，肺癌亦然 `[Local: Breast_Cancer_Brain_Meta.md, Section: Molecular Subtyping]`（类比参考）。\n\n---\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - **2022-01 至 2022-03：** 启动 MET 靶向治疗或免疫联合治疗（视药物可及性及 PD-L1 结果）。\n  - **2022-04：** 第一次疗效评估（头颅 MRI+ 胸腹 CT）。\n  - **2022-07：** 若稳定，继续维持治疗；若进展，考虑局部放疗或更换方案。\n\n- **关键决策节点**\n  - **节点 1：** 靶向药物可及性确认。若不可及，转为免疫 + 抗血管生成（参考安罗替尼在小细胞肺癌脑转移复发后的应用 `[Local: SCLC_Toripalimab_Case.md, Section: Recurrence Management]`）。\n  - **节点 2：** 肺部间质性病变监测。若出现加重，需停用可疑药物。\n\n- **多学科协作流程**\n  - 肿瘤内科主导全身治疗方案制定。\n  - 神经外科/放疗科备用，若脑部病灶进展则介入。\n  - 呼吸科协助管理肺间质纤维化并发症。\n\n---\n\n**声明：** 本报告基于提供的患者信息及检索到的指南片段生成。关于 MET 特异性靶向药物的具体推荐，因检索到的指南片段主要涉及免疫治疗及小细胞肺癌/乳腺癌案例，缺乏非小细胞肺癌 MET 突变的具体指导证据，故部分建议标注为证据不足 `[Evidence: Insufficient in Retrieved Guidelines]`，临床执行请参考最新权威指南及药物说明书。",
+      "reasoning": "",
+      "sources": [
+        "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md",
+        "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md",
+        "Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review/Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review.md"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "DIAGNOSIS AND TREATMENT WITH TORIPALIMAB IN A PATIENT WITH sclcWITH BRAIN METASTASES (104). THE PATIENT WAS DIAGNOSED WITHLOCALIZED STAGE SMALL CELL CARCINOMA OF THE LEFT LOWER LUNG ANDRECEIVED 6 CYCL...",
+          "source": "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md"
+        },
+        {
+          "content": "LIN ET AL (55), REPORTED CASE OF POORLY DIFFERENTIATED ADENOCARCINOMA OF THE RIGHT LOBE OF THE LUNG TREATED WITH ATEZOLIZUMAB MONOTHERAPY. THE PATIENT WAS DIAGNOSED IN APRIL 2016 WITH STAGE iv POORLY ...",
+          "source": "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md"
+        },
+        {
+          "content": "# BREAST CANCER BRAIN METASTASIS...",
+          "source": "Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review/Breast_Cancer_Brain_Metastasis_A_Comprehensive_Review.md"
+        }
+      ],
+      "latency_ms": 90330.79075813293,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "timestamp": "2026-04-08T21:08:38.429817"
+    }
+  },
+  "evaluation_timestamp": "2026-04-08T21:08:38.429855"
+}

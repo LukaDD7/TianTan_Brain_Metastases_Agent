@@ -1,0 +1,37 @@
+{
+  "patient_id": "638114",
+  "case_id": "Case6",
+  "patient_input_preview": "住院号 638114。\n入院时间 2021年01月08日。\n年龄 57。\n性别 男。\n主诉 确诊肺腺癌12年，发现脑转移7年。\n现病史 2008年12月患者确诊肺腺癌，行左肺上叶摘除术，术后分期IB期，手术组织基因检测提示EGFR19外显子突变，DFS 60个月。2013年12月患者发现脑转移，右枕叶占位，大小约20*8mm，行伽马刀治疗（靶中心剂量36Gy，周围剂量18GY\n），评效CR。从2013年12月起行一线吉非替尼靶向治疗，DFS 50个月。2018年2月患者再次发现脑转移，右侧小脑半球占位，大小约10*18*9mm，再次行伽马刀治疗（中心剂量32Gy，周围剂量16Gy），PFS 15个月。2020年1月右侧小脑半球PD，大小为18*28mm，2020-1-1行开颅手术切除右侧小脑半球肿瘤，手术标本行基因检测提示T790M突变，\n改为二线奥西替尼靶向治疗 。2020-12复查PET-CT提示右小脑原位复发，脑干、脑膜部位疑似待查。2021-1-8起改服用双倍量奥西替尼靶向治疗。患者目前偶有头疼，无头晕、恶心呕吐、现为进一步治疗入院。\n患者自患病以来，饮食\n可\n，睡眠\n可\n，二...",
+  "results": {
+    "rag": {
+      "method": "RAG",
+      "patient_id": "638114",
+      "report": "# 脑转移瘤多学科诊疗（MDT）报告\n\n**住院号：** 638114\n**诊疗日期：** 2021 年 01 月 08 日\n**诊疗团队：** 神经外科、肿瘤内科、放疗科、影像科、病理科\n\n---\n\n## 1. 入院评估 (Admission Evaluation)\n\n- **患者基本信息与入院情况**\n  - 患者男性，57 岁，因“确诊肺腺癌 12 年，发现脑转移 7 年”入院。\n  - 既往经历多次治疗（手术、伽马刀、靶向药），目前处于奥西替尼双倍剂量治疗初期。\n  - 一般状况良好（饮食、睡眠、二便正常，体重稳定），ECOG 评分预计 0-1 分。\n\n- **临床症状评估**\n  - **主诉：** 偶有头疼，无头晕、恶心呕吐。\n  - **现病史关键点：** 2020-12 PET-CT 提示右小脑原位复发及脑干、脑膜疑似转移；2021-01-08 头部 MRI 显示术后改变，较 2020-04 未见明显改变。存在影像学评估不一致（PET-CT 阳性 vs MRI 稳定）。\n\n- **既往病史与合并症分析**\n  - 否认高血压、糖尿病、心脏病史。\n  - 无药物过敏史。\n  - 长期靶向治疗史（吉非替尼 50 个月，奥西替尼 12 个月+）。\n\n- **影像学初步印象**\n  - 头部 MRI：右枕颅骨术后改变，右侧小脑半球片状信号，增强扫描可见不规则强化影，但较前无明显进展。\n  - 胸部 CT：左肺上叶切除术后状态，残肺微小结节，纵膈无明显异常。\n  - **评估结论：** 颅内病灶处于“疑似进展”状态，需结合临床及短期复查确认是否为真性进展或治疗后改变。\n\n---\n\n## 2. 原发灶处理方案 (Primary Tumor Management Plan)\n\n- **基于病理诊断的原发肿瘤特征**\n  - 原发灶为左肺上叶腺癌，2008 年已行根治性切除术。\n  - 目前胸部 CT 仅见微小结节及陈旧性病灶，无明确活性大肿块。\n\n- **分子分型与靶向治疗敏感性评估**\n  - 初始基因检测：EGFR 19 外显子缺失突变。\n  - 耐药后检测（2020-01）：EGFR T790M 突变。\n  - 指南依据：非小细胞肺癌（NSCLC）中 EGFR 突变常见，90% 为 19 外显子缺失或 21 外显子 L858R 突变，对 EGFR-TKI 敏感 `[Local: Clinical_Guidelines_NSCLC_BM.md, Section: EGFR Mutations in NSCLC]`。\n\n- **原发灶治疗策略建议**\n  - **当前策略：** 暂不需要针对肺部原发灶的局部治疗（手术或放疗）。\n  - **理由：** 肺部病灶目前处于稳定状态（微小结节），主要矛盾集中在中枢神经系统（CNS）。\n\n---\n\n## 3. 系统性管理 (Systemic Management)\n\n- **全身治疗方案**\n  - **当前方案：** 奥西替尼（Osimertinib）双倍剂量口服。\n  - **调整依据：** 患者既往对奥西替尼标准剂量出现进展（PET-CT 提示复发），鉴于奥西替尼是 EGFR 突变肺癌脑转移患者的首选药物，且对既往 TKI 治疗后出现 T790M 耐药突变的患者显示出良好的颅内反应率 `[Local: Clinical_Guidelines_NSCLC_BM.md, Section: Osimertinib Treatment Evidence]`。\n  - **证据说明：** 关于双倍剂量奥西替尼的具体疗效，检索到的指南片段未提供明确数据支持 `[Evidence: Insufficient in Retrieved Guidelines]`，但临床实践中常作为标准剂量进展后的探索性策略。\n\n- **药物选择与剂量考量**\n  - 奥西替尼作为第三代抑制剂，是目前 EGFR 突变肺癌脑转移患者的首选药物 `[Local: Clinical_Guidelines_NSCLC_BM.md, Section: Osimertinib Treatment Evidence]`。\n  - 需密切监测双倍剂量带来的潜在不良反应（如皮疹、腹泻、QT 间期延长）。\n\n- **围手术期用药参数**\n  - 目前无计划手术，暂不适用。若后续需手术，术前需停用靶向药至少 1 周以减少伤口愈合风险。\n\n---\n\n## 4. 随访方案 (Follow-up Strategy)\n\n- **影像学复查时间窗**\n  - **头部增强 MRI：** 建议每 4-6 周复查一次，直至确认病灶稳定或进展。鉴于 PET-CT 与 MRI 结果不一致，短期高分辨率 MRI 更为关键。\n  - **胸部 CT：** 每 3 个月复查一次。\n\n- **肿瘤标志物监测**\n  - 监测 CEA、CYFRA21-1 等肺癌相关标志物，辅助评估全身肿瘤负荷。\n\n- **神经系统功能评估**\n  - 每次随访评估头痛频率、强度及有无新发神经功能缺损（如共济失调、颅神经症状）。\n  - 关注脑膜转移迹象（如颈项强直、多发颅神经麻痹）。\n\n---\n\n## 5. 被拒绝的替代方案及排他性论证 (Rejected Alternatives)\n\n- **全脑放疗 (WBRT)**\n  - **未选择原因：** 患者既往已接受两次伽马刀治疗（2013 年、2018 年），且目前病灶局限。WBRT 认知毒性大，且患者已接受多次局部放疗，再次全脑放疗获益有限且风险高。\n  - **循证依据：** 对于寡转移或局部复发，局部治疗（如手术或立体定向放疗）优于全脑放疗以保护认知功能 `[Inference from Local: Clinical_Guidelines_NSCLC_BM.md]`。\n\n- **单纯化疗**\n  - **未选择原因：** 患者为 EGFR 突变型，靶向治疗疗效优于化疗。仅在靶向治疗完全耐药且无其他靶点时考虑。\n  - **循证依据：** 前瞻性试验证明 EGFR-TKI 在脑转移患者中颅内反应率可达 70-88% `[Local: Clinical_Guidelines_NSCLC_BM.md, Section: EGFR Mutations in NSCLC]`。\n\n- **免疫治疗 (如 Toripalimab)**\n  - **未选择原因：** 参考指南中提及的免疫联合方案主要针对小细胞肺癌（SCLC）案例 `[Local: Clinical_Guidelines_NSCLC_BM.md, Section: SCLC Case Report]`，本患者为腺癌且驱动基因阳性，免疫治疗单药效果通常不佳，且可能增加靶向药肺炎风险。\n\n---\n\n## 6. 围手术期管理 (Peri-procedural Management)\n\n- **术前准备要点**\n  - **当前状态：** N/A（目前计划保守治疗观察）。\n  - **潜在指征：** 若后续 MRI 确认病灶明显增大且引起占位效应，或需获取组织进行再次基因检测（如检测 C797S 突变），则考虑再次手术。\n\n- **术后护理注意事项**\n  - 若行手术，需关注切口愈合、脑水肿管理及癫痫预防。\n\n- **并发症预防策略**\n  - 长期靶向治疗需预防间质性肺病（ILD）及心脏毒性。\n\n---\n\n## 7. 分子病理与基因检测 (Molecular Pathology)\n\n- **关键基因突变分析**\n  - **历史突变：** EGFR 19del (2008) -> T790M (2020)。\n  - **当前推测：** 若双倍剂量奥西替尼仍进展，需警惕 C797S 突变或其他旁路激活（如 MET 扩增）。\n  - **指南依据：** 脑转移瘤的基因组特征可能揭示分支进化及潜在治疗靶点 `[Local: Clinical_Guidelines_NSCLC_BM.md, Section: Key References]` (Ref: Brastianos PK, et al. Cancer Discov. 2015)。\n\n- **靶向治疗指导意义**\n  - T790M 阳性是奥西替尼有效的预测标志物 `[Local: Clinical_Guidelines_NSCLC_BM.md, Section: Osimertinib Treatment Evidence]`。\n  - 若后续进展，建议行脑脊液（CSF）或血液 NGS 检测，以指导四代靶向药或联合治疗方案。\n\n- **预后分子标志物**\n  - EGFR 突变患者总体生存期优于野生型，但多次耐药后预后需结合全身状况评估 `[Inference from Local: Clinical_Guidelines_NSCLC_BM.md]` (Ref: Soria JC, et al. NEJM 2018)。\n\n---\n\n## 8. 执行路径与决策轨迹 (Execution Trajectory)\n\n- **推荐的治疗时间线**\n  - **2021-01-08 至 2021-02-08：** 继续双倍剂量奥西替尼治疗，密切观察头痛症状。\n  - **2021-02-08（关键决策节点）：** 复查头部增强 MRI。\n    - **若稳定/缩小：** 维持当前方案，每 2 个月复查。\n    - **若进展：** 启动二线补救方案评估（如培美曲塞 + 铂类化疗，或参加临床试验）。\n\n- **关键决策节点**\n  1.  **影像学确认：** 区分 PET-CT 假阳性与真性进展（依赖 MRI 动态观察）。\n  2.  **耐药机制明确：** 若进展，必须明确是否出现 C797S 或组织学转化（如小细胞转化）。\n  3.  **局部干预时机：** 若出现单发大病灶压迫，及时转神经外科评估手术。\n\n- **多学科协作流程**\n  - **肿瘤内科：** 主导全身药物治疗及剂量调整。\n  - **神经外科/放疗科：** 待命，若局部病灶失控则介入。\n  - **影像科：** 确保 MRI 序列一致性，便于前后对比。\n  - **病理科：** 预留组织样本或协助脑脊液检测。\n\n---\n**报告生成专家：** 脑转移瘤 MDT 专家组\n**日期：** 2021 年 01 月 08 日",
+      "reasoning": "",
+      "sources": [
+        "Update_on_the_Management_of_Brain_Metastasis/Update_on_the_Management_of_Brain_Metastasis.md",
+        "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md",
+        "Update_on_the_Management_of_Brain_Metastasis/Update_on_the_Management_of_Brain_Metastasis.md"
+      ],
+      "retrieved_docs": [
+        {
+          "content": "iN nsclc, efgr MUTATIONS ARE QUITE COMMON AND OCCUR IN 1530% OF CASES. NINETY PERCENT OF PATIENTS WITH egfr ALTERATIONS IN nsclc HARBOR EXON 19 DELETIONS OR EXON 21 l858r SUBSTITUTIONS AND ARE SENSITI...",
+          "source": "Update_on_the_Management_of_Brain_Metastasis/Update_on_the_Management_of_Brain_Metastasis.md"
+        },
+        {
+          "content": "DIAGNOSIS AND TREATMENT WITH TORIPALIMAB IN A PATIENT WITH sclcWITH BRAIN METASTASES (104). THE PATIENT WAS DIAGNOSED WITHLOCALIZED STAGE SMALL CELL CARCINOMA OF THE LEFT LOWER LUNG ANDRECEIVED 6 CYCL...",
+          "source": "Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes/Immunotherapy_revolutionizing_brain_metastatic_cancer_treatment_personalized_strategies_for_transformative_outcomes.md"
+        },
+        {
+          "content": "9. SORIA jc, OHE y, VANSTEENKISTE j, REUNGWETWATTANA t, CHEWASKULYONG b, LEE kh, ET AL. OSIMERTINIB IN UNTREATED egfr-MUTATED ADVANCED NON-SMALL-CELL LUNG CANCER. n ENGL j MED. 2018;378(2):11325.   \n1...",
+          "source": "Update_on_the_Management_of_Brain_Metastasis/Update_on_the_Management_of_Brain_Metastasis.md"
+        }
+      ],
+      "latency_ms": 73923.11477661133,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "timestamp": "2026-04-08T21:01:56.479405"
+    }
+  },
+  "evaluation_timestamp": "2026-04-08T21:01:56.479443"
+}
