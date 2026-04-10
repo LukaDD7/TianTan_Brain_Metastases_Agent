@@ -1,0 +1,423 @@
+{
+  "summary": {
+    "Direct LLM": {
+      "latency": {
+        "mean": 97102.70057784187,
+        "std": 8683.295949688692,
+        "min": 90674.20244216919,
+        "max": 118622.05982208252
+      },
+      "input_tokens": {
+        "mean": 2235.3333333333335,
+        "std": 1072.3234120357533,
+        "min": 1155,
+        "max": 4550
+      },
+      "output_tokens": {
+        "mean": 5196.555555555556,
+        "std": 187.41738920862647,
+        "min": 4994,
+        "max": 5613
+      },
+      "env_calls": {
+        "mean": 0,
+        "std": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "io_ratio": 0.43412975819074173
+    },
+    "RAG V2": {
+      "latency": {
+        "mean": 137491.41224225363,
+        "std": 22624.22068239122,
+        "min": 99544.70729827881,
+        "max": 174213.18697929382
+      },
+      "input_tokens": {
+        "mean": 3918.222222222222,
+        "std": 1140.443310491339,
+        "min": 2365,
+        "max": 6354
+      },
+      "output_tokens": {
+        "mean": 6617.555555555556,
+        "std": 788.1782969466857,
+        "min": 4919,
+        "max": 7933
+      },
+      "env_calls": {
+        "mean": 1,
+        "std": 0.0,
+        "min": 1,
+        "max": 1
+      },
+      "io_ratio": 0.5912585583326632
+    },
+    "Web Search V2": {
+      "latency": {
+        "mean": 113708.61951510112,
+        "std": 9439.808776825554,
+        "min": 101237.07818984985,
+        "max": 130060.47821044922
+      },
+      "input_tokens": {
+        "mean": 40251.555555555555,
+        "std": 4762.091980188726,
+        "min": 34551,
+        "max": 51419
+      },
+      "output_tokens": {
+        "mean": 5509.888888888889,
+        "std": 415.0669959309113,
+        "min": 4988,
+        "max": 6123
+      },
+      "env_calls": {
+        "mean": 3,
+        "std": 0.0,
+        "min": 3,
+        "max": 3
+      },
+      "io_ratio": 7.336486683226607
+    },
+    "BM Agent": {
+      "latency": null,
+      "input_tokens": {
+        "mean": 690224.1111111111,
+        "std": 357916.1364441552,
+        "min": 331158,
+        "max": 1513558
+      },
+      "output_tokens": {
+        "mean": 7669.888888888889,
+        "std": 5924.373161872158,
+        "min": 2299,
+        "max": 20239
+      },
+      "env_calls": {
+        "mean": 44.77777777777778,
+        "std": 10.86022303842994,
+        "min": 30,
+        "max": 61
+      },
+      "io_ratio": 118.0941140482816
+    }
+  },
+  "raw_data": {
+    "direct_llm": {
+      "605525": {
+        "latency_ms": 118622.05982208252,
+        "input_tokens": 2610,
+        "output_tokens": 5084,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "612908": {
+        "latency_ms": 92321.30932807922,
+        "input_tokens": 1469,
+        "output_tokens": 5097,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "638114": {
+        "latency_ms": 93489.75539207458,
+        "input_tokens": 1447,
+        "output_tokens": 5155,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "640880": {
+        "latency_ms": 95158.37693214417,
+        "input_tokens": 1301,
+        "output_tokens": 5258,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "648772": {
+        "latency_ms": 101507.74359703064,
+        "input_tokens": 1155,
+        "output_tokens": 5613,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "665548": {
+        "latency_ms": 90674.20244216919,
+        "input_tokens": 2582,
+        "output_tokens": 4994,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "708387": {
+        "latency_ms": 94715.62194824219,
+        "input_tokens": 2810,
+        "output_tokens": 5227,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "747724": {
+        "latency_ms": 91364.63785171509,
+        "input_tokens": 4550,
+        "output_tokens": 5036,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      },
+      "868183": {
+        "latency_ms": 96070.59788703918,
+        "input_tokens": 2194,
+        "output_tokens": 5305,
+        "env_calls": 0,
+        "env_calls_type": "N/A",
+        "token_source": "api_usage"
+      }
+    },
+    "rag": {
+      "605525": {
+        "latency_ms": 146328.5584449768,
+        "input_tokens": 4321,
+        "output_tokens": 6709,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "612908": {
+        "latency_ms": 99544.70729827881,
+        "input_tokens": 3151,
+        "output_tokens": 4919,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "638114": {
+        "latency_ms": 163805.69338798523,
+        "input_tokens": 3483,
+        "output_tokens": 6796,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "640880": {
+        "latency_ms": 124097.2671508789,
+        "input_tokens": 3027,
+        "output_tokens": 6401,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "648772": {
+        "latency_ms": 135155.95364570618,
+        "input_tokens": 2365,
+        "output_tokens": 6295,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "665548": {
+        "latency_ms": 174213.18697929382,
+        "input_tokens": 4445,
+        "output_tokens": 7933,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "708387": {
+        "latency_ms": 139945.55354118347,
+        "input_tokens": 3997,
+        "output_tokens": 6901,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "747724": {
+        "latency_ms": 135282.306432724,
+        "input_tokens": 6354,
+        "output_tokens": 6888,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      },
+      "868183": {
+        "latency_ms": 119049.48329925537,
+        "input_tokens": 4121,
+        "output_tokens": 6716,
+        "env_calls": 1,
+        "env_calls_type": "retrieval",
+        "retrieved_docs_count": 5,
+        "token_source": "api_usage"
+      }
+    },
+    "websearch": {
+      "605525": {
+        "latency_ms": 113408.7975025177,
+        "input_tokens": 41673,
+        "output_tokens": 5710,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "612908": {
+        "latency_ms": 112473.32906723022,
+        "input_tokens": 39129,
+        "output_tokens": 4988,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "638114": {
+        "latency_ms": 101267.45390892029,
+        "input_tokens": 34551,
+        "output_tokens": 5010,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "640880": {
+        "latency_ms": 130060.47821044922,
+        "input_tokens": 40185,
+        "output_tokens": 6123,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "648772": {
+        "latency_ms": 108408.3604812622,
+        "input_tokens": 36088,
+        "output_tokens": 5346,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "665548": {
+        "latency_ms": 116555.17745018005,
+        "input_tokens": 40040,
+        "output_tokens": 6080,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "708387": {
+        "latency_ms": 123034.36923027039,
+        "input_tokens": 40745,
+        "output_tokens": 5616,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "747724": {
+        "latency_ms": 116932.5315952301,
+        "input_tokens": 51419,
+        "output_tokens": 5234,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      },
+      "868183": {
+        "latency_ms": 101237.07818984985,
+        "input_tokens": 38434,
+        "output_tokens": 5482,
+        "env_calls": 3,
+        "env_calls_type": "web_search",
+        "token_source": "api_usage"
+      }
+    },
+    "bm_agent": {
+      "605525": {
+        "latency_ms": 0,
+        "input_tokens": 581855,
+        "output_tokens": 4344,
+        "env_calls": 44,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "612908": {
+        "latency_ms": 0,
+        "input_tokens": 615865,
+        "output_tokens": 3549,
+        "env_calls": 48,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "638114": {
+        "latency_ms": 0,
+        "input_tokens": 445975,
+        "output_tokens": 3033,
+        "env_calls": 47,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "640880": {
+        "latency_ms": 0,
+        "input_tokens": 966623,
+        "output_tokens": 13389,
+        "env_calls": 37,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "648772": {
+        "latency_ms": 0,
+        "input_tokens": 730414,
+        "output_tokens": 7905,
+        "env_calls": 57,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "665548": {
+        "latency_ms": 0,
+        "input_tokens": 498005,
+        "output_tokens": 4782,
+        "env_calls": 49,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "708387": {
+        "latency_ms": 0,
+        "input_tokens": 331158,
+        "output_tokens": 9489,
+        "env_calls": 30,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "747724": {
+        "latency_ms": 0,
+        "input_tokens": 528564,
+        "output_tokens": 2299,
+        "env_calls": 30,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      },
+      "868183": {
+        "latency_ms": 0,
+        "input_tokens": 1513558,
+        "output_tokens": 20239,
+        "env_calls": 61,
+        "env_calls_type": "tool_call",
+        "token_source": "structured_logs"
+      }
+    }
+  },
+  "metadata": {
+    "token_calculator": "tiktoken (cl100k_base)",
+    "env_calls_definition": {
+      "direct_llm": "0 (无外部调用)",
+      "rag_v2": "1 (单次向量检索)",
+      "web_search_v2": "3 (网络搜索)",
+      "bm_agent": "动态工具调用次数"
+    }
+  }
+}

@@ -36,9 +36,12 @@ def count_tokens(text: str) -> int:
 
 
 def extract_direct_llm_metrics() -> Dict[str, Dict]:
-    """提取Direct LLM指标"""
+    """提取Direct LLM V2指标（优先使用API usage数据）"""
     results = {}
-    path = ROOT / "baseline/set1_results/direct_llm"
+    # 优先使用V2路径
+    path = ROOT / "baseline/set1_results_v2/all/direct_llm"
+    if not path.exists():
+        path = ROOT / "baseline/set1_results/direct_llm"  # 回退到旧路径
 
     for pid in PATIENT_IDS:
         file_path = path / f"{pid}_baseline_results.json"
@@ -49,17 +52,35 @@ def extract_direct_llm_metrics() -> Dict[str, Dict]:
             data = json.loads(file_path.read_text(encoding='utf-8'))
             result = list(data['results'].values())[0]
 
-            patient_input = data.get('patient_input_preview', '')
-            report = result.get('report', '')
+            # 优先使用API返回的usage数据（V2版本有full_output.usage）
+            full_output = result.get('full_output', {})
+            usage = full_output.get('usage', {})
+            api_input_tokens = usage.get('input_tokens', 0)
+            api_output_tokens = usage.get('output_tokens', 0)
 
-            results[pid] = {
-                'latency_ms': result.get('latency_ms', 0),
-                'input_tokens': count_tokens(patient_input),
-                'output_tokens': count_tokens(report),
-                'env_calls': 0,
-                'env_calls_type': 'N/A',
-                'token_source': 'tiktoken'
-            }
+            if api_input_tokens > 0 and api_output_tokens > 0:
+                # 使用API返回的真实数据
+                results[pid] = {
+                    'latency_ms': result.get('latency_ms', 0),
+                    'input_tokens': api_input_tokens,
+                    'output_tokens': api_output_tokens,
+                    'env_calls': 0,
+                    'env_calls_type': 'N/A',
+                    'token_source': 'api_usage'
+                }
+            else:
+                # 回退到tiktoken计算（V1兼容）
+                patient_input = data.get('patient_input_preview', '')
+                report = result.get('report', '')
+
+                results[pid] = {
+                    'latency_ms': result.get('latency_ms', 0),
+                    'input_tokens': count_tokens(patient_input),
+                    'output_tokens': count_tokens(report),
+                    'env_calls': 0,
+                    'env_calls_type': 'N/A',
+                    'token_source': 'tiktoken'
+                }
         except Exception as e:
             print(f"Error reading {file_path}: {e}")
 
@@ -67,9 +88,12 @@ def extract_direct_llm_metrics() -> Dict[str, Dict]:
 
 
 def extract_rag_metrics() -> Dict[str, Dict]:
-    """提取RAG V2指标（环境调用=1次检索）"""
+    """提取RAG V2指标（优先使用API usage，环境调用=1次检索）"""
     results = {}
-    path = ROOT / "baseline/set1_results/rag"
+    # 优先使用V2路径
+    path = ROOT / "baseline/set1_results_v2/rag"
+    if not path.exists():
+        path = ROOT / "baseline/set1_results/rag"  # 回退到旧路径
 
     for pid in PATIENT_IDS:
         file_path = path / f"{pid}_baseline_results.json"
@@ -80,24 +104,52 @@ def extract_rag_metrics() -> Dict[str, Dict]:
             data = json.loads(file_path.read_text(encoding='utf-8'))
             result = list(data['results'].values())[0]
 
-            patient_input = data.get('patient_input_preview', '')
-            report = result.get('report', '')
-            retrieved_docs = result.get('retrieved_docs', [])
+            # 优先使用API返回的usage数据（V2版本有full_output.usage）
+            full_output = result.get('full_output', {})
+            usage = full_output.get('usage', {})
+            api_input_tokens = usage.get('input_tokens', 0) or usage.get('prompt_tokens', 0)
+            api_output_tokens = usage.get('output_tokens', 0) or usage.get('completion_tokens', 0)
 
-            # 输入token = 患者输入 + 检索文档内容
-            input_text = patient_input
-            for doc in retrieved_docs[:3]:
-                input_text += '\n' + doc.get('content', '')[:2000]  # 限制每篇文档长度
+            if api_input_tokens > 0 and api_output_tokens > 0:
+                # 使用API返回的真实数据
+                results[pid] = {
+                    'latency_ms': result.get('latency_ms', 0),
+                    'input_tokens': api_input_tokens,
+                    'output_tokens': api_output_tokens,
+                    'env_calls': 1,  # RAG只检索一次
+                    'env_calls_type': 'retrieval',
+                    'retrieved_docs_count': len(result.get('retrieved_docs', [])),
+                    'token_source': 'api_usage'
+                }
+            else:
+                # 回退到tiktoken计算（V1兼容）
+                patient_input = data.get('patient_input_preview', '')
+                report = result.get('report', '')
+                retrieved_docs = result.get('retrieved_docs', [])
 
-            results[pid] = {
-                'latency_ms': result.get('latency_ms', 0),
-                'input_tokens': count_tokens(input_text),
-                'output_tokens': count_tokens(report),
-                'env_calls': 1,  # RAG只检索一次
-                'env_calls_type': 'retrieval',
-                'retrieved_docs_count': len(retrieved_docs),
-                'token_source': 'tiktoken'
-            }
+                # RAG system prompt（与rag_baseline.py一致）
+                RAG_SYSTEM_PROMPT = """你是一位资深的脑转移瘤多学科诊疗（MDT）专家..."""  # 省略完整内容
+
+                context = ""
+                for doc in retrieved_docs[:3]:
+                    doc_content = doc.get('content', '')
+                    context += doc_content + "\n\n"
+
+                filled_system_prompt = RAG_SYSTEM_PROMPT.format(
+                    patient_info=patient_input,
+                    context=context
+                )
+                full_input = filled_system_prompt + "\n\n" + patient_input
+
+                results[pid] = {
+                    'latency_ms': result.get('latency_ms', 0),
+                    'input_tokens': count_tokens(full_input),
+                    'output_tokens': count_tokens(report),
+                    'env_calls': 1,
+                    'env_calls_type': 'retrieval',
+                    'retrieved_docs_count': len(retrieved_docs),
+                    'token_source': 'tiktoken_fallback'
+                }
         except Exception as e:
             print(f"Error reading {file_path}: {e}")
 

@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Baseline 实验 - RAG 临床指南版本 (简化版)
+Baseline 实验 - RAG 临床指南版本 (V2 - 支持API usage统计)
 使用 qwen3-vl-embedding 通过 dashscope
+使用原生OpenAI client以获取准确usage数据
 """
 
 import os
@@ -14,12 +15,23 @@ from typing import List
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 
+import config
 import numpy as np
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_core.embeddings import Embeddings
+from openai import OpenAI
 
-from utils.llm_factory import get_brain_client_langchain
+# 直接使用原生OpenAI client获取usage数据
+def get_openai_client():
+    """获取原生OpenAI client（用于准确统计usage）"""
+    import config
+    if not config.BRAIN_API_KEY:
+        raise ValueError("❌ DASHSCOPE_API_KEY not found")
+    return OpenAI(
+        api_key=config.BRAIN_API_KEY,
+        base_url=config.BRAIN_BASE_URL
+    )
 
 
 class DashScopeEmbeddings(Embeddings):
@@ -63,7 +75,7 @@ class DashScopeEmbeddings(Embeddings):
 
 
 class SimpleRAGBaseline:
-    """简化版RAG"""
+    """简化版RAG - V2支持API usage统计"""
 
     # 8模块MDT报告默认Prompt（根据患者实际情况灵活适配，不强制填充）
     DEFAULT_SYSTEM_PROMPT = """你是一位资深的脑转移瘤多学科诊疗（MDT）专家。请基于提供的患者信息和临床指南，生成一份结构化的MDT诊疗报告。
@@ -153,7 +165,9 @@ class SimpleRAGBaseline:
         # 使用绝对路径
         self.guidelines_dir = guidelines_dir or "/media/luzhenyang/project/TianTan_Brain_Metastases_Agent/workspace/sandbox/Guidelines"
         self.vector_store = None
-        self.llm = get_brain_client_langchain()
+        # 使用原生OpenAI client以获取准确usage数据
+        self.client = get_openai_client()
+        self.model = config.BRAIN_MODEL_NAME  # 使用与项目统一的模型
 
     def load_documents(self):
         """加载指南文档"""
@@ -253,27 +267,35 @@ class SimpleRAGBaseline:
                 context=context
             )
 
-        # 调用LLM
-        response = self.llm.invoke([{"role": "user", "content": prompt}])
+        # 调用LLM - 使用原生OpenAI client获取准确usage
+        messages = [{"role": "user", "content": prompt}]
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            temperature=0.6
+        )
 
         # 计算延迟
         latency_ms = int((time.time() - start_time) * 1000)
 
-        # 提取推理过程（DeepSeek thinking）
+        # 提取结果和usage
+        content = response.choices[0].message.content
+        usage = response.usage
+
+        # 提取推理过程（DeepSeek reasoning）
         reasoning_text = ""
-        if hasattr(response, 'additional_kwargs') and response.additional_kwargs:
-            reasoning_content = response.additional_kwargs.get('reasoning_content')
-            if reasoning_content:
-                reasoning_text = reasoning_content
+        if hasattr(response.choices[0].message, 'reasoning_content'):
+            reasoning_text = response.choices[0].message.reasoning_content or ""
+            if reasoning_text:
                 print(f"🧠 捕获推理过程: {len(reasoning_text)} 字符")
 
         # 构建完整输出
         full_output = None
         if save_full_output:
-            full_output = self._build_full_output(response, prompt, docs, latency_ms)
+            full_output = self._build_full_output(response, prompt, docs, latency_ms, usage)
 
         result = {
-            "response": response.content,
+            "response": content,
             "reasoning": reasoning_text,
             "sources": [d.metadata.get('source', 'unknown') for d in docs],
             "retrieved_docs": [{
@@ -288,10 +310,10 @@ class SimpleRAGBaseline:
 
         return result
 
-    def _build_full_output(self, response, prompt, docs, latency_ms: int = 0) -> dict:
-        """构建完整输出结构（用于后续分析）"""
+    def _build_full_output(self, response, prompt, docs, latency_ms: int, usage) -> dict:
+        """构建完整输出结构（V2 - 包含准确usage数据）"""
         output = {
-            "model": getattr(response, 'response_metadata', {}).get('model_name', 'unknown'),
+            "model": response.model,
             "timestamp": time.strftime("%Y-%m-%dT%H:%M:%S"),
             "latency_ms": latency_ms,
             "input_prompt": prompt,
@@ -300,34 +322,16 @@ class SimpleRAGBaseline:
                 "source": d.metadata.get('source', 'unknown')
             } for d in docs],
             "output": {
-                "content": response.content,
-                "reasoning": None,
+                "content": response.choices[0].message.content,
+                "reasoning": getattr(response.choices[0].message, 'reasoning_content', None),
                 "role": "assistant"
             },
-            "usage": {}
-        }
-
-        # 提取推理内容
-        if hasattr(response, 'additional_kwargs') and response.additional_kwargs:
-            reasoning_content = response.additional_kwargs.get('reasoning_content')
-            if reasoning_content:
-                output["output"]["reasoning"] = reasoning_content
-
-        # 提取token使用情况
-        if hasattr(response, 'usage_metadata') and response.usage_metadata:
-            output["usage"] = {
-                "input_tokens": response.usage_metadata.get('input_tokens', 0),
-                "output_tokens": response.usage_metadata.get('output_tokens', 0),
-                "total_tokens": response.usage_metadata.get('total_tokens', 0)
+            "usage": {
+                "input_tokens": usage.prompt_tokens if usage else 0,
+                "output_tokens": usage.completion_tokens if usage else 0,
+                "total_tokens": usage.total_tokens if usage else 0
             }
-        elif hasattr(response, 'response_metadata') and response.response_metadata:
-            token_usage = response.response_metadata.get('token_usage', {})
-            if token_usage:
-                output["usage"] = {
-                    "input_tokens": token_usage.get('prompt_tokens', 0),
-                    "output_tokens": token_usage.get('completion_tokens', 0),
-                    "total_tokens": token_usage.get('total_tokens', 0)
-                }
+        }
 
         return output
 
