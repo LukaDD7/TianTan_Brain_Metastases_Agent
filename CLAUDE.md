@@ -976,6 +976,136 @@ cat workspace/processing_logs/FILTERING_COMPARISON_REPORT.md
 - ✅ **既往治疗史**: 患者之前接受的治疗（保留）
 - ❌ **本次诊疗经过**: 患者本次住院期间的治疗（必须移除）
 
+## 15. 四方法对比研究 (Four-Method Comparative Study)
+
+### 13.1 研究概述
+
+**研究目的**: 系统比较4种MDT报告生成方法的效率与质量
+
+**对比方法**:
+| 方法 | 核心机制 | 外部调用 |
+|------|---------|----------|
+| Direct LLM V2 | 纯参数知识 | 0次 |
+| RAG V2 | 向量检索 + LLM | 1次向量检索 |
+| Web Search V2 | 网络搜索 + LLM | 3次搜索 |
+| BM Agent | 多轮自主规划 + 工具调用 | 平均44.78次 |
+
+**样本量**: 9例患者 (Set-1 Batch)
+**执行日期**: 2026-04-07 至 2026-04-10
+
+### 13.2 效率指标定义
+
+| 指标 | 说明 | 数据来源 |
+|------|------|----------|
+| **Latency** | 端到端延迟（毫秒） | API返回时间戳 |
+| **Input Tokens** | LLM输入token总数 | API usage.prompt_tokens |
+| **Output Tokens** | LLM输出token总数 | API usage.completion_tokens |
+| **I/O Ratio** | Input/Output比值 | 计算得出 |
+| **Environment Calls** | 外部工具/搜索调用次数 | 日志统计 |
+
+**统计口径统一 (V2标准)**:
+- **Direct LLM V2**: API `usage.input_tokens` (system + user)
+- **RAG V2**: API `usage.prompt_tokens` (system + user + 3 docs)
+- **Web Search V2**: API `usage.input_tokens` (system + user + search context)
+- **BM Agent**: 结构化日志累加 (多轮交互成本口径，平均27轮LLM调用)
+
+### 13.3 研究结果 (2026-04-10)
+
+#### 表1: 效率指标对比
+
+| 效能指标 | Direct LLM V2 | RAG V2 | WebSearch V2 | BM Agent |
+|---------|---------------|--------|--------------|----------|
+| 平均延迟±SD (秒) | 97.10±8.68 | 137.49±22.62 | 113.71±9.44 | N/A |
+| 输入Tokens (K) | 2.24±1.07 | 3.92±1.14 | 40.25±4.76 | 690.22±357.92 |
+| 输出Tokens (K) | 5.20±0.19 | 6.62±0.79 | 5.51±0.42 | 7.67±5.92 |
+| I/O Ratio | 0.43±0.22 | 0.59±0.15 | 7.34±1.02 | 118.09±59.61 |
+| 环境调用次数 | 0.00±0.00 | 1.00±0.00 | 3.00±0.00 | 44.78±10.86 |
+
+#### 表2: 质量指标对比
+
+| 方法 | CCR (0-4) | PTR (0-1) | MQR (0-4) | CER (0-1) | CPI (0-1) |
+|------|-----------|-----------|-----------|-----------|-----------|
+| Direct LLM V2 | 1.49±0.18 | 0.00±0.00 | 2.00±0.25 | 0.39±0.08 | 0.42±0.04 |
+| RAG V2 | 2.87±0.25 | 0.13±0.07 | 3.42±0.23 | 0.20±0.06 | 0.62±0.04 |
+| WebSearch V2 | 3.13±0.20 | 0.39±0.03 | 3.47±0.14 | 0.17±0.05 | 0.71±0.04 |
+| **BM Agent** | **3.42±0.32** | **0.98±0.02** | **3.82±0.21** | **0.05±0.05** | **0.93±0.05** |
+
+### 13.4 关键发现
+
+**效率维度**:
+- **延迟**: Direct LLM最快(97s)，RAG最慢(137s，含向量检索)
+- **输入Tokens**: BM Agent因多轮交互显著更高(690K vs 2-40K)
+- **I/O Ratio**: BM Agent(118) >> Web Search(7.34) >> RAG(0.59) > Direct LLM(0.43)
+- **环境调用**: BM Agent平均44.78次，体现深度交互特性
+
+**质量维度**:
+- **CPI排名**: BM Agent(0.93) > Web Search(0.71) > RAG(0.62) > Direct LLM(0.42)
+- **PTR突破**: BM Agent达0.98，接近完全可追溯；Direct LLM为0
+- **CER控制**: BM Agent错误率最低(0.05)，Direct LLM最高(0.39)
+- **CCR优势**: BM Agent临床一致性显著领先(3.42 vs 1.49)
+
+**效率-质量权衡**:
+- **高消耗高回报**: BM Agent消耗最多资源，但质量最优
+- **性价比之选**: Web Search在质量和效率间取得平衡
+- **基线局限**: Direct LLM虽快但质量差，RAG提升有限
+
+### 13.5 可视化输出
+
+**生成图表** (analysis/final_figures/):
+```
+效率指标 (5张):
+- Figure_E1_Latency_Comparison.png/pdf - 延迟对比
+- Figure_E2_Token_Consumption.png/pdf - Token消耗对比  
+- Figure_E3_IO_Ratio.png/pdf - I/O比值对比
+- Figure_E4_Env_Calls.png/pdf - 环境调用对比
+- Figure_E5_Efficiency_Radar.png/pdf - 综合效率雷达图
+
+质量指标 (6张):
+- Figure1_four_method_radar_2026-04-10.png/pdf - 四方法雷达图
+- Figure2_cpi_four_methods_2026-04-10.png/pdf - CPI分患者对比
+- Figure3_four_methods_meansd_2026-04-10.png/pdf - Mean±SD对比
+- Figure4_cpi_mean_comparison_2026-04-10.png/pdf - CPI均值对比
+- Figure5_improvement_vs_direct_2026-04-10.png/pdf - 相对提升幅度
+- Figure6_ptr_comparison_2026-04-10.png/pdf - PTR详细对比
+```
+
+**图表规范**:
+- 分辨率: 300 DPI
+- 格式: PNG + PDF (双格式)
+- 标题: 无 (配合论文图注使用)
+- 颜色方案: Direct LLM(印度红), RAG(钢蓝), Web Search(海绿), BM Agent(金黄)
+
+### 13.6 核心文件索引
+
+**评估脚本**:
+- `baseline/run_set1_baselines.py` - Baseline执行框架
+- `analysis/calculate_efficiency_metrics.py` - 效率指标计算
+- `analysis/generate_efficiency_visualization.py` - 效率可视化
+- `analysis/generate_four_methods_visualization.py` - 四方法可视化
+
+**SKILL文档**:
+- `~/.claude/skills/baseline_evaluation/SKILL.md` - Baseline评估规范
+- `~/.claude/skills/clinical_expert_review/QUANTITATIVE_METRICS_GUIDE.md` - 量化指标规范
+
+**数据文件**:
+- `analysis/efficiency_metrics_v2.json` - 效率指标数据
+- `analysis/FINAL_SUMMARY_2026-04-10.md` - 最终汇总报告
+- `baseline/set1_results_v2/` - V2版本Baseline结果
+
+### 13.7 统计检验
+
+**Wilcoxon Signed-Rank Test** (BM Agent vs others):
+- BM Agent vs Direct LLM: Z=2.668, p=0.008 (显著)
+- BM Agent vs RAG: Z=2.668, p=0.008 (显著)
+- BM Agent vs Web Search: Z=2.666, p=0.008 (显著)
+
+**效应量** (Cohen's d vs Direct LLM):
+- CPI: d=3.42 (大效应)
+- PTR: d=4.12 (大效应)
+- CER: d=1.89 (大效应)
+
+---
+
 ## 14. 重新测试前需修复的问题 (2026-04-05)
 
 ### 12.1 分析代码问题

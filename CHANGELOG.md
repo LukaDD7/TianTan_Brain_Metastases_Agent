@@ -6,6 +6,68 @@
 
 ---
 
+## [Unreleased] - 2026-04-10
+
+### 四方法对比研究完成 (Four-Method Comparative Study)
+
+#### 研究概述
+**完成日期**: 2026-04-10
+**样本量**: 9例患者 (Set-1 Batch)
+**对比方法**: Direct LLM V2, RAG V2, Web Search V2, BM Agent
+
+#### 核心成果
+
+**效率指标统一口径 (V2标准)**:
+| 指标 | Direct LLM V2 | RAG V2 | Web Search V2 | BM Agent |
+|------|---------------|--------|---------------|----------|
+| 延迟(秒) | 97.10±8.68 | 137.49±22.62 | 113.71±9.44 | N/A |
+| 输入Tokens(K) | 2.24±1.07 | 3.92±1.14 | 40.25±4.76 | 690.22±357.92 |
+| 输出Tokens(K) | 5.20±0.19 | 6.62±0.79 | 5.51±0.42 | 7.67±5.92 |
+| I/O Ratio | 0.43±0.22 | 0.59±0.15 | 7.34±1.02 | 118.09±59.61 |
+| 环境调用 | 0.00±0.00 | 1.00±0.00 | 3.00±0.00 | 44.78±10.86 |
+
+**质量指标 (CPI/CCR/MQR/CER/PTR)**:
+| 方法 | CPI | CCR | MQR | CER | PTR |
+|------|-----|-----|-----|-----|-----|
+| Direct LLM V2 | 0.42±0.04 | 1.49±0.18 | 2.00±0.25 | 0.39±0.08 | 0.00±0.00 |
+| RAG V2 | 0.62±0.04 | 2.87±0.25 | 3.42±0.23 | 0.20±0.06 | 0.13±0.07 |
+| Web Search V2 | 0.71±0.04 | 3.13±0.20 | 3.47±0.14 | 0.17±0.05 | 0.39±0.03 |
+| **BM Agent** | **0.93±0.05** | **3.42±0.32** | **3.82±0.21** | **0.05±0.05** | **0.98±0.02** |
+
+#### 技术实现
+
+**统计口径统一**:
+- Direct LLM V2: API `usage.input_tokens` (2026-04-10)
+- RAG V2: 原生OpenAI client `usage.prompt_tokens` (修复LangChain丢失usage问题)
+- Web Search V2: DashScope API `usage.input_tokens` (2026-04-09)
+- BM Agent: 结构化日志累加 `llm_response.usage.input_tokens` (2026-04-07)
+
+**可视化图表生成** (11张):
+- 效率指标: Figure_E1-E5 (延迟、Token、I/O、环境调用、雷达图)
+- 质量指标: Figure1-6 (雷达图、CPI、Mean±SD、提升幅度、PTR)
+- 格式: 300 DPI, PNG+PDF, 无标题(配合论文图注)
+
+#### 关键发现
+- **PTR突破**: BM Agent达0.98 (vs Direct LLM 0.00)
+- **CER控制**: BM Agent错误率0.05 (vs Direct LLM 0.39)
+- **统计显著性**: Wilcoxon检验 BM Agent vs 所有Baseline p<0.01
+- **效应量**: Cohen's d > 1.89 (大效应)
+
+#### 新增文件
+- `analysis/FINAL_SUMMARY_2026-04-10.md` - 最终汇总报告
+- `analysis/efficiency_metrics_v2.json` - 效率指标数据
+- `analysis/generate_efficiency_visualization.py` - 效率可视化
+- `analysis/generate_four_methods_visualization.py` - 四方法可视化
+- `baseline/set1_results_v2/` - V2版本Baseline结果
+- `~/.claude/skills/baseline_evaluation/SKILL.md` - Baseline评估SKILL
+
+#### 更新的文件
+- `analysis/generate_efficiency_visualization.py` - 移除所有标题
+- `analysis/generate_four_methods_visualization.py` - 移除所有标题
+- `~/.claude/skills/clinical_expert_review/QUANTITATIVE_METRICS_GUIDE.md` - 添加效率指标规范
+
+---
+
 ## [Unreleased] - 2026-04-05
 
 ### 分析代码清理与重新测试准备
