@@ -43,7 +43,6 @@ lat_stds[3] = 0
 x = np.arange(len(methods))
 bars = ax.bar(x, latencies, yerr=lat_stds, capsize=5, color=colors, alpha=0.8, edgecolor='black')
 ax.set_ylabel('Latency (seconds)', fontsize=12)
-ax.set_title('End-to-End Latency Comparison (Mean±SD)', fontsize=14, fontweight='bold')
 ax.set_xticks(x)
 ax.set_xticklabels(methods, rotation=15, ha='right')
 ax.set_ylim(0, max(latencies)*1.2)
@@ -66,7 +65,6 @@ input_stds = [stats[m]['input_tokens']['std']/1000 for m in ['Direct LLM', 'RAG 
 ax = axes[0]
 bars = ax.bar(x, input_tokens, yerr=input_stds, capsize=5, color=colors, alpha=0.8, edgecolor='black')
 ax.set_ylabel('Input Tokens (K)', fontsize=12)
-ax.set_title('Input Token Consumption (Mean±SD)', fontsize=14, fontweight='bold')
 ax.set_xticks(x)
 ax.set_xticklabels(methods, rotation=15, ha='right')
 ax.set_yscale('log')  # 使用对数刻度因为BM Agent数值太大
@@ -98,7 +96,6 @@ io_ratios = [stats[m]['io_ratio'] for m in ['Direct LLM', 'RAG V2', 'Web Search 
 
 bars = ax.bar(x, io_ratios, color=colors, alpha=0.8, edgecolor='black')
 ax.set_ylabel('I/O Ratio (Input/Output)', fontsize=12)
-ax.set_title('Input/Output Token Ratio Comparison', fontsize=14, fontweight='bold')
 ax.set_xticks(x)
 ax.set_xticklabels(methods, rotation=15, ha='right')
 ax.set_yscale('log')  # 对数刻度
@@ -117,7 +114,6 @@ env_stds = [stats[m]['env_calls']['std'] for m in ['Direct LLM', 'RAG V2', 'Web 
 
 bars = ax.bar(x, env_calls, yerr=env_stds, capsize=5, color=colors, alpha=0.8, edgecolor='black')
 ax.set_ylabel('Environment Calls (count)', fontsize=12)
-ax.set_title('External Environment Calls (Mean±SD)', fontsize=14, fontweight='bold')
 ax.set_xticks(x)
 ax.set_xticklabels(methods, rotation=15, ha='right')
 for i, (v, s) in enumerate(zip(env_calls, env_stds)):
@@ -163,7 +159,6 @@ for method, color in zip(['Direct LLM', 'RAG V2', 'Web Search', 'BM Agent'], col
 ax.set_xticks(angles[:-1])
 ax.set_xticklabels(categories, fontsize=10)
 ax.set_ylim(0, 1)
-ax.set_title('Efficiency Metrics Radar Chart (Normalized)', fontsize=14, fontweight='bold', pad=20)
 ax.legend(loc='upper right', bbox_to_anchor=(1.3, 1.1))
 plt.tight_layout()
 plt.savefig(OUTPUT_DIR / 'Figure_E5_Efficiency_Radar.png', dpi=300, bbox_inches='tight')

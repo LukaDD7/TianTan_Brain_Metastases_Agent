@@ -166,9 +166,7 @@ def plot_figure1_radar_comparison(stats: Dict[str, Dict]):
     ax.set_yticklabels(['0.2', '0.4', '0.6', '0.8', '1.0'], fontsize=10)
     ax.grid(True, linestyle='--', alpha=0.5)
     ax.legend(loc='upper right', bbox_to_anchor=(1.35, 1.15), fontsize=11)
-    ax.set_title('Figure 1. Four-Method Comparison: Radar Chart\n(Mean values across 9 patients)',
-                 fontsize=15, fontweight='bold', pad=25)
-
+    
     save_figure(fig, 'Figure1_four_method_radar')
 
 
@@ -188,8 +186,6 @@ def plot_figure2_cpi_comparison(dfs: Dict[str, pd.DataFrame], stats: Dict[str, D
                       color=METHOD_COLORS[method], alpha=0.85)
 
     ax.set_ylabel('CPI (Composite Performance Index)', fontsize=12, fontweight='bold')
-    ax.set_title('Figure 2. Patient-level CPI Comparison (4 Methods)',
-                 fontsize=15, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels([CASE_NAMES[pid] for pid in PATIENT_IDS], rotation=0, fontsize=9)
     ax.legend(loc='lower right', fontsize=10)
@@ -219,8 +215,6 @@ def plot_figure3_metrics_grouped(stats: Dict[str, Dict]):
                       color=METHOD_COLORS[method], alpha=0.85, capsize=4)
 
     ax.set_ylabel('Score', fontsize=12, fontweight='bold')
-    ax.set_title('Figure 3. Quantitative Metrics Comparison (Mean ± SD)\nFour Methods',
-                 fontsize=15, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(metrics, fontsize=12, fontweight='bold')
     ax.legend(loc='upper right', fontsize=11)
@@ -243,8 +237,6 @@ def plot_figure4_cpi_bars(stats: Dict[str, Dict]):
                   color=colors, alpha=0.85, edgecolor='black', linewidth=1.5)
 
     ax.set_ylabel('CPI (Composite Performance Index)', fontsize=12, fontweight='bold')
-    ax.set_title('Figure 4. Mean CPI Comparison (4 Methods)\nwith Standard Deviation',
-                 fontsize=15, fontweight='bold')
     ax.set_ylim(0, 1.05)
     ax.grid(True, axis='y', linestyle='--', alpha=0.3)
 
@@ -289,8 +281,6 @@ def plot_figure5_improvement_bars(stats: Dict[str, Dict]):
                       color=METHOD_COLORS[method], alpha=0.85)
 
     ax.set_ylabel('Improvement vs Direct LLM (%)', fontsize=12, fontweight='bold')
-    ax.set_title('Figure 5. Performance Improvement vs Direct LLM\n(Percentage change)',
-                 fontsize=15, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(metrics, fontsize=12, fontweight='bold')
     ax.legend(loc='upper left', fontsize=11)
@@ -312,8 +302,6 @@ def plot_figure6_ptr_comparison(stats: Dict[str, Dict]):
     bars = ax.bar(labels, ptr_means, color=colors, alpha=0.85, edgecolor='black', linewidth=1.5)
 
     ax.set_ylabel('PTR (Physical Traceability Rate)', fontsize=12, fontweight='bold')
-    ax.set_title('Figure 6. Physical Traceability Rate Comparison\n(4 Methods)',
-                 fontsize=15, fontweight='bold')
     ax.set_ylim(0, 1.05)
     ax.grid(True, axis='y', linestyle='--', alpha=0.3)
 
