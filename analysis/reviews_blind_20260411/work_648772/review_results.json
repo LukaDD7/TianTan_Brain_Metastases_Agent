@@ -1,0 +1,306 @@
+{
+  "patient_id": "648772",
+  "review_date": "2026-04-11",
+  "review_version": "v2.0_strict",
+  "method_mapping": {
+    "Report_A": "BM Agent",
+    "Report_B": "Direct LLM",
+    "Report_C": "RAG",
+    "Report_D": "WebSearch"
+  },
+  "reviews": {
+    "Report_A": {
+      "method": "BM Agent",
+      "scores": {
+        "CCR": {
+          "total": 4.0,
+          "S_line": 4,
+          "S_scheme": 4,
+          "S_dose": 4,
+          "S_reject": 4,
+          "S_align": 4
+        },
+        "MQR": {
+          "total": 4.0,
+          "S_complete": 4,
+          "S_applicable": 4,
+          "S_format": 4,
+          "S_citation": 4,
+          "S_uncertainty": 4
+        },
+        "CER": 0.0,
+        "PTR": 0.426,
+        "CPI": 0.856
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 7,
+          "weight": 1.0,
+          "score": 7.0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 13,
+          "weight": 1.0,
+          "score": 13.0
+        },
+        "Tier_2_Guideline": {
+          "count": 0,
+          "weight": 0.3,
+          "score": 0
+        },
+        "Tier_3_Web_Official": {
+          "count": 0,
+          "weight": 0.1,
+          "score": 0
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 0,
+          "weight": -0.5,
+          "score": 0
+        },
+        "Invalid_Parametric": {
+          "count": 0,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 47
+      },
+      "errors": [],
+      "notes": "\u6807\u6746\u62a5\u544a\uff0c20\u5904Tier 1\u5f15\u7528\uff0c\u514d\u75ab\u8054\u5408\u5242\u91cf(Nivo 1mg/kg + Ipi 3mg/kg)\u6709NCCN\u951a\u70b9\uff0c\u672f\u540eSRS\u5242\u91cf24-27Gy/3f\u6709\u7269\u7406\u951a\u70b9"
+    },
+    "Report_B": {
+      "method": "Direct LLM",
+      "scores": {
+        "CCR": {
+          "total": 2.4,
+          "S_line": 3,
+          "S_scheme": 2,
+          "S_dose": 1,
+          "S_reject": 3,
+          "S_align": 3
+        },
+        "MQR": {
+          "total": 1.8,
+          "S_complete": 2,
+          "S_applicable": 3,
+          "S_format": 2,
+          "S_citation": 0,
+          "S_uncertainty": 2
+        },
+        "CER": 0.0,
+        "PTR": 0.0,
+        "CPI": 0.473
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_2_Guideline": {
+          "count": 0,
+          "weight": 0.3,
+          "score": 0
+        },
+        "Tier_3_Web_Official": {
+          "count": 0,
+          "weight": 0.1,
+          "score": 0
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 0,
+          "weight": -0.5,
+          "score": 0
+        },
+        "Invalid_Parametric": {
+          "count": 19,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 41
+      },
+      "errors": [],
+      "notes": "\u5b8c\u5168\u4f9d\u8d56Parametric Knowledge\uff0c\u65e0\u7269\u7406\u53ef\u8ffd\u6eaf\u5f15\u7528"
+    },
+    "Report_C": {
+      "method": "RAG",
+      "scores": {
+        "CCR": {
+          "total": 3.2,
+          "S_line": 4,
+          "S_scheme": 3,
+          "S_dose": 3,
+          "S_reject": 3,
+          "S_align": 3
+        },
+        "MQR": {
+          "total": 3.4,
+          "S_complete": 4,
+          "S_applicable": 4,
+          "S_format": 3,
+          "S_citation": 3,
+          "S_uncertainty": 3
+        },
+        "CER": 0.0,
+        "PTR": 0.273,
+        "CPI": 0.711
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 10,
+          "weight": 1.0,
+          "score": 10.0
+        },
+        "Tier_2_Guideline": {
+          "count": 0,
+          "weight": 0.3,
+          "score": 0
+        },
+        "Tier_3_Web_Official": {
+          "count": 0,
+          "weight": 0.1,
+          "score": 0
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 0,
+          "weight": -0.5,
+          "score": 0
+        },
+        "Invalid_Parametric": {
+          "count": 7,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 45
+      },
+      "errors": [],
+      "notes": "10\u5904Local\u5f15\u7528\uff0c\u5242\u91cf\u6709\u60a3\u8005\u5f53\u524d\u65b9\u6848\u951a\u70b9"
+    },
+    "Report_D": {
+      "method": "WebSearch",
+      "scores": {
+        "CCR": {
+          "total": 3.6,
+          "S_line": 4,
+          "S_scheme": 4,
+          "S_dose": 3,
+          "S_reject": 4,
+          "S_align": 3
+        },
+        "MQR": {
+          "total": 3.6,
+          "S_complete": 4,
+          "S_applicable": 4,
+          "S_format": 4,
+          "S_citation": 3,
+          "S_uncertainty": 3
+        },
+        "CER": 0.133,
+        "PTR": 0.0,
+        "CPI": 0.67
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 4,
+          "weight": 1.0,
+          "score": 4.0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_2_Guideline": {
+          "count": 4,
+          "weight": 0.3,
+          "score": 1.2
+        },
+        "Tier_3_Web_Official": {
+          "count": 0,
+          "weight": 0.1,
+          "score": 0
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 3,
+          "weight": -0.5,
+          "score": -1.5
+        },
+        "Invalid_Parametric": {
+          "count": 4,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 48
+      },
+      "errors": [
+        {
+          "type": "Minor",
+          "description": "\u5f15\u7528\u597d\u5927\u592b\u5728\u7ebf(haodf.com)\u4f5c\u4e3a\u968f\u8bbf\u65b9\u6848\u4f9d\u636e",
+          "weight": 1.0
+        },
+        {
+          "type": "Minor",
+          "description": "\u5f15\u7528\u5546\u4e1a\u7f51\u7ad9(bydrug.pharmcube.com)\u4f5c\u4e3a\u9884\u540e\u6807\u5fd7\u7269\u4f9d\u636e",
+          "weight": 1.0
+        }
+      ],
+      "notes": "3\u5904\u5546\u4e1a\u7f51\u7ad9\u5f15\u7528\u88ab\u5012\u6263\uff0c\u542bhaodf.com\u548cpharmcube.com"
+    }
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "report": "Report_A",
+      "method": "BM Agent",
+      "CPI": 0.857
+    },
+    {
+      "rank": 2,
+      "report": "Report_C",
+      "method": "RAG",
+      "CPI": 0.693
+    },
+    {
+      "rank": 3,
+      "report": "Report_D",
+      "method": "WebSearch",
+      "CPI": 0.647
+    },
+    {
+      "rank": 4,
+      "report": "Report_B",
+      "method": "Direct LLM",
+      "CPI": 0.485
+    }
+  ]
+}

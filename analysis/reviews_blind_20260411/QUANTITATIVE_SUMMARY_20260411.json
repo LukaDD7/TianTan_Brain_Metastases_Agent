@@ -1,0 +1,465 @@
+{
+  "individual_data": [
+    {
+      "patient_id": "605525",
+      "method": "BM Agent",
+      "CPI": 0.872,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.489
+    },
+    {
+      "patient_id": "605525",
+      "method": "Direct LLM",
+      "CPI": 0.498,
+      "CCR": 2.4,
+      "MQR": 2.2,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "605525",
+      "method": "RAG",
+      "CPI": 0.639,
+      "CCR": 3.0,
+      "MQR": 3.0,
+      "CER": 0.0,
+      "PTR": 0.158
+    },
+    {
+      "patient_id": "605525",
+      "method": "WebSearch",
+      "CPI": 0.533,
+      "CCR": 3.0,
+      "MQR": 3.2,
+      "CER": 0.533,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "612908",
+      "method": "BM Agent",
+      "CPI": 0.853,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.413
+    },
+    {
+      "patient_id": "612908",
+      "method": "Direct LLM",
+      "CPI": 0.46,
+      "CCR": 2.4,
+      "MQR": 1.6,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "612908",
+      "method": "RAG",
+      "CPI": 0.636,
+      "CCR": 3.0,
+      "MQR": 3.0,
+      "CER": 0.0,
+      "PTR": 0.143
+    },
+    {
+      "patient_id": "612908",
+      "method": "WebSearch",
+      "CPI": 0.737,
+      "CCR": 3.4,
+      "MQR": 3.6,
+      "CER": 0.0,
+      "PTR": 0.256
+    },
+    {
+      "patient_id": "638114",
+      "method": "BM Agent",
+      "CPI": 0.854,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.415
+    },
+    {
+      "patient_id": "638114",
+      "method": "Direct LLM",
+      "CPI": 0.502,
+      "CCR": 2.6,
+      "MQR": 2.0,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "638114",
+      "method": "RAG",
+      "CPI": 0.648,
+      "CCR": 3.0,
+      "MQR": 3.2,
+      "CER": 0.0,
+      "PTR": 0.143
+    },
+    {
+      "patient_id": "638114",
+      "method": "WebSearch",
+      "CPI": 0.778,
+      "CCR": 3.6,
+      "MQR": 3.6,
+      "CER": 0.0,
+      "PTR": 0.354
+    },
+    {
+      "patient_id": "640880",
+      "method": "BM Agent",
+      "CPI": 0.856,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.426
+    },
+    {
+      "patient_id": "640880",
+      "method": "Direct LLM",
+      "CPI": 0.502,
+      "CCR": 2.6,
+      "MQR": 2.0,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "640880",
+      "method": "RAG",
+      "CPI": 0.652,
+      "CCR": 3.0,
+      "MQR": 3.2,
+      "CER": 0.0,
+      "PTR": 0.159
+    },
+    {
+      "patient_id": "640880",
+      "method": "WebSearch",
+      "CPI": 0.821,
+      "CCR": 3.8,
+      "MQR": 3.8,
+      "CER": 0.0,
+      "PTR": 0.404
+    },
+    {
+      "patient_id": "648772",
+      "method": "BM Agent",
+      "CPI": 0.856,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.426
+    },
+    {
+      "patient_id": "648772",
+      "method": "Direct LLM",
+      "CPI": 0.473,
+      "CCR": 2.4,
+      "MQR": 1.8,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "648772",
+      "method": "RAG",
+      "CPI": 0.711,
+      "CCR": 3.2,
+      "MQR": 3.4,
+      "CER": 0.0,
+      "PTR": 0.273
+    },
+    {
+      "patient_id": "648772",
+      "method": "WebSearch",
+      "CPI": 0.67,
+      "CCR": 3.6,
+      "MQR": 3.6,
+      "CER": 0.133,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "665548",
+      "method": "BM Agent",
+      "CPI": 0.851,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.404
+    },
+    {
+      "patient_id": "665548",
+      "method": "Direct LLM",
+      "CPI": 0.485,
+      "CCR": 2.4,
+      "MQR": 2.0,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "665548",
+      "method": "RAG",
+      "CPI": 0.607,
+      "CCR": 2.8,
+      "MQR": 3.0,
+      "CER": 0.067,
+      "PTR": 0.14
+    },
+    {
+      "patient_id": "665548",
+      "method": "WebSearch",
+      "CPI": 0.754,
+      "CCR": 3.4,
+      "MQR": 3.6,
+      "CER": 0.0,
+      "PTR": 0.326
+    },
+    {
+      "patient_id": "708387",
+      "method": "BM Agent",
+      "CPI": 0.867,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.467
+    },
+    {
+      "patient_id": "708387",
+      "method": "Direct LLM",
+      "CPI": 0.502,
+      "CCR": 2.6,
+      "MQR": 2.0,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "708387",
+      "method": "RAG",
+      "CPI": 0.643,
+      "CCR": 3.0,
+      "MQR": 3.2,
+      "CER": 0.0,
+      "PTR": 0.122
+    },
+    {
+      "patient_id": "708387",
+      "method": "WebSearch",
+      "CPI": 0.77,
+      "CCR": 3.6,
+      "MQR": 3.6,
+      "CER": 0.0,
+      "PTR": 0.32
+    },
+    {
+      "patient_id": "747724",
+      "method": "BM Agent",
+      "CPI": 0.831,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.325
+    },
+    {
+      "patient_id": "747724",
+      "method": "Direct LLM",
+      "CPI": 0.49,
+      "CCR": 2.6,
+      "MQR": 1.8,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "747724",
+      "method": "RAG",
+      "CPI": 0.669,
+      "CCR": 3.2,
+      "MQR": 3.2,
+      "CER": 0.0,
+      "PTR": 0.158
+    },
+    {
+      "patient_id": "747724",
+      "method": "WebSearch",
+      "CPI": 0.605,
+      "CCR": 3.0,
+      "MQR": 3.4,
+      "CER": 0.133,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "868183",
+      "method": "BM Agent",
+      "CPI": 0.867,
+      "CCR": 4.0,
+      "MQR": 4.0,
+      "CER": 0.0,
+      "PTR": 0.467
+    },
+    {
+      "patient_id": "868183",
+      "method": "Direct LLM",
+      "CPI": 0.52,
+      "CCR": 2.8,
+      "MQR": 2.0,
+      "CER": 0.0,
+      "PTR": 0.0
+    },
+    {
+      "patient_id": "868183",
+      "method": "RAG",
+      "CPI": 0.67,
+      "CCR": 3.2,
+      "MQR": 3.2,
+      "CER": 0.0,
+      "PTR": 0.159
+    },
+    {
+      "patient_id": "868183",
+      "method": "WebSearch",
+      "CPI": 0.767,
+      "CCR": 3.6,
+      "MQR": 3.6,
+      "CER": 0.067,
+      "PTR": 0.347
+    }
+  ],
+  "statistics": {
+    "BM Agent": {
+      "CPI": {
+        "mean": 0.856,
+        "std": 0.011,
+        "min": 0.831,
+        "max": 0.872
+      },
+      "CCR": {
+        "mean": 4.0,
+        "std": 0.0,
+        "min": 4.0,
+        "max": 4.0
+      },
+      "MQR": {
+        "mean": 4.0,
+        "std": 0.0,
+        "min": 4.0,
+        "max": 4.0
+      },
+      "CER": {
+        "mean": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "PTR": {
+        "mean": 0.426,
+        "std": 0.045,
+        "min": 0.325,
+        "max": 0.489
+      }
+    },
+    "WebSearch": {
+      "CPI": {
+        "mean": 0.715,
+        "std": 0.088,
+        "min": 0.533,
+        "max": 0.821
+      },
+      "CCR": {
+        "mean": 3.444,
+        "std": 0.263,
+        "min": 3.0,
+        "max": 3.8
+      },
+      "MQR": {
+        "mean": 3.556,
+        "std": 0.157,
+        "min": 3.2,
+        "max": 3.8
+      },
+      "CER": {
+        "mean": 0.096,
+        "std": 0.164,
+        "min": 0.0,
+        "max": 0.533
+      },
+      "PTR": {
+        "mean": 0.223,
+        "std": 0.162,
+        "min": 0.0,
+        "max": 0.404
+      }
+    },
+    "RAG": {
+      "CPI": {
+        "mean": 0.653,
+        "std": 0.027,
+        "min": 0.607,
+        "max": 0.711
+      },
+      "CCR": {
+        "mean": 3.044,
+        "std": 0.126,
+        "min": 2.8,
+        "max": 3.2
+      },
+      "MQR": {
+        "mean": 3.156,
+        "std": 0.126,
+        "min": 3.0,
+        "max": 3.4
+      },
+      "CER": {
+        "mean": 0.007,
+        "std": 0.021,
+        "min": 0.0,
+        "max": 0.067
+      },
+      "PTR": {
+        "mean": 0.162,
+        "std": 0.041,
+        "min": 0.122,
+        "max": 0.273
+      }
+    },
+    "Direct LLM": {
+      "CPI": {
+        "mean": 0.492,
+        "std": 0.017,
+        "min": 0.46,
+        "max": 0.52
+      },
+      "CCR": {
+        "mean": 2.533,
+        "std": 0.133,
+        "min": 2.4,
+        "max": 2.8
+      },
+      "MQR": {
+        "mean": 1.933,
+        "std": 0.163,
+        "min": 1.6,
+        "max": 2.2
+      },
+      "CER": {
+        "mean": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "PTR": {
+        "mean": 0.0,
+        "std": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      }
+    }
+  },
+  "review_metadata": {
+    "total_patients": 9,
+    "total_reviews": 36,
+    "review_date": "2026-04-11",
+    "review_version": "v2.0_strict",
+    "decimal_precision": 3
+  }
+}

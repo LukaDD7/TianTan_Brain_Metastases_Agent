@@ -6,6 +6,14 @@
 
 ## 审查协议（6-Phase Protocol）
 
+【专家级审查铁律 (Expert Review Directives)】
+
+严禁外貌协会：不得因报告排版美观、使用了表格或 Markdown 特效而提高 MQR 评分。质量评估必须且仅基于医疗逻辑的完整性与证据的硬核程度。
+
+对未经物理验证的数字保持零容忍：在评估 S_dose 和 S_scheme 时，如果对应的治疗剂量或参数没有紧跟 [Local...] 或 [PubMed...] 等确凿的循证锚点，必须将其视为“潜在幻觉”，对应的评分不得高于 2/4。
+
+医疗信源洁癖：任何将普通互联网资讯站点（如百度、好大夫在线等非同行评议平台）作为临床推荐依据的行为，必须在 Phase 5 (CER) 中直接判定为 Major Error 或 Critical Error。
+
 ### Phase 1: Patient Context Analysis（患者上下文分析）
 - 提取患者基本信息、肿瘤类型、分期、治疗史
 - 识别关键临床决策点
@@ -38,11 +46,10 @@
 - 公式: CER = min((Σ w_j × n_j) / 15, 1.0)
 
 ### Phase 6: PTR - Physical Traceability Rate（物理可追溯率）
-- **PubMed引用**: 权重1.0
-- **Guideline引用**: 权重0.8
-- **Web引用**: 权重0.5
-- **Parametric Knowledge**: 权重0.0
-- **Insufficient**: 不计入
+- **Tier 1 (权威物理溯源 - 权重 1.0)：** [PubMed: PMID XXXXX] | [OncoKB: XXX] (精准肿瘤学数据库) | [Local: <文件名>, Section: <章节>] (本地挂载的官方指南文件，必须精确定位)
+- **Tier 2 (不可验证的泛指南 - 权重 0.3)：** [Guideline: XXX] (没有提供物理路径或精确章节的开放域指南声明，给予极低权重以惩罚未溯源行为)
+- **Tier 3 (开放网络链接 - 权重 -0.5 到 0.1)：** [Web: 权威机构/官方说明书] (如 FDA, NMPA, 药企官网说明书 PDF)：权重 0.1 | [Web: 商业健康资讯/论坛] (如 Baidu Health, Haodf, 微信公众号)：权重 -0.5（倒扣分，因为引入了严重的医疗合规风险）
+- **无效证据 (权重 0.0)：** Parametric Knowledge | Insufficient。
 - 公式: PTR = Σ(各类型引用数×权重) / 总声明数
 
 ## CPI计算
@@ -62,6 +69,7 @@ CPI = 0.35×(CCR/4) + 0.25×PTR + 0.25×(MQR/4) + 0.15×(1-CER)
 ### 步骤1: 提取报告中的所有引用
 扫描报告，识别以下格式引用：
 - `[PubMed: PMID XXXXXXXX]`
+- `[OncoKB: XXXXXXXX]`  <-- 【一定要补上这行】
 - `[Guideline: XXX Guidelines, YYYY]`
 - `[Local: <文件名>, Section: <章节>]`
 - `[Web: <URL>, Accessed: YYYY-MM-DD]`
@@ -95,6 +103,9 @@ CPI = 0.35×(CCR/4) + 0.25×PTR + 0.25×(MQR/4) + 0.15×(1-CER)
 3. **特殊情况处理**
    - "Patient Imaging Report"等章节 → 必为虚假引用（实际不存在于指南文档）
    - "既往史"、"病理诊断"等 → 必为患者输入数据（非指南引用）
+
+4. **针对 [Guideline: XXX] 泛引用的强制降级：**
+如果智能体仅输出了指南名称而未使用 [Local: ...] 挂载物理文件并定位章节，裁判模型不得将其判定为有效指南引用（不能给 0.8），必须将其降级为 Tier 2 (0.3分)，并记录在 Note 中：“未提供可追溯的物理文件与章节证据”。
 
 ### 步骤4: 计算match_score
 
@@ -190,15 +201,15 @@ analysis/
 ```
 
 ### PTR示例
-```markdown
-**PTR: 0.386**
-- PubMed引用: 6处 × 1.0 = 6.0
-- Guideline引用: 4处 × 0.8 = 3.2
-- Web引用: 5处 × 0.5 = 2.5
-- 总引用得分: 11.7
-- 总声明数: 30
-- PTR = 11.7 / 30 = 0.386
-```
+**PTR: 0.320**
+- Tier 1 权威溯源 (PubMed/OncoKB/Local): 6处 × 1.0 = 6.0
+- Tier 2 泛指南引用 (仅Guideline名称): 4处 × 0.3 = 1.2
+- Tier 3 官方Web引用 (FDA等): 2处 × 0.1 = 0.2
+- Tier 3 商业Web引用 (Baidu/Haodf等): 2处 × (-0.5) = -1.0
+- 总引用得分: 6.4
+- 总声明数: 20
+- PTR = 6.4 / 20 = 0.320
+（注：由于包含了商业健康网站，已在CER中追加Major Error惩罚）
 
 ### CER示例
 ```markdown
