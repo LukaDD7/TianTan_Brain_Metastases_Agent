@@ -29,8 +29,71 @@
           "S_uncertainty": 4
         },
         "CER": 0.0,
-        "PTR": 0.426,
-        "CPI": 0.856
+        "PTR": 0.638,
+        "CPI": 0.909,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.638,
+          "tier_1a": {
+            "count": 20,
+            "weight": 1.0,
+            "score": 20.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 8,
+                "score": 8.0
+              },
+              "oncokb": {
+                "count": 2,
+                "score": 2.0
+              },
+              "local": {
+                "count": 10,
+                "score": 10.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 10,
+            "weight": 1.0,
+            "score": 10.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 0,
+            "weight": 0.3,
+            "score": 0.0
+          },
+          "tier_3": {
+            "count": 0,
+            "weight": 0.1,
+            "score": 0.0
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 30.0,
+            "total_statements": 47,
+            "formula": "30.0 / 47",
+            "ptr_final": 0.638
+          }
+        }
       },
       "citation_breakdown": {
         "Tier_1_PubMed": {
@@ -71,7 +134,7 @@
         "total_statements": 47
       },
       "errors": [],
-      "notes": "\u6807\u6746\u62a5\u544a\uff0c20\u5904Tier 1\u5f15\u7528\uff0c\u542bOncoKB LEVEL_1\uff0cSRS\u5242\u91cf18-20Gy\u6709PMID\u951a\u70b9"
+      "notes": "标杆报告，20处Tier 1引用，含OncoKB LEVEL_1，SRS剂量18-20Gy有PMID锚点"
     },
     "Report_B": {
       "method": "Direct LLM",
@@ -93,8 +156,71 @@
           "S_uncertainty": 2
         },
         "CER": 0.0,
-        "PTR": 0.0,
-        "CPI": 0.502
+        "PTR": 0.079,
+        "CPI": 0.522,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.079,
+          "tier_1a": {
+            "count": 0,
+            "weight": 1.0,
+            "score": 0.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 0,
+                "score": 0.0
+              },
+              "oncokb": {
+                "count": 0,
+                "score": 0.0
+              },
+              "local": {
+                "count": 0,
+                "score": 0.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 3,
+            "weight": 1.0,
+            "score": 3.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 0,
+            "weight": 0.3,
+            "score": 0.0
+          },
+          "tier_3": {
+            "count": 0,
+            "weight": 0.1,
+            "score": 0.0
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 17,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 3.0,
+            "total_statements": 38,
+            "formula": "3.0 / 38",
+            "ptr_final": 0.079
+          }
+        }
       },
       "citation_breakdown": {
         "Tier_1_PubMed": {
@@ -135,7 +261,7 @@
         "total_statements": 38
       },
       "errors": [],
-      "notes": "\u5b8c\u5168\u4f9d\u8d56Parametric Knowledge\uff0c\u65e0\u7269\u7406\u53ef\u8ffd\u6eaf\u5f15\u7528"
+      "notes": "完全依赖Parametric Knowledge，无物理可追溯引用"
     },
     "Report_C": {
       "method": "RAG",
@@ -157,8 +283,71 @@
           "S_uncertainty": 3
         },
         "CER": 0.0,
-        "PTR": 0.159,
-        "CPI": 0.652
+        "PTR": 0.295,
+        "CPI": 0.686,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.295,
+          "tier_1a": {
+            "count": 7,
+            "weight": 1.0,
+            "score": 7.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 0,
+                "score": 0.0
+              },
+              "oncokb": {
+                "count": 0,
+                "score": 0.0
+              },
+              "local": {
+                "count": 7,
+                "score": 7.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 6,
+            "weight": 1.0,
+            "score": 6.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 0,
+            "weight": 0.3,
+            "score": 0.0
+          },
+          "tier_3": {
+            "count": 0,
+            "weight": 0.1,
+            "score": 0.0
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 11,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 13.0,
+            "total_statements": 44,
+            "formula": "13.0 / 44",
+            "ptr_final": 0.295
+          }
+        }
       },
       "citation_breakdown": {
         "Tier_1_PubMed": {
@@ -199,7 +388,7 @@
         "total_statements": 44
       },
       "errors": [],
-      "notes": "7\u5904Local\u5f15\u7528\uff0cParametric Knowledge\u5360\u6bd4\u4ecd\u9ad8"
+      "notes": "7处Local引用，Parametric Knowledge占比仍高"
     },
     "Report_D": {
       "method": "WebSearch",
@@ -221,8 +410,71 @@
           "S_uncertainty": 3
         },
         "CER": 0.0,
-        "PTR": 0.404,
-        "CPI": 0.821
+        "PTR": 0.398,
+        "CPI": 0.82,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.398,
+          "tier_1a": {
+            "count": 8,
+            "weight": 1.0,
+            "score": 8.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 8,
+                "score": 8.0
+              },
+              "oncokb": {
+                "count": 0,
+                "score": 0.0
+              },
+              "local": {
+                "count": 0,
+                "score": 0.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 8,
+            "weight": 1.0,
+            "score": 8.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 6,
+            "weight": 0.3,
+            "score": 1.7999999999999998
+          },
+          "tier_3": {
+            "count": 1,
+            "weight": 0.1,
+            "score": 0.1
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 2,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 17.9,
+            "total_statements": 45,
+            "formula": "17.9 / 45",
+            "ptr_final": 0.398
+          }
+        }
       },
       "citation_breakdown": {
         "Tier_1_PubMed": {
@@ -263,7 +515,7 @@
         "total_statements": 45
       },
       "errors": [],
-      "notes": "8\u5904PubMed\u5f15\u7528\uff0c\u542bClinicalTrial\u5f15\u7528\uff0c\u51b3\u7b56\u6811\u903b\u8f91\u6e05\u6670"
+      "notes": "8处PubMed引用，含ClinicalTrial引用，决策树逻辑清晰"
     }
   },
   "ranking": [
