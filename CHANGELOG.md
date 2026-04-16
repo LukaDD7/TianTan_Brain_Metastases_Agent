@@ -6,6 +6,48 @@
 
 ---
 
+## [Unreleased] - 2026-04-16
+
+### Skill升级 v5.2 - 模块命名标准化与执行摘要
+
+#### 医生反馈问题
+医生反映现有8模块命名不稳定，希望能将总结放在报告开头便于快速阅读。
+
+#### 升级内容
+
+**1. 版本号更新**
+- `universal_bm_mdt_skill/SKILL.md`: 5.1.0 → 5.2.0
+
+**2. 模块命名统一（v5.2）**
+| 模块编号 | 旧命名 | 新命名（标准化） |
+|---------|--------|-----------------|
+| Module 0 | N/A | 执行摘要 (Executive Summary) 【新增】 |
+| Module 1 | 入院评估 | 入院评估 (Admission Evaluation) |
+| Module 2 | 个体化治疗方案 | 个体化治疗方案 (Primary Personalized Plan) |
+| Module 3 | 支持治疗 | 支持治疗 (Systemic Management) |
+| Module 4 | 随访与监测 | 随访与监测 (Follow-up & Monitoring) |
+| Module 5 | 被排除方案 | 被排除方案 (Rejected Alternatives) |
+| Module 6 | 围手术期管理参数 | 围手术期管理 (Peri-procedural Holding Parameters) |
+| Module 7 | 分子病理学检测建议 | 分子病理检测 (Molecular Pathology Orders) |
+| Module 8 | 智能体执行轨迹 | 执行轨迹 (Agent Execution Trajectory) |
+
+**3. 执行摘要 (Module 0) 新增**
+- 位于报告开头，便于医生快速把握要点
+- 包含：患者特征、核心推荐、关键排他性论证、预后、注意事项
+- 格式参考：`skills/universal_bm_mdt_skill/examples/standard_mdt_report_format.md`
+
+**4. 更新文件**
+- `skills/universal_bm_mdt_skill/SKILL.md` - Phase 4改为9模块架构
+- `skills/universal_bm_mdt_skill/examples/standard_mdt_report_format.md` - 增加Module 0示例
+- `interactive_main.py` - 版本号更新为v5.2
+
+#### 毕业论文备份
+- 已克隆GitHub仓库到 `/media/luzhenyang/project/BM-Agent-毕业论文版/`
+- 已创建tag: `v5.1-thesis` 标记毕业论文版本
+- 后续升级（v5.2+）不影响毕业论文版本
+
+---
+
 ## [Unreleased] - 2026-04-10
 
 ### 四方法对比研究完成 (Four-Method Comparative Study)

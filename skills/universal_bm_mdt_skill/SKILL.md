@@ -1,10 +1,10 @@
 ---
 name: universal_bm_mdt_skill
-version: 5.1.0
+version: 5.2.0
 category: clinical_decision_support
 description: |
   [FUNCTION]: The standardized Multi-Disciplinary Team (MDT) report generation cognitive model and protocol for Brain Metastases at TianTan Hospital.
-  [VALUE]: Provides a complete Standard Operating Procedure (SOP) encompassing patient feature extraction, multi-source evidence integration (Guidelines + Molecular Profiling + Literature), mutually exclusive reasoning, and a standardized 8-module report output.
+  [VALUE]: Provides a complete Standard Operating Procedure (SOP) encompassing patient feature extraction, multi-source evidence integration (Guidelines + Molecular Profiling + Literature), mutually exclusive reasoning, and a standardized 9-module report output (including Executive Summary).
   [TRIGGER_HOOK]: Whenever you receive a medical record for a patient with brain metastases and are asked to provide a treatment plan or an MDT report, you MUST first read this entire Skill document and strictly follow its cognitive reasoning steps and file-writing protocols.
 ---
 
@@ -179,25 +179,39 @@ Every major conclusion must be labeled as one of the following:
 
 ---
 
-## Phase 4: The 8-Module Standardized Output Architecture
+## Phase 4: The 9-Module Standardized Output Architecture (v5.2+)
 
-Your final output must strictly follow this 8-module Markdown structure:
+Your final output must strictly follow this 9-module Markdown structure:
 
 **🚨 ZERO HALLUCINATION RED LINE FOR ALL MODULES 🚨**
 If, after executing the Deep Drill (Phase 3.2), you STILL cannot find the exact dosage or parameter in your retrieved physical evidence, **you MUST NOT guess or use pre-trained knowledge.** You MUST explicitly write: `[具体剂量/参数未在检索证据中明确，需临床医师基于患者个体情况决定]`
 
-* **Module 1: Admission Evaluation (`admission_evaluation`)** - Summary of structured patient artifacts, explicitly stating any missing data.
-* **Module 2: Primary Personalized Plan** - Local + Systemic therapy. 
+**Module 0: 执行摘要 (Executive Summary)** - 【NEW in v5.2】位于报告开头，提供核心推荐要点
+- 简要患者特征（诊断、分子分型、既往治疗线）
+- 核心治疗推荐（方案、剂量、疗程）
+- 关键排他性论证（为何排除哪些方案）
+- 预后与注意事项
+- 便于医生快速把握要点
+
+**Module 1: 入院评估 (Admission Evaluation)** - 结构化患者信息摘要，明确标注缺失数据
+
+**Module 2: 个体化治疗方案 (Primary Personalized Plan)** - 局部治疗+系统治疗方案
   **⚠️ CRITICAL:** Every single parameter (e.g., "80mg QD", "27Gy/3f", "5-ALA") MUST have an immediate, physical citation attached to it (e.g., `[PubMed: PMID 12345]`). If you cannot cite it, use the fallback text above.
-* **Module 3: Systemic Management (`systemic_management`)** - Supportive care (e.g., Dexamethasone tapering, seizure prophylaxis).
-* **Module 4: Follow-up & Monitoring (`follow_up & Monitoring`)** - MRI intervals, RANO-BM assessment criteria.
-* **Module 5: Rejected Alternatives (`rejected_alternatives`)** - The 2+ excluded options with evidence-based justifications.
-* **Module 6: Peri-procedural Holding Parameters (`peri_procedural_holding_parameters`)** - Management of anticoagulants or systemic therapy holding windows around surgery/SRS.
-  **⚠️ CRITICAL RED LINE: Every holding parameter, timing window, and management recommendation in this module MUST have a [Local] or [PubMed] citation. NO PRE-TRAINED KNOWLEDGE ALLOWED. Use Phase 2.4 search protocol.**
-* **Module 7: Molecular Pathology Orders (`molecular_pathology_orders`)** - Recommendations for missing tests (e.g., "Recommend NGS testing for MET ex14 skipping").
-  **⚠️ CRITICAL RED LINE: Every biomarker recommendation, testing priority, and panel composition in this module MUST have a [Local] or [PubMed] citation. NO PRE-TRAINED KNOWLEDGE ALLOWED. Use Phase 2.4 search protocol.**
+
+**Module 3: 支持治疗 (Systemic Management)** - 支持性治疗与毒性管理（如地塞米松减量方案、癫痫预防）
+
+**Module 4: 随访与监测 (Follow-up & Monitoring)** - 影像学随访间隔、RANO-BM评估标准
+
+**Module 5: 被排除方案 (Rejected Alternatives)** - 至少2项排他性论证及证据
+
+**Module 6: 围手术期管理 (Peri-procedural Holding Parameters)** - 手术/SRS前后系统治疗暂停参数
+  **⚠️ CRITICAL RED LINE:** Every holding parameter, timing window, and management recommendation in this module MUST have a [Local] or [PubMed] citation. NO PRE-TRAINED KNOWLEDGE ALLOWED. Use Phase 2.4 search protocol.
+
+**Module 7: 分子病理检测 (Molecular Pathology Orders)** - 推荐检测项目及优先级
+  **⚠️ CRITICAL RED LINE:** Every biomarker recommendation, testing priority, and panel composition in this module MUST have a [Local] or [PubMed] citation. NO PRE-TRAINED KNOWLEDGE ALLOWED. Use Phase 2.4 search protocol.
   - If the module is driven by treatment-history suspicion rather than a confirmed biomarker, explicitly write that the biomarker status remains `unknown` and the recommendation is to retest.
-* **Module 8: Agent Execution Trajectory (`agent_execution_trajectory`)** - An audit log of your thought process (Which scripts you executed, which guidelines you grepped).
+
+**Module 8: 执行轨迹 (Agent Execution Trajectory)** - 审计日志（执行命令、检索指南、OncoKB/PubMed查询）
 
 **Citation Protocol (Updated):**
 All clinical claims must be backed by a physical citation in one of these formats:
@@ -214,7 +228,7 @@ All clinical claims must be backed by a physical citation in one of these format
 ## Phase 5: Output Execution (Final Action - Citation Guardrail Enforced)
 
 **⚠️ CRITICAL ACTION DIRECTIVE:**
-Once the 8-module report is fully formulated in your context window, **DO NOT print the full report into the chat output.**
+Once the 9-module report is fully formulated in your context window, **DO NOT print the full report into the chat output.**
 
 **You MUST use the `submit_mdt_report` tool to submit the final report.** This tool has a built-in Citation Guardrail that will:
 - Scan all [PubMed: PMID XXX] and [Local: ...] citations in your report
@@ -230,7 +244,7 @@ execute(command="mkdir -p patients/<Patient_ID>/reports/")
 ```python
 submit_mdt_report(
     patient_id="<Patient_ID>",
-    report_content="# TianTan Hospital Brain Metastases MDT Report\n\n[Full 8-module content here]"
+    report_content="# TianTan Hospital Brain Metastases MDT Report\n\n[Full 9-module content here - including Executive Summary as Module 0]"
 )
 ```
 
