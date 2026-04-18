@@ -1,0 +1,74 @@
+{
+  "osimertinib": {
+    "drug_class": "EGFR_TKI_3rd_gen",
+    "csf_plasma_ratio": 0.16,
+    "csf_plasma_ratio_range": "0.12-0.25",
+    "cns_orr_percent": 66,
+    "cns_dcr_percent": 90,
+    "key_study": "FLAURA / AURA3",
+    "pmid": ["28885881", "29151359", "37691552"],
+    "mechanism": "Crosses BBB via passive diffusion due to high lipophilicity",
+    "evidence_level": "Level 1A",
+    "last_reviewed": "2025-01"
+  },
+  "lorlatinib": {
+    "drug_class": "ALK_TKI_3rd_gen",
+    "csf_plasma_ratio": 0.75,
+    "cns_orr_percent": 83,
+    "key_study": "CROWN",
+    "pmid": ["33207065", "36958790"],
+    "evidence_level": "Level 1A",
+    "last_reviewed": "2025-01"
+  },
+  "tucatinib": {
+    "drug_class": "HER2_TKI",
+    "csf_penetration": "limited_but_clinically_significant",
+    "cns_pfs_improvement": "HR 0.48 vs placebo (HER2CLIMB)",
+    "key_study": "HER2CLIMB",
+    "pmid": ["31825569", "36301544"],
+    "evidence_level": "Level 1A",
+    "last_reviewed": "2025-01"
+  },
+  "gefitinib": {
+    "drug_class": "EGFR_TKI_1st_gen",
+    "csf_plasma_ratio": 0.013,
+    "cns_penetration_rating": "poor",
+    "pmid": ["17060929"],
+    "note": "CSF穿透率约1.3%，远低于奥希替尼",
+    "evidence_level": "Level 2B",
+    "last_reviewed": "2025-01"
+  },
+  "erlotinib": {
+    "drug_class": "EGFR_TKI_1st_gen",
+    "csf_plasma_ratio": 0.05,
+    "cns_penetration_rating": "moderate",
+    "note": "高剂量脉冲治疗可暂时提高脑内浓度，但常规剂量不如三代",
+    "pmid": ["16484710"],
+    "evidence_level": "Level 2B"
+  },
+  "alectinib": {
+    "drug_class": "ALK_TKI_2nd_gen",
+    "csf_plasma_ratio": 0.03,
+    "cns_orr_percent": 81,
+    "key_study": "ALEX",
+    "note": "非直接高渗透但CNS疗效卓越（可能因肿瘤微环境特异性摄取及非P-gp底物）",
+    "pmid": ["28586279"],
+    "evidence_level": "Level 1A"
+  },
+  "trastuzumab_deruxtecan": {
+    "drug_class": "HER2_ADC",
+    "csf_penetration": "low_but_cns_active",
+    "cns_orr_percent": 50,
+    "cns_pfs_months": "approx 10.4",
+    "key_study": "DESTINY-Breast12",
+    "pmid": ["37549887", "36149453"],
+    "evidence_level": "Level 1B"
+  },
+  "dabrafenib": {
+    "drug_class": "BRAF_inhibitor",
+    "cns_orr_percent": 58,
+    "key_study": "COMBI-MB (with trametinib)",
+    "pmid": ["30032303"],
+    "evidence_level": "Level 2A"
+  }
+}

@@ -108,6 +108,9 @@ analysis/reviews/
 analysis/reviews/*.md
 analysis/reviews/*.csv
 
+# 盲审数据（含患者信息）
+analysis/reviews_blind_*/
+
 # 旧的可视化（可能含患者信息）
 analysis/visualization/
 

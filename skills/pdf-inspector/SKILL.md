@@ -120,6 +120,69 @@ When citing content obtained through VLM analysis:
 
 ---
 
+## ⚠️ DUAL-TRACK MANDATORY VERIFICATION (v6.0 新增，MANDATORY)
+
+**触发条件**：当你的推理涉及以下任何关键词时，**必须**同时使用 Track 1（文本）和 Track 3（VLM视觉）：
+
+### 强制触发词集合（Trigger Keywords）
+
+| 类别 | 触发词 |
+|:-----|:------|
+| **剂量单位** | `Gy`, `cGy`, `mg`, `mg/m²`, `mg/kg`, `AUC`, `μg` |
+| **放疗参数** | `fraction`, `分割`, `分次`, `dose`, `剂量`, `SRS`, `SRT`, `WBRT` |
+| **决策节点** | `decision tree`, `决策树`, `pathway`, `flowchart`, `流程图`, `criteria` |
+| **安全阈值** | `禁忌`, `contraindication`, `停药`, `hold`, `resume`, `washout` |
+| **数值标准** | `≤`, `≥`, `<`, `>`, `threshold`, `cutoff` |
+| **时间窗口** | `days`, `weeks`, `天`, `周`, `before surgery`, `after surgery` |
+
+### 双轨执行步骤（MANDATORY Protocol）
+
+**Step 1: 文本轨道（Track 1）**
+```bash
+grep -n -A 5 "<TRIGGER_KEYWORD>" /workspace/sandbox/Guidelines/<FILE>.md
+```
+记录：文件名、行号、文本内容。
+
+**Step 2: 视觉轨道（Track 2 + 3）**
+1. 从 `<!-- Page X -->` 标签或 `_image_page_map.json` 确定页码
+2. 使用 Track 2 渲染该页：
+```bash
+conda run -n mineru_env python \
+    /skills/pdf-inspector/scripts/render_pdf_page.py \
+    /workspace/sandbox/Guidelines/<FILE>.pdf \
+    --pages <PAGE_NUMBER>
+```
+3. 使用 Track 3 VLM 分析：
+```python
+analyze_image(
+    image_path="/workspace/sandbox/<FILE>_page_<N>.jpg",
+    query="精确提取所有剂量参数、数值标准和时间窗口（包含单位）。验证以下数字是否准确：<CLAIM_FROM_TEXT>"
+)
+```
+
+**Step 3: 比对与决策**
+| 结果 | 处理方式 |
+|:-----|:--------|
+| 文本 = 视觉（完全一致） | ✅ 使用文本值，引用标注 `[Dual-Track Verified ✓]` |
+| 文本 ≠ 视觉（存在差异） | 🔴 以视觉为准（OCR可能有误），注明差异，引用标注 `[Dual-Track: Visual Override]` |
+| 视觉无法识别 | ⚠️ 标注 `[Dual-Track: Visual Unreadable, Text Only]`，降低置信度 |
+
+**Step 4: 引用格式（Dual-Track 专用）**
+```
+[Local: <FILENAME>.pdf, Page <N>, Dual-Track Verified ✓]
+```
+此格式表示该数值已经过文本+视觉双重确认，可直接写入报告。
+未经双轨验证的剂量参数**不得**写入正式报告中。
+
+### ⛔ 违禁行为（Dual-Track 红线）
+
+- **严禁**：仅凭 Markdown 文本直接引用剂量（如 `[Local: NCCN.md, Line 280]`），
+  如果被引用的内容是剂量/停药天数/安全阈值，则必须额外完成视觉验证
+- **严禁**：视觉验证失败时仍使用文本数值而不标注差异
+- **严禁**：估算行号（`Line 约 380`）—— 必须实际 grep 定位
+
+---
+
 ## Track 4: Deep Guide Retrieval Protocol
 
 **Purpose:** Systematically locate specific clinical parameters (doses, regimens, recommendations) from guidelines using patient context.

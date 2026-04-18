@@ -1,0 +1,103 @@
+{
+  "bevacizumab": {
+    "drug_class": "anti_VEGF_monoclonal_antibody",
+    "half_life_days": 20,
+    "hold_before_surgery_days": 42,
+    "hold_before_surgery_minimum_days": 28,
+    "hold_before_surgery_note": "建议 6-8 周，绝对最低 28 天",
+    "resume_after_surgery_days": 28,
+    "resume_condition": "切口完全愈合（无裂开、无感染）",
+    "risk_if_not_held": "术中大出血风险、伤口愈合延迟/裂开、胃肠道穿孔",
+    "pmid_evidence": ["24863066", "30573478"],
+    "source": "FDA PI Section 5.3 + ASCO Guidelines",
+    "evidence_level": "Level 2A",
+    "last_reviewed": "2025-01"
+  },
+  "osimertinib": {
+    "drug_class": "EGFR_TKI_3rd_gen",
+    "half_life_days": 2,
+    "hold_before_surgery_days": 5,
+    "hold_before_surgery_note": "建议术前停用 3-5 天",
+    "resume_after_surgery_days": 7,
+    "resume_condition": "无活动性出血，消化道功能恢复",
+    "risk_if_not_held": "常规风险（未见特异性增加，但增加麻醉/血流动力学不稳定风险）",
+    "pmid_evidence": ["29151359"],
+    "source": "AstraZeneca Tagrisso PI + General TKI perioperative management",
+    "evidence_level": "Level 2B",
+    "last_reviewed": "2025-01"
+  },
+  "erlotinib": {
+    "drug_class": "EGFR_TKI_1st_gen",
+    "half_life_days": 1.5,
+    "hold_before_surgery_days": 4,
+    "hold_before_surgery_note": "建议术前停用 3-5 天",
+    "resume_after_surgery_days": 7,
+    "resume_condition": "切口基本愈合",
+    "source": "Manufacturer PI",
+    "evidence_level": "Level 3"
+  },
+  "gefitinib": {
+    "drug_class": "EGFR_TKI_1st_gen",
+    "half_life_days": 2,
+    "hold_before_surgery_days": 5,
+    "hold_before_surgery_note": "建议术前停用 3-5 天",
+    "resume_after_surgery_days": 7,
+    "resume_condition": "切口基本愈合",
+    "source": "Manufacturer PI",
+    "evidence_level": "Level 3"
+  },
+  "lorlatinib": {
+    "drug_class": "ALK_TKI_3rd_gen",
+    "half_life_days": 1,
+    "hold_before_surgery_days": 5,
+    "hold_before_surgery_note": "建议术前停用 5-7 天",
+    "resume_after_surgery_days": 7,
+    "resume_condition": "切口愈合，无并发症",
+    "source": "CROWN Protocol + Local guidelines",
+    "evidence_level": "Level 3"
+  },
+  "alectinib": {
+    "drug_class": "ALK_TKI_2nd_gen",
+    "half_life_days": 1.5,
+    "hold_before_surgery_days": 7,
+    "hold_before_surgery_note": "半衰期较长（代谢产物M4类似），建议停药一周",
+    "resume_after_surgery_days": 7,
+    "resume_condition": "切口愈合",
+    "source": "Roche Alecensa PI",
+    "evidence_level": "Level 3"
+  },
+  "tucatinib": {
+    "drug_class": "HER2_TKI",
+    "half_life_days": 0.35,
+    "hold_before_surgery_days": 3,
+    "hold_before_surgery_note": "半衰期极短（约 8.5 小时），停药 3-5 天即可",
+    "resume_after_surgery_days": 7,
+    "resume_condition": "切口愈合",
+    "source": "HER2CLIMB PI",
+    "evidence_level": "Level 3"
+  },
+  "aspirin": {
+    "drug_class": "antiplatelet",
+    "half_life_days": 0.25,
+    "hold_before_surgery_days": 7,
+    "hold_before_surgery_note": "术前必须停用 7-10 天以恢复血小板功能（不可逆抑制）",
+    "resume_after_surgery_days": 1,
+    "resume_condition": "神经外科术后无硬膜外/硬膜下血肿，需严格评估出血风险",
+    "risk_if_not_held": "神经外科术野不可控渗血，术后致死性血肿",
+    "pmid_evidence": ["32049723"],
+    "source": "ACC/AHA Perioperative Guideline 2022",
+    "evidence_level": "Level 1A"
+  },
+  "warfarin": {
+    "drug_class": "anticoagulant",
+    "half_life_days": 1.5,
+    "hold_before_surgery_days": 5,
+    "hold_before_surgery_note": "术前停用 5 天，术前 1 天查 INR（需 < 1.5）",
+    "resume_after_surgery_days": 1,
+    "resume_condition": "止血彻底，依据血栓风险评估",
+    "bridge_therapy": "高危血栓患者需 LMWH 桥接",
+    "pmid_evidence": ["32049723"],
+    "source": "ACC/AHA Perioperative Guideline 2022",
+    "evidence_level": "Level 1A"
+  }
+}
