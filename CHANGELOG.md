@@ -6,6 +6,67 @@
 
 ---
 
+## [Unreleased] - 2026-04-21
+
+### 系统关键Bug修复 (Critical Bug Fixes)
+
+#### Fix 1: Backend Execute 支持
+- **问题**: `FilesystemBackend` 不实现 `SandboxBackendProtocol`，导致 `execute` 工具无法执行 shell 命令
+- **根因**: 架构理解错误，`LocalShellBackend` 是唯一同时实现 `SandboxBackendProtocol` 和 `FilesystemBackendProtocol` 的后端
+- **修复**: `make_backend()` 改用 `LocalShellBackend`，通过 `routes` 配置虚拟路径路由
+```python
+def make_backend(runtime):
+    return CompositeBackend(
+        default=LocalShellBackend(
+            root_dir=SANDBOX_DIR,
+            virtual_mode=False,
+            inherit_env=True,
+        ),
+        routes={
+            "/skills/": FilesystemBackend(root_dir=SKILLS_DIR, virtual_mode=True),
+            "/memories/": StoreBackend()
+        }
+    )
+```
+- **影响**: SubAgent 现在可以正常执行 shell 命令（指南查询、OncoKB 调用等）
+
+#### Fix 2: task() 同步等待
+- **问题**: `stream_mode="values"` 导致 `task()` 在 SubAgent 完成前就返回
+- **根因**: 流式模式下中间值被当作最终结果返回，但 SubAgent 工具调用尚未完成
+- **修复**: `interactive_main.py` 主循环改用 `agent.invoke()` 替代 `agent.stream()`
+```python
+result = agent.invoke(
+    {"messages": [{"role": "user", "content": user_input}]},
+    config={"configurable": {"thread_id": patient_thread_id}}
+)
+```
+- **影响**: Orchestrator 现在可以正确等待所有 SubAgent 返回后继续执行
+
+#### Fix 3: PMID 引用铁律
+- **问题**: Orchestrator 在报告中写入未经工具验证的 PMID（从预训练记忆伪造）
+- **根因**: Phase 3 合成报告时，Orchestrator 直接使用记忆中的 PMID 而非 SubAgent 返回的 PMID
+- **修复**: 在 `orchestrator_prompt.py` 添加 Phase 3.5 "PMID写入铁律"
+  - 所有 PMID 必须来自 SubAgent JSON 输出中的 `[OncoKB: Level X]` 或 `search_pubmed.py` 执行结果
+  - 禁止从预训练记忆写入 PMID
+  - 无 PMID 来源时标注 `[需临床医师补充]`
+- **影响**: 从根本上杜绝 PMID 伪造风险
+
+#### Fix 4: SubAgent 持久会话记忆
+- **问题**: 各 SubAgent 独立运行，无法共享中间结果（MDT 共识倒退为单专科意见）
+- **根因**: 缺少跨 SubAgent 持久化机制，每个 SubAgent 只知道自己的输入
+- **修复**: 在所有 SubAgent prompts 中添加 Session Memory Protocol
+  - 会话文件路径: `/memories/sessions/{thread_id}.md`
+  - 读取时机: 执行评估前先读取会话文件
+  - 写入时机: 完成评估后将结构化 JSON 追加到会话文件
+  - `thread_id` 来源: 从患者上下文块的 `[SESSION: {thread_id}]` 标注提取
+- **影响**: 各 SubAgent 可以读取其他 SubAgent 的分析结果，实现真正的 MDT 协作
+
+#### 协调者上下文更新
+- **修复**: `orchestrator_prompt.py` Phase 1.3/1.4 添加 session_id 获取和标注要求
+- **影响**: 患者上下文块现在包含 `[SESSION: {thread_id}]`，传递给 SubAgent
+
+---
+
 ## [Unreleased] - 2026-04-16
 
 ### Skill升级 v5.2 - 模块命名标准化与执行摘要

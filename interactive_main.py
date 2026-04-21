@@ -23,13 +23,25 @@ from datetime import datetime
 from typing import Optional, Dict, Any, List
 
 from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, FilesystemBackend, StoreBackend
+from deepagents.backends import CompositeBackend, FilesystemBackend, LocalShellBackend, StoreBackend
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.store.memory import InMemoryStore
 from langchain.tools import tool
 
 from utils.llm_factory import get_brain_client_langchain
 from config import SUBAGENT_MODEL_NAME, AUDITOR_EGR_THRESHOLD, AUDITOR_MAX_RETRY
+
+# SubAgent全量日志支持
+from utils.subagent_full_logging import (
+    create_full_logger,
+    wrap_tools_for_agent,
+    set_current_logger,
+    get_current_logger,
+    generate_audit_report,
+)
+
+# 全局SubAgent日志器
+_subagent_full_logger = None
 
 # Import SubAgent system prompts
 from agents.orchestrator_prompt import ORCHESTRATOR_SYSTEM_PROMPT
@@ -39,6 +51,18 @@ from agents.medical_oncology_prompt import MEDICAL_ONCOLOGY_SYSTEM_PROMPT
 from agents.molecular_pathology_prompt import MOLECULAR_PATHOLOGY_SYSTEM_PROMPT
 from agents.auditor_prompt import AUDITOR_SYSTEM_PROMPT
 
+# =============================================================================
+# 注册 DashScope/Qwen 模型 Profile（让 deepagents 知道如何初始化 qwen 模型）
+# =============================================================================
+from deepagents.profiles import _register_harness_profile, _HarnessProfile
+import config as _config
+
+_register_harness_profile("qwen3.6-plus", _HarnessProfile(
+    init_kwargs_factory=lambda: {
+        "model_provider": "openai",
+        **{"base_url": _config.BRAIN_BASE_URL, "api_key": _config.BRAIN_API_KEY},
+    }
+))
 
 # =============================================================================
 # 配置常量
@@ -47,9 +71,17 @@ from agents.auditor_prompt import AUDITOR_SYSTEM_PROMPT
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 SKILLS_DIR = os.path.join(PROJECT_ROOT, "skills")
 SANDBOX_DIR = os.path.join(PROJECT_ROOT, "workspace", "sandbox")
+ANALYSIS_OUTPUT_DIR = os.path.join(PROJECT_ROOT, "workspace", "analysis_output")
 EXECUTION_LOGS_DIR = os.path.join(SANDBOX_DIR, "execution_logs")
 
+# 自动获取Agent System版本号
+try:
+    _AGENT_SYSTEM_VERSION = f"v6.0_{deepagents.__version__}"
+except (NameError, AttributeError):
+    _AGENT_SYSTEM_VERSION = "v6.0_unknown"
+
 os.makedirs(SANDBOX_DIR, exist_ok=True)
+os.makedirs(ANALYSIS_OUTPUT_DIR, exist_ok=True)
 os.makedirs(EXECUTION_LOGS_DIR, exist_ok=True)
 os.environ["SANDBOX_ROOT"] = SANDBOX_DIR
 
@@ -97,6 +129,7 @@ ORCHESTRATOR_SKILLS = [
 # =============================================================================
 
 execution_logger: Optional['ExecutionLogger'] = None
+_subagent_full_logger = None
 
 
 def get_logger() -> Optional['ExecutionLogger']:
@@ -393,6 +426,25 @@ DANGEROUS_PATTERNS = (
 )
 
 
+def _resolve_virtual_path(command: str) -> str:
+    """将虚拟路径转换为实际绝对路径.
+
+    Deep Agents 的 execute 工具在沙盒内执行，但项目使用了虚拟路径
+    (/skills/, /workspace/sandbox/) 来访问不同目录。需要将虚拟路径
+    转换为实际绝对路径才能正确执行。
+    """
+    # /skills/ -> SKILLS_DIR (项目skills目录)
+    if '/skills/' in command:
+        command = command.replace('/skills/', f'{SKILLS_DIR}/', 1)
+    # /workspace/sandbox/ -> SANDBOX_DIR
+    if '/workspace/sandbox/' in command:
+        command = command.replace('/workspace/sandbox/', f'{SANDBOX_DIR}/', 1)
+    # /memories/ -> SANDBOX_DIR/memories
+    if '/memories/' in command:
+        command = command.replace('/memories/', f'{SANDBOX_DIR}/memories/', 1)
+    return command
+
+
 @tool
 def execute(command: str, timeout: int = 600, max_output_bytes: int = 100000) -> str:
     """Execute a shell command and return the output.
@@ -409,6 +461,9 @@ def execute(command: str, timeout: int = 600, max_output_bytes: int = 100000) ->
         Command output dict with exit_code, stdout, stderr
     """
     start_time = time.time()
+
+    # 路径虚拟化转换
+    command = _resolve_virtual_path(command)
 
     is_allowed = any(command.strip().startswith(p) for p in ALLOWED_PREFIXES)
     is_dangerous = any(p in command.lower() for p in DANGEROUS_PATTERNS)
@@ -527,11 +582,13 @@ def submit_mdt_report(patient_id: str, report_content: str) -> str:
         print("⚠️  [提醒] 报告包含审计警告标记，建议人工复核后存档")
 
     # Save report
-    patient_dir = os.path.join(SANDBOX_DIR, "patients", patient_id, "reports")
+    # 输出到 analysis_output（隔离sandbox，避免信息泄露）
+    patient_dir = os.path.join(ANALYSIS_OUTPUT_DIR, "patients", patient_id, "reports")
     os.makedirs(patient_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    file_path = os.path.join(patient_dir, f"MDT_Report_{patient_id}_{timestamp}.md")
+    # 命名格式：{patient_id}_v6.0_{deepagents版本}_{时间戳}.md
+    file_path = os.path.join(patient_dir, f"{patient_id}_{_AGENT_SYSTEM_VERSION}_{timestamp}.md")
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(report_content)
 
@@ -554,12 +611,16 @@ def submit_mdt_report(patient_id: str, report_content: str) -> str:
 # =============================================================================
 
 def make_backend(runtime):
-    """CompositeBackend: sandbox(default) + skills(read-only) + memories(persistent)"""
+    """CompositeBackend: sandbox(default with shell) + skills(read-only) + memories(persistent)"""
     return CompositeBackend(
-        default=FilesystemBackend(root_dir=SANDBOX_DIR, virtual_mode=True),
+        default=LocalShellBackend(
+            root_dir=SANDBOX_DIR,
+            virtual_mode=False,
+            inherit_env=True,
+        ),
         routes={
             "/skills/": FilesystemBackend(root_dir=SKILLS_DIR, virtual_mode=True),
-            "/memories/": StoreBackend(runtime)
+            "/memories/": StoreBackend()
         }
     )
 
@@ -700,29 +761,25 @@ if __name__ == "__main__":
     patient_thread_id = str(uuid.uuid4())
     execution_logger = ExecutionLogger(patient_thread_id)
 
-    print(f"\n✅ 天坛医疗大脑 v6.0 已就绪。Session ID: {patient_thread_id}")
-    print(f"📝 执行日志: {execution_logger.main_log_path}")
-    print(f"💡 输入患者病史或文件路径（如 patient_868183_input.txt）开始会诊")
-    print(f"💡 输入 exit 退出")
-    print("-" * 60)
+    print(f"\n✅ 天坛医疗大脑 v6.0 已就绪。Session ID: {patient_thread_id}", flush=True)
+    print(f"📝 执行日志: {execution_logger.main_log_path}", flush=True)
+    print(f"💡 输入患者病史或文件路径（如 patient_868183_input.txt）开始会诊", flush=True)
+    print(f"💡 输入 exit 退出", flush=True)
+    print("-" * 60, flush=True)
 
     while True:
         try:
-            print("\n🧑‍⚕️ 请输入患者信息（输入空行结束，输入 exit 退出）：")
+            print("\n🧑‍⚕️ 请输入患者信息（输入空行结束，输入 exit 退出）：", end="", flush=True)
             lines = []
             empty_line_count = 0
             while True:
                 try:
-                    line_bytes = sys.stdin.buffer.readline()
-                    if not line_bytes:
+                    line = sys.stdin.readline()
+                    if not line:
                         break
-                    try:
-                        line = line_bytes.decode('utf-8')
-                    except UnicodeDecodeError:
-                        line = line_bytes.decode('utf-8', errors='replace')
 
                     if line.strip().lower() in ["exit", "quit"] and len(lines) == 0:
-                        print("👋 再见！")
+                        print("👋 再见！", flush=True)
                         sys.exit(0)
 
                     if line.strip() == "" or line.strip() == "---":
@@ -778,46 +835,64 @@ if __name__ == "__main__":
             if patient_match:
                 patient_id = patient_match.group(1)
 
+            # 记录输入文件名（用于追溯）
+            input_filename = None
+            if file_read_success and 'actual_path' in locals():
+                input_filename = os.path.basename(actual_path)
+
             execution_logger.log_user_input(user_input, patient_id)
             if patient_id:
                 execution_logger.set_patient_id(patient_id)
+            if input_filename:
+                execution_logger.log_agent_thinking(f"患者输入文件: {input_filename}", "input_source")
 
             print(f"\n⏳ MDT Orchestrator 正在协调多专科会诊... (Patient ID: {patient_id or 'N/A'})")
             print(f"   → 并行委派给: 神外 | 放疗 | 内科 | 分子病理")
             print(f"   → 合成后经 Evidence Auditor 审计 (EGR ≥ {AUDITOR_EGR_THRESHOLD})")
 
-            events = agent.stream(
+            result = agent.invoke(
                 {"messages": [{"role": "user", "content": user_input}]},
-                config={"configurable": {"thread_id": patient_thread_id}},
-                stream_mode="values"
+                config={"configurable": {"thread_id": patient_thread_id}}
             )
 
             last_printed_msg_id = None
-            for event in events:
-                messages = event.get("messages", [])
-                if not messages:
-                    continue
-                last_msg = messages[-1]
+            msgs_seen = set()  # Track seen message IDs to show only new ones
+            messages = result.get("messages", [])
 
-                if id(last_msg) == last_printed_msg_id:
+            # 遍历所有消息，显示摘要日志（只显示新的）
+            for last_msg in messages:
+                msg_id = id(last_msg)
+                if msg_id in msgs_seen:
                     continue
-                last_printed_msg_id = id(last_msg)
+                msgs_seen.add(msg_id)
+
+                # 判断是哪个角色（Orchestrator vs SubAgent）
+                msg_role = getattr(last_msg, 'role', 'unknown')
+                msg_name = getattr(last_msg, 'name', '')
 
                 if hasattr(last_msg, 'tool_calls') and last_msg.tool_calls:
                     for tc in last_msg.tool_calls:
                         tool_name = tc.get('name', 'unknown')
                         tool_args = tc.get('args', {})
-                        # 区分 Orchestrator 的 task() 调用（委派事件）
                         if tool_name == "task":
-                            sa_name = tool_args.get('name', '?')
+                            # DeepAgents task tool uses 'subagent_type' key
+                            sa_name = tool_args.get('subagent_type', tool_args.get('name', '?'))
                             print(f"\n🔀  [委派] → {sa_name}")
+                            execution_logger.log_agent_thinking(f"已委派给 SubAgent: {sa_name}", "delegate")
+                        elif tool_name == "submit_mdt_report":
+                            print(f"\n📋  [提交报告]")
+                            execution_logger.log_agent_thinking("Orchestrator 提交最终报告", "submit")
                         else:
-                            print(f"\n⚙️  [工具] {tool_name}")
+                            print(f"\n⚙️  [{msg_name or msg_role}] {tool_name}")
                         execution_logger.log_tool_call(tool_name, tool_args, None, 0)
 
                 content = getattr(last_msg, 'content', '')
                 if content:
-                    print(f"\n🤖 Agent:\n{content}")
+                    # SubAgent 返回的消息显示角色+摘要
+                    if msg_name:
+                        print(f"\n📥  [{msg_name}] 摘要日志 ({len(content)} 字符)")
+                    else:
+                        print(f"\n🤖 [{msg_role}]")
                     usage = {}
                     if hasattr(last_msg, 'response_metadata') and last_msg.response_metadata:
                         token_usage = last_msg.response_metadata.get('token_usage', {})
@@ -827,7 +902,7 @@ if __name__ == "__main__":
                                 "output_tokens": token_usage.get('completion_tokens', 0),
                                 "total_tokens": token_usage.get('total_tokens', 0)
                             }
-                    execution_logger.log_llm_response(content, role="assistant",
+                    execution_logger.log_llm_response(content, role=msg_role,
                                                       model=SUBAGENT_MODEL_NAME, usage=usage)
 
                 if hasattr(last_msg, 'additional_kwargs') and \
@@ -835,7 +910,7 @@ if __name__ == "__main__":
                     reasoning = last_msg.additional_kwargs['reasoning_content']
                     if reasoning:
                         print(f"\n🧠 [深度思考]:\n{reasoning}")
-                        execution_logger.log_agent_thinking(reasoning, "reasoning")
+                    execution_logger.log_agent_thinking(reasoning, "reasoning")
 
         except KeyboardInterrupt:
             print("\n会诊被用户强行终止。")

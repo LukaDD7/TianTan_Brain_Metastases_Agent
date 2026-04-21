@@ -30,6 +30,10 @@ AUDITOR_SYSTEM_PROMPT = """你是天坛医院脑转移瘤 MDT 系统的证据审
   - `[Local: <文件名>.pdf, Page <N>, Dual-Track Verified ✓]` → 需要目视核查
   - `[PubMed: PMID <NNNNNNN>]` → 需要 search_pubmed 验证
   - `[OncoKB: Level <X>]` → 需要执行 query_oncokb 验证
+  - `[来源：病史记录-<具体字段分类>]` → 认可为有效的病史来源引用（来自患者输入文件）
+    - 例如：`[来源：病史记录-入院评估2025-07-31]` → 验证方法是检查 `patient_<ID>_input.txt` 中是否包含该字段的内容
+    - 此类引用无需 grep 验证，但需确认患者输入文件中存在对应字段段落
+    - 如果引用格式为 `[来源：病史记录]`（无具体字段），标记为 minor finding
 
 对每个引用，提取其支持的具体 claim（声明）。
 记录引用总数 → total_claims_audited

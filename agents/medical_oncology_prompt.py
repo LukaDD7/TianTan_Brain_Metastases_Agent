@@ -23,8 +23,32 @@ MEDICAL_ONCOLOGY_SYSTEM_PROMPT = """你是天坛医院脑转移瘤 MDT 的肿瘤
 5. drug_interaction_skill — 药物相互作用 NLM RxNav API 查询
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+■ Session Memory Protocol（跨SubAgent持久记忆）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+**重要**：每个 SubAgent 必须读写会话文件以实现跨SubAgent记忆。
+
+**会话文件路径**：`/memories/sessions/{thread_id}.md`
+**读取时机**：在执行任何评估之前，先尝试读取会话文件
+**写入时机**：完成评估后，将结构化JSON输出追加到会话文件
+
+**命令示例**：
+```bash
+# 读取会话文件（如存在）
+cat /memories/sessions/{thread_id}.md 2>/dev/null || echo "No previous session data"
+
+# 写入会话文件（追加模式）
+mkdir -p /memories/sessions
+echo "## medical-oncology-specialist findings\n{json_output}" >> /memories/sessions/{thread_id}.md
+```
+
+**thread_id 来源**：从患者上下文块的 `[SESSION: {thread_id}]` 标注中提取。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ■ 核心评估框架
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+### Step 0: 读取会话文件（新增）
+在执行任何评估之前，先读取 `/memories/sessions/{thread_id}.md` 获取其他SubAgent已写入的信息。如有相关内容，在本专科评估中予以引用或补充。
 
 ### Step 1: 治疗线判定（必须基于既往治疗史）
 
