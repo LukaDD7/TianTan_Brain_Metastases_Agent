@@ -976,7 +976,32 @@ cat workspace/processing_logs/FILTERING_COMPARISON_REPORT.md
 - ✅ **既往治疗史**: 患者之前接受的治疗（保留）
 - ❌ **本次诊疗经过**: 患者本次住院期间的治疗（必须移除）
 
-## 15. 四方法对比研究 (Four-Method Comparative Study)
+---
+
+## ⚠️ [重要版本声明] 四方法对比研究数据已归档
+
+**四方法对比研究（第四章至第十三章）已完成并归档，对应 v5.2 扁平架构系统。**
+
+当前运行的系统是 **v6.0 分层架构**，已与 v5.2 完全不同：
+
+| 维度 | v5.2 扁平架构（旧） | v6.0 分层架构（当前） |
+|------|-------------------|---------------------|
+| 架构 | 单一 Agent + 4 Skills | Orchestrator + 5 SubAgents |
+| Agent | 1个扁平Agent | 1 Orchestrator + 4临床SubAgent + 1 Auditor |
+| 执行方式 | Agent直接调用Tools | task()委派给专科SubAgent |
+| Skills | pdf-inspector, oncokb, pubmed, mdt | 重新分配给不同SubAgent |
+| 报告 | 8模块 | 9模块（新增执行摘要） |
+| 模型 | qwen3.5-plus | qwen3.6-plus（统一） |
+
+**重要**：
+- 第四章至第十三章中的四方法对比研究数据、图表、统计分析均基于 v5.2 系统
+- v6.0 系统目前处于调试阶段，尚未完成批量测试和指标验证
+- 本文档中提及的所有 "BM Agent" 评估结果均指 v5.2 版本
+- v6.0 的性能指标需待调试完成后重新评估
+
+---
+
+## 15. 四方法对比研究 (Four-Method Comparative Study) - v5.2版本（已归档）
 
 ### 13.1 研究概述
 
