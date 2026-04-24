@@ -6,7 +6,32 @@
 
 ---
 
-## [Unreleased] - 2026-04-21
+## [v6.0.0] - 2026-04-24
+
+### 架构重大重构 (Architectural Major Refactor)
+
+#### 1. 首席仲裁分层架构 (Dispatcher-Arbitrator Architecture)
+- **Orchestrator 剥权协议**: 实现了 Orchestrator 的 Zero-execution 协议，强制其仅作为分发者和裁决者，解决了“主席直接开处方”的 Bug。
+- **专家 Sub-agent 矩阵**: 新增 `Imaging-Specialist` (影像专家) 和 `Primary-Oncology-Specialist` (原发系统专家)，由原先的 4 专家升级为 6 专家体系。
+
+#### 2. 循证医学驱动的仲裁机制
+- **EBM 仲裁矩阵**: 引入了 `(EBM等级 * 临床优先级)` 权重算法。Orchestrator 现在能根据 LoE (1-4级) 和临床红线（如生命安全）进行动态仲裁。
+- **Module 5 逻辑重构**: 新增 Fallback 机制。在无分歧时汇总专家内部的排除（Rejected）方案；在有冲突时记录详细的仲裁辩论过程。
+
+#### 3. 证据主权与支撑一致性审计 (Triple-Audit)
+- **证据三位一体**: 所有专家输出必须包含 `Claim`、`Citation`、`Source_Core_Summary` 和 `EBM_Level`。
+- **Auditor 三重审计**: Auditor 现在具备物理溯源、语义支撑一致性（Support Consistency）以及证据等级准确性校准的三重审计能力。
+
+#### 4. 结构化输出强约束 (Pydantic Schema Isolation)
+- **航道隔离**: 通过 `schemas/v6_expert_schemas.py` 为每个专家定义了互斥的输出模型，从底层代码层面防止跨学科越权（如内科建议手术）。
+
+### 5. 自进化系统增强
+- **Consensus Memory**: 挂载 `StoreBackend` 实现对高等级证据修正旧认知的持久化记录，系统具备基于案例法（Case Law）的自进化能力。
+
+---
+
+## [v5.2.0] - 2026-04-21 (Archived)
+
 
 ### 系统关键Bug修复 (Critical Bug Fixes)
 

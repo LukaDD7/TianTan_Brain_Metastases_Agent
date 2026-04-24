@@ -45,11 +45,18 @@ _subagent_full_logger = None
 
 # Import SubAgent system prompts
 from agents.orchestrator_prompt import ORCHESTRATOR_SYSTEM_PROMPT
+from agents.imaging_prompt import IMAGING_SYSTEM_PROMPT
+from agents.primary_oncology_prompt import PRIMARY_ONCOLOGY_SYSTEM_PROMPT
 from agents.neurosurgery_prompt import NEUROSURGERY_SYSTEM_PROMPT
 from agents.radiation_prompt import RADIATION_SYSTEM_PROMPT
-from agents.medical_oncology_prompt import MEDICAL_ONCOLOGY_SYSTEM_PROMPT
 from agents.molecular_pathology_prompt import MOLECULAR_PATHOLOGY_SYSTEM_PROMPT
 from agents.auditor_prompt import AUDITOR_SYSTEM_PROMPT
+
+# Import v6.0 Schemas
+from schemas.v6_expert_schemas import (
+    ImagingOutput, PrimaryOncologyOutput, NeurosurgeryOutput, 
+    RadiationOutput, MolecularOutput, AuditorOutput
+)
 
 # =============================================================================
 # 注册 DashScope/Qwen 模型 Profile（让 deepagents 知道如何初始化 qwen 模型）
@@ -633,98 +640,97 @@ CORE_TOOLS = [execute, read_file, analyze_image]
 
 
 # =============================================================================
-# v6.0 SubAgent 定义
+# v6.0 SubAgent 定义 (Strictly Managed)
 # =============================================================================
+
+imaging_sa = {
+    "name": "imaging-specialist",
+    "description": (
+        "Neuroradiology specialist. EXTRACTS objective geometric parameters (diameter, shift, location). "
+        "DOES NOT provide treatment advice. MUST output ImagingOutput JSON."
+    ),
+    "system_prompt": IMAGING_SYSTEM_PROMPT,
+    "tools": CORE_TOOLS,
+    "skills": [_S("pdf-inspector")], 
+    "response_format": ImagingOutput,
+    "model": SUBAGENT_MODEL_NAME,
+}
+
+primary_oncology_sa = {
+    "name": "primary-oncology-specialist",
+    "description": (
+        "Primary oncology specialist. Assesses primary tumor status, histology, and CNS drug penetrance. "
+        "MUST identify primary tumor type (Lung/Breast/etc.) and targetable mutations. "
+        "MUST output PrimaryOncologyOutput JSON."
+    ),
+    "system_prompt": PRIMARY_ONCOLOGY_SYSTEM_PROMPT,
+    "tools": CORE_TOOLS,
+    "skills": CORE_SKILLS + [_CNS_DB, _ONCOKB],
+    "response_format": PrimaryOncologyOutput,
+    "model": SUBAGENT_MODEL_NAME,
+}
 
 neurosurgery_sa = {
     "name": "neurosurgery-specialist",
     "description": (
-        "Neurosurgery specialist for brain metastases MDT. "
-        "Evaluates surgical indications, craniotomy vs biopsy, eloquent area risk. "
-        "MUST query perioperative_safety_skill for drug holding windows. "
-        "MUST query drug_interaction_skill for concomitant medication checks. "
-        "Returns structured JSON + narrative with physical citations."
+        "Neurosurgery specialist. Evaluates surgical indication and risk. "
+        "Dependent on imaging-specialist data. MUST output NeurosurgeryOutput JSON."
     ),
     "system_prompt": NEUROSURGERY_SYSTEM_PROMPT,
     "tools": CORE_TOOLS,
-    "skills": NEUROSURGERY_SKILLS,   # core + perioperative_safety + drug_interaction
+    "skills": NEUROSURGERY_SKILLS,
+    "response_format": NeurosurgeryOutput,
     "model": SUBAGENT_MODEL_NAME,
 }
 
 radiation_sa = {
     "name": "radiation-oncology-specialist",
     "description": (
-        "Radiation oncology specialist for brain metastases MDT. "
-        "Determines SRS vs WBRT indications from guideline PDF. "
-        "ALL Gy values MUST be dual-track verified (text + VLM visual). "
-        "Assesses radionecrosis risk and systemic therapy timing. "
-        "Returns structured JSON + narrative."
+        "Radiation oncology specialist. SRS vs WBRT decision maker. "
+        "MUST perform dual-track verification for Gy values. MUST output RadiationOutput JSON."
     ),
     "system_prompt": RADIATION_SYSTEM_PROMPT,
     "tools": CORE_TOOLS,
-    "skills": RADIATION_SKILLS,   # core only (pdf-inspector + pubmed)
-    "model": SUBAGENT_MODEL_NAME,
-}
-
-medical_oncology_sa = {
-    "name": "medical-oncology-specialist",
-    "description": (
-        "Medical oncology specialist for brain metastases MDT. "
-        "Recommends systemic therapy (targeted/IO/chemo), determines treatment line, "
-        "assesses drug doses and CNS penetration. "
-        "MUST query OncoKB FIRST for targeted therapy evidence levels. "
-        "MUST query cns_drug_db for CNS penetration metrics (no LLM memory). "
-        "MUST query drug_interaction_skill for polypharmacy checks. "
-        "Returns structured JSON + narrative."
-    ),
-    "system_prompt": MEDICAL_ONCOLOGY_SYSTEM_PROMPT,
-    "tools": CORE_TOOLS,
-    "skills": MEDICAL_ONCOLOGY_SKILLS,  # core + oncokb + cns_db + drug_interaction
+    "skills": RADIATION_SKILLS,
+    "response_format": RadiationOutput,
     "model": SUBAGENT_MODEL_NAME,
 }
 
 molecular_pathology_sa = {
     "name": "molecular-pathology-specialist",
     "description": (
-        "Molecular pathology specialist for brain metastases MDT. "
-        "Interprets molecular profiling results (NGS, IHC, FISH). "
-        "MUST query OncoKB for REAL-TIME evidence levels (not LLM memory). "
-        "Recommends additional tests (Emergency/Routine/Exploratory priority). "
-        "Identifies molecular contraindications (e.g., KRAS → anti-EGFR forbidden). "
-        "Returns structured JSON + narrative."
+        "Molecular pathology specialist. Interprets NGS/IHC results via OncoKB. "
+        "MUST output MolecularOutput JSON."
     ),
     "system_prompt": MOLECULAR_PATHOLOGY_SYSTEM_PROMPT,
     "tools": CORE_TOOLS,
-    "skills": MOLECULAR_PATHOLOGY_SKILLS,  # core + oncokb
+    "skills": MOLECULAR_PATHOLOGY_SKILLS,
+    "response_format": MolecularOutput,
     "model": SUBAGENT_MODEL_NAME,
 }
 
 evidence_auditor_sa = {
     "name": "evidence-auditor",
     "description": (
-        "Evidence auditor for the MDT report. "
-        "ONLY call AFTER the full 9-module MDT draft is complete. "
-        "Verifies ALL citations: [Local:] via grep, [PubMed:] via search_pubmed, "
-        "[OncoKB:] via query_oncokb. "
-        "Checks dual-track verification coverage for ALL dose parameters. "
-        "Computes EGR (Evidence Grounding Rate). "
-        "Returns AuditorOutput JSON. pass_threshold=False → Orchestrator MUST revise."
+        "Final evidence auditor. Verifies all physical citations. "
+        "MUST compute EGR and output AuditorOutput JSON."
     ),
     "system_prompt": AUDITOR_SYSTEM_PROMPT,
     "tools": CORE_TOOLS,
-    "skills": AUDITOR_SKILLS,  # core only (pdf-inspector + pubmed)
+    "skills": AUDITOR_SKILLS,
+    "response_format": AuditorOutput,
     "model": SUBAGENT_MODEL_NAME,
 }
 
 
 # =============================================================================
-# 组装 Orchestrator Deep Agent (v6.0)
+# 组装 Orchestrator Deep Agent (v6.0 Dispatcher)
 # =============================================================================
 
-print(f"🚀 正在初始化天坛医疗大脑 v6.0 (Hierarchical Agentic MDT)...")
-print(f"   架构     ：Orchestrator + 5 SubAgents")
+print(f"🚀 正在初始化天坛医疗大脑 v6.0 (Hierarchical Agentic MDT Dispatcher)...")
+print(f"   架构     ：Orchestrator + 6 SubAgents")
 print(f"   模型     ：{SUBAGENT_MODEL_NAME} (统一)")
-print(f"   SubAgents：神外 / 放疗 / 内科 / 分子病理 / Evidence Auditor")
+print(f"   SubAgents：影像 / 原发内科 / 神外 / 放疗 / 分子病理 / Evidence Auditor")
 print(f"   EGR阈值  ：{AUDITOR_EGR_THRESHOLD} (最大重试 {AUDITOR_MAX_RETRY} 次)")
 print(f"   Sandbox  ：{SANDBOX_DIR}")
 
@@ -734,11 +740,12 @@ checkpointer = MemorySaver()
 agent = create_deep_agent(
     model=model,
     system_prompt=ORCHESTRATOR_SYSTEM_PROMPT,
-    tools=[submit_mdt_report],          # Orchestrator 只持有提交工具
+    tools=[submit_mdt_report],          # Zero-execution Policy: Orchestrator only submits
     subagents=[
+        imaging_sa,
+        primary_oncology_sa,
         neurosurgery_sa,
         radiation_sa,
-        medical_oncology_sa,
         molecular_pathology_sa,
         evidence_auditor_sa,
     ],
@@ -747,7 +754,7 @@ agent = create_deep_agent(
     store=store,
     checkpointer=checkpointer,
     interrupt_on={
-        "submit_mdt_report": False,     # 自动提交（已经有 Auditor 关卡）
+        "submit_mdt_report": False,     # 已经有 Auditor 关卡
     },
     name="mdt-orchestrator",
 )
