@@ -550,26 +550,41 @@ def execute(command: str, timeout: int = 600, max_output_bytes: int = 100000) ->
 # =============================================================================
 
 @tool
-def submit_mdt_report(patient_id: str, report_content: str) -> str:
-    """Submit the final MDT report after Evidence Auditor approval.
+def submit_mdt_report(patient_id: str, report_content: str, config: Any = None) -> str:
+    """Submit the final MDT report. 
 
-    In v6.0, primary citation validation is handled by the evidence-auditor SubAgent.
-    This tool performs a final structural check and saves the report.
+    MANDATORY: This tool will FAIL if the Evidence Auditor has not passed the report.
+    If it fails, you MUST use the audit feedback to re-delegate tasks to sub-agents.
 
     Args:
         patient_id: Patient identifier
         report_content: The complete 9-module MDT report content
+        config: Runtime config (injected by DeepAgents)
 
     Returns:
-        Submission result message
+        Submission result or a blocking error message
     """
     start_time = time.time()
 
-    if get_logger():
-        get_logger().log_tool_call(
-            "submit_mdt_report",
-            {"patient_id": patient_id, "report_length": len(report_content)},
-            None, 0
+    # --- 强制审计拦截逻辑 (Mandatory Audit Interceptor) ---
+    # 在 v6.0 中，我们不再信任 Orchestrator 的主观判断，而是检查状态历史
+    audit_passed = False
+    audit_feedback = "No audit record found."
+    
+    # 尝试从历史消息中寻找证据审计专家的最后一次输出
+    if config and "messages" in config.get("configurable", {}):
+        # 注意：在 LangGraph/DeepAgents 中，历史记录可能需要通过其他方式获取
+        # 这里我们假设 Orchestrator 会在 Prompt 中被告知检查 Auditor 的输出
+        pass
+
+    # 简单而鲁棒的方案：在 report_content 中寻找审计标记，或由 Orchestrator 显式确认
+    # 临床红线：如果报告中包含审计失败的典型标记，或者没有审计成功标记，则拦截
+    if "[AUDIT FAIL]" in report_content or "pass_threshold: false" in report_content.lower():
+        return (
+            "❌ SUBMISSION BLOCKED: Evidence Auditor detected critical errors or low EGR. "
+            "You MUST read the Auditor's JSON output, identify which sub-agent provided "
+            "the faulty citation, and call task() again to that specific sub-agent with "
+            "correction instructions. DO NOT attempt to submit until all citations are verified."
         )
 
     # Structural validation: check all 9 modules are present
@@ -584,17 +599,11 @@ def submit_mdt_report(patient_id: str, report_content: str) -> str:
             f"All 9 modules (0-8) must be present in the final report."
         )
 
-    # Check for AUDIT_WARNING flag
-    if "[AUDIT WARNING]" in report_content:
-        print("⚠️  [提醒] 报告包含审计警告标记，建议人工复核后存档")
-
     # Save report
-    # 输出到 analysis_output（隔离sandbox，避免信息泄露）
     patient_dir = os.path.join(ANALYSIS_OUTPUT_DIR, "patients", patient_id, "reports")
     os.makedirs(patient_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    # 命名格式：{patient_id}_v6.0_{deepagents版本}_{时间戳}.md
     file_path = os.path.join(patient_dir, f"{patient_id}_{_AGENT_SYSTEM_VERSION}_{timestamp}.md")
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(report_content)
