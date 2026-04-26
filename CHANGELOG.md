@@ -6,6 +6,50 @@
 
 ---
 
+## [Unreleased] - 2026-04-24
+
+### 临床指南统一升级计划 (Guideline Synchronization)
+
+#### 背景
+Set-2，0402 批次（46例患者）新增了多种原发病灶类型（胃癌/贲门癌、黑色素瘤、卵巢癌等），原有指南无法覆盖所有 sub-agent 需求。且现有指南日期不一致（旧至2021年，新至2025年），需统一更新。
+
+#### 版本号更新
+- 版本号规范: `v{主版本}.{次版本}.{日期代码}` → 正式发布时更新为 `v6.0.20250424`
+
+#### 指南缺口分析
+**Practice Guideline 缺口:**
+| 指南 | 当前版本 | 目标版本 | 状态 |
+|------|---------|---------|------|
+| EANO-ESMO Brain Metastasis | © 2021 | 2024 | ❌ 需下载 |
+| ESMO Metastatic Breast Cancer | © 2021 | 2024 | ❌ 需下载 |
+| ESMO Oncogene-addicted NSCLC | © 2023 | 2024 | ❌ 需下载 |
+| ESMO Non-Oncogene-addicted NSCLC | © 2023 | 2024 | ❌ 需下载 |
+| ASCO-SNO-ASTRO Brain Mets | 2022 | 2024 | ❌ 需下载 |
+| Radiation Therapy for Brain Mets | 2008-2020 | 2024 | ❌ 需下载 |
+| ESMO Colorectal Cancer CPG | 缺失 | 2024 | ❌ 需下载 |
+| ESMO Melanoma CPG | 缺失 | 2024 | ❌ 需下载 |
+| ESMO Gastric Cancer/GEJ CPG | 缺失 | 2024 | ❌ 需下载 |
+| ESMO Ovarian Cancer CPG | 缺失 | 2024 | ❌ 需下载 |
+
+**已就绪:**
+- NCCN CNS Cancers v3.2024 ✅
+- Congress of Neurological Surgeons June 2025 ✅
+
+#### 下载来源
+1. Annals of Oncology (ESMO指南): https://www.annalsoncology.org
+2. ASCO Guidelines: https://ascopubs.org/guidelines
+3. ESMO Guidelines: https://www.esmo.org/guidelines
+4. NCCN Guidelines: https://www.nccn.org
+
+#### 待办
+- [ ] 下载所有2024版ESMO指南（10个）
+- [ ] 下载ASCO-SNO-ASTRO 2024版
+- [ ] 执行文本转换生成.txt文件
+- [ ] 验证所有指南日期一致性
+- [ ] 更新 `LocalGuidelinesManager` 路由表（如有必要）
+
+---
+
 ## [v6.0.0] - 2026-04-24
 
 ### 架构重大重构 (Architectural Major Refactor)

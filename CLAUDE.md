@@ -1,4 +1,4 @@
-# TianTan Brain Metastases Agent - AI 协作与开发协议 (v6.0 Hierarchical)
+# TianTan Brain Metastases Agent - AI 协作与开发协议 (v6.0.20250424)
 
 ## 1. 核心宣言 (Manifesto)
 **"We build intellectual Agent, not LLM with skill."**
@@ -41,3 +41,77 @@
 - **环境名称**: `tiantanBM_agent`
 - **主入口**: `interactive_main.py`
 - **Schema 定义**: `schemas/v6_expert_schemas.py`
+
+---
+
+## 6. 临床指南管理规范 (Guideline Management)
+
+### 6.1 指南版本同步要求
+**所有指南必须保持日期一致性（统一为2024-2025年版），禁止混用不同时期的指南。**
+
+### 6.2 当前指南状态
+
+**Practice Guidelines (需下载更新版):**
+| 指南 | 当前版本 | 目标版本 | 状态 |
+|------|---------|---------|------|
+| NCCN CNS Cancers | v3.2024 | v3.2024 | ✅ 已就绪 |
+| Congress of Neurological Surgeons | June 2025 | June 2025 | ✅ 已就绪 |
+| EANO-ESMO Brain Metastasis | © 2021 | 2024 | ❌ 需下载 |
+| ESMO Metastatic Breast Cancer | © 2021 | 2024 | ❌ 需下载 |
+| ESMO Oncogene-addicted NSCLC | © 2023 | 2024 | ❌ 需下载 |
+| ESMO Non-Oncogene-addicted NSCLC | © 2023 | 2024 | ❌ 需下载 |
+| ASCO-SNO-ASTRO Brain Mets | 2022 | 2024 | ❌ 需下载 |
+| Radiation Therapy for Brain Mets | 2008-2020 | 2024 | ❌ 需下载 |
+
+**完全缺失需下载:**
+| 指南 | 目标版本 |
+|------|---------|
+| ESMO Colorectal Cancer CPG | 2024 |
+| ESMO Melanoma CPG | 2024 |
+| ESMO Gastric Cancer/GEJ CPG | 2024 |
+| ESMO Ovarian Cancer CPG | 2024 |
+
+### 6.3 指南来源优先级
+1. **Annals of Oncology** (https://www.annalsoncology.org) — ESMO指南
+2. **ASCO Guidelines** (https://ascopubs.org/guidelines) — ASCO指南
+3. **ESMO Guidelines** (https://www.esmo.org/guidelines) — ESMO主页
+4. **NCCN Guidelines** (https://www.nccn.org) — NCCN指南
+
+### 6.4 下载后操作
+1. 保存到 `/media/luzhenyang/project/TianTan_Brain_Metastases_Agent/Guidelines/脑转诊疗指南/Practice_Guideline_metastases/`
+2. 执行文本转换: `pdftotext {filename}.pdf {filename}.txt`
+3. 验证日期一致性
+
+---
+
+## 7. 网络访问与搜索回退规则 (Web Access Fallback)
+
+### 5.1 WebSearch 工具优先级
+当需要搜索外部信息时，按以下优先级尝试：
+
+1. **`mcp__MiniMax__web_search`** — 首选，通过 MiniMax API 搜索（走 MiniMax 代理）
+2. **`mcp__WebSearch__bailian_web_search`** — 次选，通过阿里百炼/通义搜索
+3. **`curl` Bash 命令** — 终极回退，直接 curl 目标 URL
+4. **放弃搜索** — 如果以上全部失败，标注 `[无法验证]` 并继续
+
+### 5.2 WebFetch 工具失效时的处理
+`WebFetch` 工具在以下情况可能失效：
+- 目标域名被企业安全策略屏蔽（github.com, docs.langchain.com 等）
+- 云服务器 IP 被目标网站加入黑名单或 rate limit
+
+**回退策略**：
+1. 尝试用 `curl -sL --max-time 30 <url>` 直接在 Bash 中获取页面内容
+2. 如果 curl 也失败，放弃该信息源，在响应中标注 `[WebFetch unavailable: <domain>]`
+3. **严禁无休止地反复尝试同一失效的 URL**
+
+### 5.3 禁止行为
+- **严禁**使用 Puppeteer/Selenium/Playwright 等无头浏览器进行网页抓取
+- **严禁**在 WebFetch/WebSearch 失败后尝试 VPN 代理配置（除非用户明确要求）
+- 如果所有网络工具都失效，**直接告知用户**并建议手动提供链接内容
+
+### 5.4 Jina Reader 使用
+如需渲染网页为 Markdown，优先使用 Jina Reader：
+```bash
+curl -sL "https://r.jina.ai/https://target-url.com"
+```
+如果目标服务器拒绝（返回非200），标记为 `[Jina blocked]` 并回退到上述策略。

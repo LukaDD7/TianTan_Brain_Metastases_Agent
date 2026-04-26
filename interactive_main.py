@@ -44,7 +44,7 @@ from utils.subagent_full_logging import (
 _subagent_full_logger = None
 
 # Import SubAgent system prompts
-from agents.orchestrator_prompt import ORCHESTRATOR_SYSTEM_PROMPT
+from agents.orchestrator_prompt import get_orchestrator_prompt
 from agents.imaging_prompt import IMAGING_SYSTEM_PROMPT
 from agents.primary_oncology_prompt import PRIMARY_ONCOLOGY_SYSTEM_PROMPT
 from agents.neurosurgery_prompt import NEUROSURGERY_SYSTEM_PROMPT
@@ -566,28 +566,9 @@ def submit_mdt_report(patient_id: str, report_content: str, config: Any = None) 
     """
     start_time = time.time()
 
-    # --- 强制审计拦截逻辑 (Mandatory Audit Interceptor) ---
-    # 在 v6.0 中，我们不再信任 Orchestrator 的主观判断，而是检查状态历史
-    audit_passed = False
-    audit_feedback = "No audit record found."
-    
-    # 尝试从历史消息中寻找证据审计专家的最后一次输出
-    if config and "messages" in config.get("configurable", {}):
-        # 注意：在 LangGraph/DeepAgents 中，历史记录可能需要通过其他方式获取
-        # 这里我们假设 Orchestrator 会在 Prompt 中被告知检查 Auditor 的输出
-        pass
-
-    # 简单而鲁棒的方案：在 report_content 中寻找审计标记，或由 Orchestrator 显式确认
-    # 临床红线：如果报告中包含审计失败的典型标记，或者没有审计成功标记，则拦截
-    if "[AUDIT FAIL]" in report_content or "pass_threshold: false" in report_content.lower():
-        return (
-            "❌ SUBMISSION BLOCKED: Evidence Auditor detected critical errors or low EGR. "
-            "You MUST read the Auditor's JSON output, identify which sub-agent provided "
-            "the faulty citation, and call task() again to that specific sub-agent with "
-            "correction instructions. DO NOT attempt to submit until all citations are verified."
-        )
-
-    # Structural validation: check all 9 modules are present
+    # --- 结构完整性验证（v6.0: 审计已在 Orchestrator Phase 2 完成，submit 仅做格式兜底） ---
+    # 注意：v6.0 的审计闭环已由 Orchestrator Phase 2 + {max_retry} 终止条件保证，
+    # submit_mdt_report 不再重复审计，只检查 9 模块完整性。
     required_modules = [
         "Module 0", "Module 1", "Module 2", "Module 3",
         "Module 4", "Module 5", "Module 6", "Module 7", "Module 8"
@@ -748,7 +729,7 @@ checkpointer = MemorySaver()
 
 agent = create_deep_agent(
     model=model,
-    system_prompt=ORCHESTRATOR_SYSTEM_PROMPT,
+    system_prompt=get_orchestrator_prompt(),
     tools=[submit_mdt_report],          # Zero-execution Policy: Orchestrator only submits
     subagents=[
         imaging_sa,
