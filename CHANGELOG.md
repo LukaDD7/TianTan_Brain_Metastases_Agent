@@ -6,7 +6,181 @@
 
 ---
 
+## [v7.0.0] - 2026-04-26
+
+### 架构里程碑：科研级自适应 MDT 系统 (Research-Grade Adaptive MDT)
+
+> 本次升级是为达到 Nature Medicine 等顶级期刊发表标准而进行的全面架构升级，
+> 核心创新点为：自适应路由 + 统计冲突量化 + 形式化安全保障 + 三要素自进化引擎。
+
+#### WS-1: 自适应复杂度路由 (Triage Gate)
+
+**新增文件**:
+- `agents/triage_prompt.py` — 分诊门 System Prompt（5段路由规则）
+- `schemas/triage_schema.py` — TriageOutput Schema（复杂度分级 + 7个临床特征字段）
+
+**核心变更**:
+- Orchestrator 工作流新增 **Phase 0 (Triage)**，强制第一步
+- `required_subagents` 字段动态决定本次召集哪些 SA：
+  - `simple`（单发/已知靶点/一线）→ 3 个核心 SA
+  - `moderate`（2-4个病灶/二线/靶点不明）→ 5 个专科 SA
+  - `complex`（≥5病灶/中线移位/原发不明/三线以上）→ 全部 5 个 SA + 激活 Debate
+- `emergency_flag=True` 时触发 Phase Emergency，立即优先委派神外 SA
+
+#### WS-2: 统计冲突量化 (Conflict Quantification)
+
+**新增文件**:
+- `schemas/conflict_schema.py` — KDP 投票 Schema、AgreementMatrix、ConflictRecord、冲突分类学
+- `tools/conflict_calculator.py` — Cohen's κ（成对）+ Kendall's W（近似）命令行计算工具
+
+**核心变更**:
+- `schemas/v6_expert_schemas.py`：所有 5 个专科 SA Schema 新增 `kdp_votes: List[KDPVote]` 字段
+- Orchestrator Phase 1.5：收集各 SA 的 KDP 投票 → 写入 `votes_{patient_id}.json` → 调用 `conflict_calculator.py`
+- 5 个标准 KDP：`local_therapy_modality`, `surgery_indication`, `systemic_therapy_class`, `treatment_urgency`, `molecular_testing_need`
+- 冲突量化结果（κ/W/冲突记录）强制写入报告 Module 5
+
+#### WS-3: LLM-as-Judge 评估管线
+
+**新增文件**:
+- `evaluation/llm_as_judge.py` — 8维度40分制评估管线，支持多模型聚合
+
+**评估维度**:
+- D1: 指南遵循性 | D2: 证据完整性 | D3: 临床安全性 | D4: 冲突处理
+- D5: 不确定性披露 | D6: 个体化程度 | D7: 可操作性 | D8: 内部一致性
+
+**核心功能**:
+- `run_multi_judge_evaluation()` — 主评估入口，Primary + Optional Secondary
+- `aggregate_judge_scores()` — 多模型均值聚合，标准差 > 1.5 标记 `high_disagreement`
+- `generate_evolution_signals()` — 从批量结果提取 Prompt Refinement 目标
+- CLI: `python3 evaluation/llm_as_judge.py --report report.md --case-id X --round R0`
+
+#### WS-4: 声明级不确定性量化 (Uncertainty Quantification)
+
+**核心变更** (`schemas/v6_expert_schemas.py`):
+- `CitedClaim` 新增:
+  - `confidence: float` — 声明置信度 [0,1]，基于 EBM Level 基础分 + 多源验证奖励
+  - `uncertainty_type: Optional[Literal["epistemic", "aleatoric"]]` — 不确定性类型分类
+- 所有专科 SA Schema 新增:
+  - `decision_confidence: float` — 决策级整体置信度
+- Orchestrator Phase 3 新增置信度聚合逻辑（high/moderate/low/insufficient_evidence）
+
+#### WS-5: 15条形式化安全不变量 (Safety Invariants)
+
+**新增文件**:
+- `core/safety_invariants.py` — 15条规则（6 Critical / 4 Major / 5 Minor）
+
+**关键规则**:
+- `SI-001`: KRAS 突变禁用抗 EGFR 单抗 [OncoKB R1]
+- `SI-002`: SRS 单次剂量上限 24 Gy [RTOG 90-05]
+- `SI-003`: WBRT 总剂量上限 40 Gy [NCCN CNS 2026 v2]
+- `SI-006`: EGFR T790M 阳性禁用一/二代 EGFR TKI [OncoKB Level 1]
+- 共 6 条 Critical（一票否决提交）、4 条 Major（警告）、5 条 Minor（提示）
+
+**集成变更** (`interactive_main.py`):
+- `submit_mdt_report` 新增 **Gate 3: Safety Invariants Check**
+- Critical 违规触发 `SUBMISSION BLOCKED (Safety Invariants)` 并给出 remediation 引导
+- 每份提交报告同步生成 `*_safety_audit.json` 审计日志
+
+#### WS-6: 结构化辩论协议 (Structured Debate Protocol)
+
+**新增文件**:
+- `schemas/debate_schema.py` — DebateResponse + DebateRecord（从 conflict_schema 导出）
+
+**核心变更** (`schemas/conflict_schema.py`):
+- `DebateResponse` — 单 SA 辩论回应（revised_position / rebuttal_claims / concession_points）
+- `DebateRecord` — 完整辩论过程记录（最多2轮，必须收敛裁决）
+
+**触发条件**: `complexity=complex` AND `total_conflicts > 0`
+
+**协议**:
+- Round 1: 冲突双方互传对方立场，要求用最强证据支持或修正
+- Round 1 后若一方被说服（`revised_position != null`）直接收敛
+- Round 2（最后一轮）: 必须依 `Selection_Priority = EBM × Priority` 公式做最终裁决
+- 辩论记录写入 Module 5 `debate_log` 字段
+
+#### WS-7: 三要素自进化引擎 (Self-Evolution Engine)
+
+**新增文件**:
+- `core/arbitration_weights.py` — 可进化仲裁权重（JSON 持久化 + 阻尼微调）
+- `core/experience_library.py` — JSONL 经验库（存储/多维检索/Context 注入格式化）
+
+**三要素进化机制**（均不涉及模型微调，均基于 API-only 调用）:
+1. **Prompt Refinement** — 基于失败 Case 分析，手动修改 `*_prompt.py`（R1 阶段）
+2. **Experience Library** — JSONL 积累历史 Case → 相似案例检索 → 注入 Orchestrator context（R2 阶段）
+3. **Arbitration Weight Tuning** — `adjust_weight(factor_path, direction, damping=0.05)` 微调仲裁权重（R3 阶段）
+
+**关键函数**:
+- `compute_selection_priority(ebm_level, clinical_priority)` — 实时读取可进化权重
+- `adjust_weight(factor_path, direction, case_id, reason, damping)` — 带 evolution_log 的阻尼微调
+- `search_similar_cases(cancer_type, mutation, treatment_line, top_k)` — 多维精确匹配检索
+- `format_for_context_injection(similar_cases)` — 格式化为 Orchestrator context 前缀
+
+#### 辅助模块: Episodic Memory (SQLite FTS5)
+
+**新增文件**:
+- `core/episodic_memory.py` — SQLite FTS5 跨会话语义存储
+
+**功能**:
+- 3维分类存储：`(cancer_type, complexity, evolution_round)`
+- FTS5 全文检索：按错误类型/药名/突变关键词检索历史 Case
+- 自动维护 Trigger：`cases_ai/cases_ad` 保持 FTS 索引同步
+
+#### 辅助模块: Cross-Agent Validator
+
+**新增文件**:
+- `tools/cross_agent_validator.py` — 5条横向一致性检查（CR-001~CR-005）
+
+**关键规则**:
+- `CR-002`: 急诊手术 ⊕ WBRT 先行（互斥，一触即报）
+- `CR-004`: 耐药突变状态与推荐药物逻辑一致
+- `CR-005`: 中线移位时神外必须评估紧急性
+
+#### 部署工具
+
+**新增文件**:
+- `scripts/setup_workspace.py` — 服务器端一键部署初始化
+- `docs/V7_Test_Plan_and_Config_Guide.md` — 完整测试规划 + 进化调整 SOP
+- `docs/V7_Implementation_Plan.md` — 技术实施方案 (v1.1，含进化轮次说明)
+- `docs/TiantanBM_Gap_Analysis.md` — 科研范式 Gap 分析报告
+
+### 修改文件（三个全局关键文件）
+
+| 文件 | 修改摘要 |
+|:-----|:---------|
+| `interactive_main.py` | 注册 Triage SA；`submit_mdt_report` 新增 Gate 3（Safety Invariants）；v6→v7 版本号；进化模块初始化 |
+| `agents/orchestrator_prompt.py` | 完全重写为 5 阶段工作流（Phase 0 Triage → Phase 1 Delegation → Phase 1.5 Conflict Quant → Phase 1.6 Debate → Phase 2 Audit → Phase 3 Safety+Submit）|
+| `schemas/v6_expert_schemas.py` | 所有 Schema 新增 `kdp_votes` (WS-2)、`decision_confidence` (WS-4)；`CitedClaim` 新增 `confidence` + `uncertainty_type` (WS-4) |
+
+### 不兼容变更 (Breaking Changes)
+
+> [!WARNING]
+> 以下变更在升级后需要注意：
+
+1. **Triage Gate 必须首先调用**: Orchestrator Phase 0 是强制步骤，现有测试脚本若绕过 Orchestrator 直接调用 SA，需要注意 Triage 结果不存在时的处理
+2. **SA Schema 字段新增**: `kdp_votes` 和 `decision_confidence` 有默认值，向后兼容；但若现有 JSON 输出严格校验字段需更新
+3. **`submit_mdt_report` 多一道关卡**: 任何包含 KRAS+cetuximab、SRS>24Gy 等组合的历史测试 Case 将被 Gate 3 拦截
+4. **工作目录结构变更**: 新增 `workspace/evolution/` 和 `workspace/memory/`，首次运行前必须执行 `python3 scripts/setup_workspace.py`
+
+### 从 v6.0 迁移指南
+
+```bash
+# 1. 拉取代码
+git pull origin main
+
+# 2. 初始化 v7.0 工作目录
+python3 scripts/setup_workspace.py
+
+# 3. 验证所有模块可导入
+python3 -c "from core.safety_invariants import run_safety_check; print('✅')"
+
+# 4. 运行单 Case 测试验证
+python3 scripts/run_batch_eval.py --max_cases 1
+```
+
+---
+
 ## [v6.0.0] - 2026-04-24
+
 
 ### 架构重大重构 (Architectural Major Refactor)
 
