@@ -10,18 +10,41 @@ import config
 
 def get_brain_client_langchain():
     """
-    [Main Agent] 获取支持 DeepSeek R1/V3 思考模式的 LangChain 对象
+    [Orchestrator] 获取支持思考模式的 LangChain 对象（enable_thinking=True）
+    用于复杂推理任务（仲裁、报告合成、多阶段规划）
     """
     if not config.BRAIN_API_KEY:
-        raise ValueError("❌ MISSING: DEEPSEEK_API_KEY in env.")
-    
+        raise ValueError("❌ MISSING: DASHSCOPE_API_KEY in env.")
+
     return ChatOpenAI(
         model=config.BRAIN_MODEL_NAME,
         api_key=config.BRAIN_API_KEY,
         base_url=config.BRAIN_BASE_URL,
         temperature=0.6,
-        extra_body={  # 直接传递，不要在 model_kwargs 中包装
+        extra_body={
             "enable_thinking": True
+        },
+    )
+
+
+def get_subagent_client_langchain():
+    """
+    [SubAgent] SubAgent 专用 LangChain 对象（关闭思考模式）
+
+    SubAgent 需要结构化输出（response_format: Pydantic Schema），
+    DashScope 的 enable_thinking 模式与 tool_choice=required 互斥，
+    因此 SubAgent 必须显式设置 enable_thinking=False。
+    """
+    if not config.BRAIN_API_KEY:
+        raise ValueError("❌ MISSING: DASHSCOPE_API_KEY in env.")
+
+    return ChatOpenAI(
+        model=config.SUBAGENT_MODEL_NAME,
+        api_key=config.BRAIN_API_KEY,
+        base_url=config.BRAIN_BASE_URL,
+        temperature=0.3,
+        extra_body={
+            "enable_thinking": False,  # 必须显式关闭，DashScope 结构化输出要求
         },
     )
 

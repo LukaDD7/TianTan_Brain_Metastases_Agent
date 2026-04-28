@@ -6,6 +6,39 @@
 
 ---
 
+## [v7.1.0] - 2026-04-28
+
+### 关键 Bug 修复 (Critical Bug Fixes)
+
+#### Fix 1: 路径双重替换导致 738 次无限循环
+- **问题**: `_resolve_virtual_path` 用简单 `replace('/skills/', SKILLS_DIR)` 做路径转换，当 Agent 使用 SKILL.md 中的完整绝对路径（如 `/media/.../skills/...`）时，`/skills/` 子串被错误替换成 `SKILLS_DIR/`（即 `/media/.../skills/`），导致路径再加倍一层。Agent 拿到错误结果后重试，继续用错误路径，形成 **738 次 `ls -la` 循环**，烧掉大量 Token。
+- **根因**: `interactive_main.py:451-452` 的 `replace()` 是子串匹配，不区分路径开头还是中间片段
+- **修复**: 用正则 `r'(?:^|(?<= ))(/skills/)'` 只替换**命令参数开头**的虚拟路径前缀，不替换已是完整绝对路径里的 `/skills/` 片段
+- **影响**: 消除路径加倍导致的无限循环
+
+#### Fix 2: SubAgent 400 错误（enable_thinking 与 structured output 冲突）
+- **问题**: SubAgent 调用时返回 400 错误 `"tool_choice parameter does not support being set to required or object in thinking mode"`
+- **根因**: DashScope API `enable_thinking=True` 模式与 `tool_choice=required`（由 `response_format` schema 触发）互斥
+- **修复**: 创建独立 `get_subagent_client_langchain()` 工厂函数，SubAgent 显式设置 `extra_body={"enable_thinking": False}`；Orchestrator 保持 `enable_thinking=True`
+- **涉及文件**:
+  - `utils/llm_factory.py` — 新增 `get_subagent_client_langchain()`
+  - `interactive_main.py` — SubAgent 模型改用 `_subagent_model = get_subagent_client_langchain()`
+
+#### Fix 3: 实时流式输出（解决 invoke 阻塞问题）
+- **问题**: `agent.invoke()` 是阻塞调用，运行完才返回结果，用户在终端看不到任何中间输出，出现异常只能等结束才发现
+- **修复**: 改用 `agent.stream()` + `stream_mode=["updates", "messages"]`
+  - `"messages"` — LLM token 级流式输出（实时显示推理过程）
+  - `"updates"` — 每个 step 的节点更新（委派、工具调用、返回结果）
+- **LangGraph BSP 保证**: LangGraph 的 Bulk Synchronous Parallel 模型确保 `stream()` 在每个 superstep 所有任务完成前不会交还控制权，不破坏 Orchestrator→SubAgent 协调
+- **额外修复**: `node_data.get("messages", [])` 可能返回 `Overwrite` 对象（非 list），添加 `isinstance(messages_in_node, list)` 检查
+
+#### Fix 4: 工具调用次数上限（防预算烧光）
+- **新增**: `MAX_TOOL_CALLS_PER_RUN = 200`（每 Case 最多 200 次 execute 调用）
+- **实现**: `execute` 工具每次调用前计数，超过上限直接返回错误；每个新 Case 开始时计数器重置为 0
+- **输出**: 运行结束后打印 `📊 工具调用统计: X / 200 次`
+
+---
+
 ## [v7.0.0] - 2026-04-26
 
 ### 架构里程碑：科研级自适应 MDT 系统 (Research-Grade Adaptive MDT)

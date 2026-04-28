@@ -3,12 +3,43 @@ name: pdf-inspector
 version: 3.0.0
 category: document_analysis
 description: |
-  [FUNCTION]: Multi-track PDF analysis engine for complex clinical guidelines (NCCN, ESMO, ASCO).
+  [FUNCTION]: Multi-track PDF analysis engine for complex clinical guidelines (NCCN, ESMO, ASCO) and Neuroradiology parameter extraction.
   [VALUE]: Provides global text extraction (MinerU Markdown), local visual probing (PyMuPDF rendering), and VLM-powered analysis via analyze_image tool for any uncertain content.
   [TRIGGER_HOOK]: Read this Skill BEFORE accessing any clinical guideline PDF. Use for text extraction, visual inspection of flowcharts/tables, or when markdown is garbled/OCR-failed.
 ---
 
 # PDF-Inspector: Cognitive Execution Protocol
+
+## Neuroradiology Specialist Addendum (Imaging Extraction)
+
+### Core Mission
+Extract objective physical and geometric parameters from patient imaging reports.
+
+### Workflow
+1. **Identify Key Metrics**:
+   - `max_diameter_cm`: Largest lesion diameter.
+   - `lesion_count`: Total number of brain metastases.
+   - `midline_shift`: Presence and degree of shift.
+   - `mass_effect_level`: none, mild, moderate, severe.
+   - `hydrocephalus`: true/false.
+   - `is_eloquent_area`: true/false (based on location description).
+   - `edema_index`: Estimated ratio or descriptive index.
+   - `hemorrhage_present`: true/false.
+
+2. **KDP Voting Logic**:
+   - `local_therapy_modality`: 
+     - If `lesion_count` <= 4 and `max_diameter_cm` < 3-4cm -> SRS.
+     - If `max_diameter_cm` > 3cm or significant mass effect -> Surgery.
+     - If `lesion_count` > 10 -> WBRT.
+   - `surgery_indication`:
+     - True if `max_diameter_cm` > 3cm or `midline_shift` is significant.
+   - `treatment_urgency`:
+     - High if `midline_shift` present or `mass_effect_level` is severe.
+
+3. **Output Format**
+   - Strictly follow `ImagingOutput` schema.
+
+---
 
 ## Identity & Core Mechanism
 This is a Multi-Track PDF analysis skill. It does NOT use API tools. You must use your native `execute` tool to run isolated Python scripts in the terminal, and the `analyze_image` tool for VLM-powered visual analysis.

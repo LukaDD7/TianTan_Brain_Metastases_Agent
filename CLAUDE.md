@@ -1,14 +1,14 @@
 # TianTan Brain Metastases MDT Agent — AI 协作与开发协议
 
-> **版本**: v7.0  
-> **更新**: 2026-04-26  
+> **版本**: v7.1  
+> **更新**: 2026-04-28  
 > **宣言**: *"We build an intellectual Agent, not an LLM with skills."*
 
 本项目致力于打造具备**自适应路由、统计冲突量化、形式化安全保障、自进化能力**的医疗多智能体系统，面向 Nature Medicine 等顶级期刊。
 
 ---
 
-## 1. 架构总览 (v7.0 Adaptive MDT Architecture)
+## 1. 架构总览 (v7.1 Adaptive MDT Architecture)
 
 ```
 用户输入（病历/影像报告）
@@ -47,7 +47,7 @@
 
 ---
 
-## 2. SubAgent 完整矩阵 (v7.0: 1+7 体系)
+## 2. SubAgent 完整矩阵 (v7.1: 1+7 体系)
 
 | # | Agent | 名称 | 标准输出 Schema | 核心职责 |
 |:--|:------|:-----|:----------------|:---------|
@@ -63,7 +63,7 @@
 
 ---
 
-## 3. v7.0 核心创新点 (论文贡献点)
+## 3. v7.1 核心创新点 (论文贡献点)
 
 ### 3.1 WS-1: 自适应复杂度路由 (Triage Gate)
 - **文件**: `agents/triage_prompt.py`, `schemas/triage_schema.py`
@@ -110,13 +110,14 @@
 ### 4.1 必须了解的文件（修改前必读）
 | 文件 | 角色 | 修改风险 |
 |:-----|:-----|:-------:|
-| `interactive_main.py` | 全局入口，SA注册，三重关卡 | 🔴 极高 |
+| `interactive_main.py` | 全局入口，SA注册，三重关卡，工具调用上限，流式输出 | 🔴 极高 |
 | `agents/orchestrator_prompt.py` | 5阶段工作流协议 | 🔴 极高 |
+| `utils/llm_factory.py` | Orchestrator/SubAgent 独立 LLM 客户端工厂（thinking 模式分离） | 🟡 中 |
 | `core/safety_invariants.py` | 15条临床安全规则 | 🟡 中 |
 | `schemas/v6_expert_schemas.py` | 所有 SA 输出 Schema | 🟡 中 |
 | `config.py` | API Key / 阈值常量 | 🟢 低 |
 
-### 4.2 v7.0 新增文件（可独立修改）
+### 4.2 v7.0/v7.1 新增文件（可独立修改）
 ```
 schemas/
   triage_schema.py          # Triage Gate 输出 Schema
@@ -135,6 +136,9 @@ core/
 tools/
   conflict_calculator.py    # Cohen's κ + Kendall's W计算
   cross_agent_validator.py  # 5条横向一致性检查
+
+utils/
+  llm_factory.py            # Orchestrator/SubAgent 独立 LLM 客户端工厂（v7.1 新增）
 
 evaluation/
   llm_as_judge.py           # 8维度LLM-as-Judge管线
@@ -163,6 +167,8 @@ docs/
 6. **单轮单机制**: 每个进化轮次（R1/R2/R3）只新增一个进化机制（增量消融设计）
 7. **权重阻尼**: `adjust_weight()` 每次调整 ≤ 5%，防止单 Case 导致过拟合
 8. **后台禁止**: 禁止在后台静默运行 `interactive_main.py`
+9. **工具调用上限**: `MAX_TOOL_CALLS_PER_RUN = 200`，每个 Case 最多 200 次 execute 调用，防止异常循环烧光预算
+10. **流式输出**: 使用 `agent.stream()` 而非 `agent.invoke()`，确保终端实时可见 SubAgent 委派和工具调用状态
 
 ---
 

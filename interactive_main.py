@@ -29,7 +29,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langgraph.store.memory import InMemoryStore
 from langchain.tools import tool
 
-from utils.llm_factory import get_brain_client_langchain
+from utils.llm_factory import get_brain_client_langchain, get_subagent_client_langchain
 from config import SUBAGENT_MODEL_NAME, AUDITOR_EGR_THRESHOLD, AUDITOR_MAX_RETRY
 
 # SubAgent全量日志支持
@@ -98,6 +98,11 @@ os.makedirs(SANDBOX_DIR, exist_ok=True)
 os.makedirs(ANALYSIS_OUTPUT_DIR, exist_ok=True)
 os.makedirs(EXECUTION_LOGS_DIR, exist_ok=True)
 os.environ["SANDBOX_ROOT"] = SANDBOX_DIR
+
+# --- 工具调用次数上限（防止异常循环烧光预算）---
+# 每个 execute tool call 都会计数，达到上限后拒绝执行并返回错误
+MAX_TOOL_CALLS_PER_RUN = 200   # 建议值，可根据 Case 复杂度调整
+_tool_call_count = 0           # 当前 run 的累计计数（Session级别）
 
 # Skills 路径常量（用于 SubAgent skills 分配）
 _S = lambda name: os.path.join(SKILLS_DIR, name)
@@ -446,16 +451,32 @@ def _resolve_virtual_path(command: str) -> str:
     Deep Agents 的 execute 工具在沙盒内执行，但项目使用了虚拟路径
     (/skills/, /workspace/sandbox/) 来访问不同目录。需要将虚拟路径
     转换为实际绝对路径才能正确执行。
+
+    注意：只替换作为路径开头的虚拟前缀，不替换已是完整绝对路径中的片段。
+    例如："/skills/oncokb" -> 替换
+          "/media/.../skills/oncokb" -> 不替换（已经是完整路径）
     """
-    # /skills/ -> SKILLS_DIR (项目skills目录)
-    if '/skills/' in command:
-        command = command.replace('/skills/', f'{SKILLS_DIR}/', 1)
+    import re
+
+    # /skills/ -> SKILLS_DIR
+    # 只匹配命令开头的 /skills/（前面是空格或命令起始），不匹配完整路径中的片段
+    command = re.sub(
+        r'(?:^|(?<= ))(/skills/)',
+        f'{SKILLS_DIR}/',
+        command
+    )
     # /workspace/sandbox/ -> SANDBOX_DIR
-    if '/workspace/sandbox/' in command:
-        command = command.replace('/workspace/sandbox/', f'{SANDBOX_DIR}/', 1)
+    command = re.sub(
+        r'(?:^|(?<= ))(/workspace/sandbox/)',
+        f'{SANDBOX_DIR}/',
+        command
+    )
     # /memories/ -> SANDBOX_DIR/memories
-    if '/memories/' in command:
-        command = command.replace('/memories/', f'{SANDBOX_DIR}/memories/', 1)
+    command = re.sub(
+        r'(?:^|(?<= ))(/memories/)',
+        f'{SANDBOX_DIR}/memories/',
+        command
+    )
     return command
 
 
@@ -475,6 +496,19 @@ def execute(command: str, timeout: int = 600, max_output_bytes: int = 100000) ->
         Command output dict with exit_code, stdout, stderr
     """
     start_time = time.time()
+
+    # 工具调用次数上限检查
+    global _tool_call_count
+    _tool_call_count += 1
+    if _tool_call_count > MAX_TOOL_CALLS_PER_RUN:
+        error_msg = (
+            f"Error: Maximum tool calls ({MAX_TOOL_CALLS_PER_RUN}) reached. "
+            f"Possible infinite loop or excessive tool usage. "
+            f"Last command: {command[:100]}"
+        )
+        if get_logger():
+            get_logger().log_tool_call("execute", {"command": command}, {"error": error_msg}, 0)
+        return error_msg
 
     # 路径虚拟化转换
     command = _resolve_virtual_path(command)
@@ -691,6 +725,10 @@ CORE_TOOLS = [execute, read_file, analyze_image]
 # v6.0 SubAgent 定义 (Strictly Managed)
 # =============================================================================
 
+# SubAgent 专用模型客户端（关闭 thinking mode，兼容结构化输出）
+# 注意：thinking mode 与 tool_choice=required 互斥，SubAgent 必须关闭
+_subagent_model = get_subagent_client_langchain()
+
 imaging_sa = {
     "name": "imaging-specialist",
     "description": (
@@ -699,9 +737,9 @@ imaging_sa = {
     ),
     "system_prompt": IMAGING_SYSTEM_PROMPT,
     "tools": CORE_TOOLS,
-    "skills": [_S("pdf-inspector")], 
+    "skills": [_S("pdf-inspector")],
     "response_format": ImagingOutput,
-    "model": SUBAGENT_MODEL_NAME,
+    "model": _subagent_model,
 }
 
 primary_oncology_sa = {
@@ -715,7 +753,7 @@ primary_oncology_sa = {
     "tools": CORE_TOOLS,
     "skills": CORE_SKILLS + [_CNS_DB, _ONCOKB],
     "response_format": PrimaryOncologyOutput,
-    "model": SUBAGENT_MODEL_NAME,
+    "model": _subagent_model,
 }
 
 neurosurgery_sa = {
@@ -728,7 +766,7 @@ neurosurgery_sa = {
     "tools": CORE_TOOLS,
     "skills": NEUROSURGERY_SKILLS,
     "response_format": NeurosurgeryOutput,
-    "model": SUBAGENT_MODEL_NAME,
+    "model": _subagent_model,
 }
 
 radiation_sa = {
@@ -741,7 +779,7 @@ radiation_sa = {
     "tools": CORE_TOOLS,
     "skills": RADIATION_SKILLS,
     "response_format": RadiationOutput,
-    "model": SUBAGENT_MODEL_NAME,
+    "model": _subagent_model,
 }
 
 molecular_pathology_sa = {
@@ -754,7 +792,7 @@ molecular_pathology_sa = {
     "tools": CORE_TOOLS,
     "skills": MOLECULAR_PATHOLOGY_SKILLS,
     "response_format": MolecularOutput,
-    "model": SUBAGENT_MODEL_NAME,
+    "model": _subagent_model,
 }
 
 evidence_auditor_sa = {
@@ -767,7 +805,7 @@ evidence_auditor_sa = {
     "tools": CORE_TOOLS,
     "skills": AUDITOR_SKILLS,
     "response_format": AuditorOutput,
-    "model": SUBAGENT_MODEL_NAME,
+    "model": _subagent_model,
 }
 
 
@@ -790,7 +828,7 @@ triage_sa = {
     "system_prompt": TRIAGE_SYSTEM_PROMPT,
     "tools": [read_file],               # 只需读取患者文件，不需要 execute 或 analyze_image
     "response_format": TriageOutput,
-    "model": SUBAGENT_MODEL_NAME,
+    "model": _subagent_model,
 }
 
 print(f"🚀 正在初始化天坛医疗大脑 v7.0 (Adaptive MDT with Triage + Conflict Quantification)...")
@@ -928,68 +966,111 @@ if __name__ == "__main__":
             print(f"\n⏳ MDT Orchestrator 正在协调多专科会诊... (Patient ID: {patient_id or 'N/A'})")
             print(f"   → 并行委派给: 神外 | 放疗 | 内科 | 分子病理")
             print(f"   → 合成后经 Evidence Auditor 审计 (EGR ≥ {AUDITOR_EGR_THRESHOLD})")
+            print(f"\n{'='*60}")
+            print("  实时监控（工具调用+LLM思考逐步输出）")
+            print(f"{'='*60}\n")
 
-            result = agent.invoke(
+            # 重置工具调用计数器（每个新 Case 从 0 开始）
+            _tool_call_count = 0
+            msgs_seen = set()  # Track seen message IDs across streaming chunks
+
+            # 使用 stream() 实时输出，替代 invoke() 阻塞式
+            # stream_mode="updates" = 每个 step 的节点更新
+            # stream_mode="messages" = LLM 输出的 token 级流
+            for stream_mode, chunk in agent.stream(
                 {"messages": [{"role": "user", "content": user_input}]},
-                config={"configurable": {"thread_id": patient_thread_id}}
-            )
+                config={"configurable": {"thread_id": patient_thread_id}},
+                stream_mode=["updates", "messages"]
+            ):
+                # === stream_mode="messages" : LLM token 级输出 ===
+                if stream_mode == "messages":
+                    for msg_chunk in chunk:
+                        if hasattr(msg_chunk, 'content') and msg_chunk.content:
+                            # LLM 思考内容（reasoning）
+                            if hasattr(msg_chunk, 'type') and msg_chunk.type == 'thinking':
+                                print(f"🧠 {msg_chunk.content}", end="", flush=True)
+                            # 普通文本 token 流
+                            else:
+                                print(msg_chunk.content, end="", flush=True)
+                    flush = True
 
-            last_printed_msg_id = None
-            msgs_seen = set()  # Track seen message IDs to show only new ones
-            messages = result.get("messages", [])
+                # === stream_mode="updates" : 每个 step 的节点更新 ===
+                elif stream_mode == "updates":
+                    for node_name, node_data in chunk.items():
+                        if not isinstance(node_data, dict):
+                            continue
+                        messages_in_node = node_data.get("messages", [])
+                        # messages_in_node 可能是 Overwrite 对象（直接写通道），跳过
+                        if not isinstance(messages_in_node, list):
+                            continue
+                        for msg in messages_in_node:
+                            msg_id = id(msg)
+                            if msg_id in msgs_seen:
+                                continue
+                            msgs_seen.add(msg_id)
 
-            # 遍历所有消息，显示摘要日志（只显示新的）
-            for last_msg in messages:
-                msg_id = id(last_msg)
-                if msg_id in msgs_seen:
-                    continue
-                msgs_seen.add(msg_id)
+                            msg_role = getattr(msg, 'role', 'unknown')
+                            msg_name = getattr(msg, 'name', '')
 
-                # 判断是哪个角色（Orchestrator vs SubAgent）
-                msg_role = getattr(last_msg, 'role', 'unknown')
-                msg_name = getattr(last_msg, 'name', '')
+                            # 工具调用
+                            if hasattr(msg, 'tool_calls') and msg.tool_calls:
+                                for tc in msg.tool_calls:
+                                    tool_name = tc.get('name', 'unknown')
+                                    tool_args = tc.get('args', {})
+                                    if tool_name == "task":
+                                        sa_name = tool_args.get('subagent_type', tool_args.get('name', '?'))
+                                        print(f"\n\n🔀 ═══ [委派] ═══ → {sa_name}")
+                                        execution_logger.log_agent_thinking(f"已委派给 SubAgent: {sa_name}", "delegate")
+                                    elif tool_name == "submit_mdt_report":
+                                        print(f"\n\n📋 ═══ [提交报告] ═══")
+                                        execution_logger.log_agent_thinking("Orchestrator 提交最终报告", "submit")
+                                    elif tool_name == "execute":
+                                        cmd = tool_args.get('command', '')[:80]
+                                        print(f"\n⚙️  ═══ [执行] ═══ {cmd}")
+                                    else:
+                                        print(f"\n⚙️  ═══ [{msg_name or msg_role}] ═══ {tool_name}")
+                                    execution_logger.log_tool_call(tool_name, tool_args, None, 0)
 
-                if hasattr(last_msg, 'tool_calls') and last_msg.tool_calls:
-                    for tc in last_msg.tool_calls:
-                        tool_name = tc.get('name', 'unknown')
-                        tool_args = tc.get('args', {})
-                        if tool_name == "task":
-                            # DeepAgents task tool uses 'subagent_type' key
-                            sa_name = tool_args.get('subagent_type', tool_args.get('name', '?'))
-                            print(f"\n🔀  [委派] → {sa_name}")
-                            execution_logger.log_agent_thinking(f"已委派给 SubAgent: {sa_name}", "delegate")
-                        elif tool_name == "submit_mdt_report":
-                            print(f"\n📋  [提交报告]")
-                            execution_logger.log_agent_thinking("Orchestrator 提交最终报告", "submit")
-                        else:
-                            print(f"\n⚙️  [{msg_name or msg_role}] {tool_name}")
-                        execution_logger.log_tool_call(tool_name, tool_args, None, 0)
+                            # 工具返回结果
+                            if msg_role == 'tool':
+                                content = getattr(msg, 'content', '')
+                                if content:
+                                    preview = content[:200].replace('\n', ' ')
+                                    print(f"   ↩ {preview}{'...' if len(content) > 200 else ''}")
 
-                content = getattr(last_msg, 'content', '')
-                if content:
-                    # SubAgent 返回的消息显示角色+摘要
-                    if msg_name:
-                        print(f"\n📥  [{msg_name}] 摘要日志 ({len(content)} 字符)")
-                    else:
-                        print(f"\n🤖 [{msg_role}]")
-                    usage = {}
-                    if hasattr(last_msg, 'response_metadata') and last_msg.response_metadata:
-                        token_usage = last_msg.response_metadata.get('token_usage', {})
-                        if token_usage:
-                            usage = {
-                                "input_tokens": token_usage.get('prompt_tokens', 0),
-                                "output_tokens": token_usage.get('completion_tokens', 0),
-                                "total_tokens": token_usage.get('total_tokens', 0)
-                            }
-                    execution_logger.log_llm_response(content, role=msg_role,
-                                                      model=SUBAGENT_MODEL_NAME, usage=usage)
+                            # LLM 文本回复
+                            content = getattr(msg, 'content', '')
+                            if content and msg_role not in ('tool', 'system'):
+                                if msg_name:
+                                    print(f"\n📥 [{msg_name}] {content[:300]}{'...' if len(content) > 300 else ''}")
+                                else:
+                                    print(f"\n🤖 [{msg_role}] {content[:300]}{'...' if len(content) > 300 else ''}")
 
-                if hasattr(last_msg, 'additional_kwargs') and \
-                   'reasoning_content' in last_msg.additional_kwargs:
-                    reasoning = last_msg.additional_kwargs['reasoning_content']
-                    if reasoning:
-                        print(f"\n🧠 [深度思考]:\n{reasoning}")
-                    execution_logger.log_agent_thinking(reasoning, "reasoning")
+                            # reasoning_content（深度思考）
+                            if hasattr(msg, 'additional_kwargs') and \
+                               'reasoning_content' in msg.additional_kwargs:
+                                reasoning = msg.additional_kwargs['reasoning_content']
+                                if reasoning:
+                                    print(f"\n🧠 [深度思考] {reasoning[:500]}{'...' if len(reasoning) > 500 else ''}")
+
+                            # Token usage
+                            usage = {}
+                            if hasattr(msg, 'response_metadata') and msg.response_metadata:
+                                token_usage = msg.response_metadata.get('token_usage', {})
+                                if token_usage:
+                                    usage = {
+                                        "input_tokens": token_usage.get('prompt_tokens', 0),
+                                        "output_tokens": token_usage.get('completion_tokens', 0),
+                                        "total_tokens": token_usage.get('total_tokens', 0)
+                                    }
+                            if usage:
+                                execution_logger.log_llm_response(content, role=msg_role,
+                                                                  model=SUBAGENT_MODEL_NAME, usage=usage)
+
+            # 打印本次运行的工具调用统计
+            print(f"\n{'='*60}")
+            print(f"📊 工具调用统计: {_tool_call_count} / {MAX_TOOL_CALLS_PER_RUN} 次")
+            print(f"{'='*60}")
 
         except KeyboardInterrupt:
             print("\n会诊被用户强行终止。")
