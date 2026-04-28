@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-TianTan Brain Metastases MDT Agent - Interactive Main Entry (v6.0 Hierarchical Agentic MDT)
+TianTan Brain Metastases MDT Agent - Interactive Main Entry (v7.0 Adaptive MDT)
 
-架构核心变更 (v5.2 → v6.0)：
-1. 单一扁平 Agent → Orchestrator + 5 个专科 SubAgent 分层架构
-2. 4 个 Domain SubAgent (神外/放疗/内科/分子病理) 并行执行专科评估
-3. 1 个 Evidence Auditor SubAgent 负责报告引用真实性验证
-4. 报告格式由 Pydantic Schema 强制约束（schemas/mdt_report.py）
-5. 双轨强制确认机制：剂量/决策树参数必须文本+视觉双轨验证
-6. 全面升级至 qwen3.6-plus（统一 Orchestrator 和 SubAgent 模型）
+架构核心变更 (v6.0 → v7.0)：
+1. 新增 Triage Gate SubAgent：自适应复杂度路由，动态决定召集哪些专科 SA (WS-1)
+2. 冲突量化：KDP 投票 + Cohen's κ + Kendall's W 统计 (WS-2)
+3. 结构化辩论：complex 病例触发 SA 间 Round-Robin 辩论 (WS-6)
+4. 不确定性量化：CitedClaim 级 confidence + decision_confidence 字段 (WS-4)
+5. 安全不变量：15 条形式化规则在 submit_mdt_report 前强制检查 (WS-5)
+6. 自进化引擎：可进化仲裁权重 + 经验库 (WS-7)
+7. Episodic Memory：SQLite FTS5 跨会话语义检索
 """
 
 import os
@@ -44,19 +45,25 @@ from utils.subagent_full_logging import (
 _subagent_full_logger = None
 
 # Import SubAgent system prompts
-from agents.orchestrator_prompt import get_orchestrator_prompt
+from agents.orchestrator_prompt import ORCHESTRATOR_SYSTEM_PROMPT
 from agents.imaging_prompt import IMAGING_SYSTEM_PROMPT
 from agents.primary_oncology_prompt import PRIMARY_ONCOLOGY_SYSTEM_PROMPT
 from agents.neurosurgery_prompt import NEUROSURGERY_SYSTEM_PROMPT
 from agents.radiation_prompt import RADIATION_SYSTEM_PROMPT
 from agents.molecular_pathology_prompt import MOLECULAR_PATHOLOGY_SYSTEM_PROMPT
 from agents.auditor_prompt import AUDITOR_SYSTEM_PROMPT
+from agents.triage_prompt import TRIAGE_SYSTEM_PROMPT  # v7.0 WS-1
 
-# Import v6.0 Schemas
+# Import v7.0 Schemas
 from schemas.v6_expert_schemas import (
-    ImagingOutput, PrimaryOncologyOutput, NeurosurgeryOutput, 
+    ImagingOutput, PrimaryOncologyOutput, NeurosurgeryOutput,
     RadiationOutput, MolecularOutput, AuditorOutput
 )
+from schemas.triage_schema import TriageOutput  # v7.0 WS-1
+
+# Import v7.0 Core Modules
+from core.safety_invariants import run_safety_check  # v7.0 WS-5
+from core.arbitration_weights import load_weights     # v7.0 WS-7
 
 # =============================================================================
 # 注册 DashScope/Qwen 模型 Profile（让 deepagents 知道如何初始化 qwen 模型）
@@ -83,9 +90,9 @@ EXECUTION_LOGS_DIR = os.path.join(SANDBOX_DIR, "execution_logs")
 
 # 自动获取Agent System版本号
 try:
-    _AGENT_SYSTEM_VERSION = f"v6.0_{deepagents.__version__}"
+    _AGENT_SYSTEM_VERSION = f"v7.0_{deepagents.__version__}"
 except (NameError, AttributeError):
-    _AGENT_SYSTEM_VERSION = "v6.0_unknown"
+    _AGENT_SYSTEM_VERSION = "v7.0_unknown"
 
 os.makedirs(SANDBOX_DIR, exist_ok=True)
 os.makedirs(ANALYSIS_OUTPUT_DIR, exist_ok=True)
@@ -546,15 +553,20 @@ def execute(command: str, timeout: int = 600, max_output_bytes: int = 100000) ->
 
 
 # =============================================================================
-# 自定义工具：submit_mdt_report (带基础引用验证)
+# 自定义工具：submit_mdt_report (v7.0 — 三重关卡: Audit + Structure + Safety)
 # =============================================================================
 
 @tool
 def submit_mdt_report(patient_id: str, report_content: str, config: Any = None) -> str:
-    """Submit the final MDT report. 
+    """Submit the final MDT report after passing all quality gates.
 
-    MANDATORY: This tool will FAIL if the Evidence Auditor has not passed the report.
-    If it fails, you MUST use the audit feedback to re-delegate tasks to sub-agents.
+    v7.0 Gates:
+      Gate 1: Evidence Auditor pass check (audit marker scan)
+      Gate 2: Structural validation (all 9 modules present)
+      Gate 3: Safety Invariants check (15 formal clinical rules)
+
+    MANDATORY: All three gates must pass before submission is allowed.
+    If any gate fails, fix the issue and retry — do NOT loop submit.
 
     Args:
         patient_id: Patient identifier
@@ -562,13 +574,20 @@ def submit_mdt_report(patient_id: str, report_content: str, config: Any = None) 
         config: Runtime config (injected by DeepAgents)
 
     Returns:
-        Submission result or a blocking error message
+        Submission result or a blocking error message with remediation guidance
     """
     start_time = time.time()
 
-    # --- 结构完整性验证（v6.0: 审计已在 Orchestrator Phase 2 完成，submit 仅做格式兜底） ---
-    # 注意：v6.0 的审计闭环已由 Orchestrator Phase 2 + {max_retry} 终止条件保证，
-    # submit_mdt_report 不再重复审计，只检查 9 模块完整性。
+    # ─── Gate 1: Audit Interceptor ────────────────────────────────────────────
+    if "[AUDIT FAIL]" in report_content or "pass_threshold: false" in report_content.lower():
+        return (
+            "❌ SUBMISSION BLOCKED: Evidence Auditor detected critical errors or low EGR. "
+            "You MUST read the Auditor's JSON output, identify which sub-agent provided "
+            "the faulty citation, and call task() again to that specific sub-agent with "
+            "correction instructions. DO NOT attempt to submit until all citations are verified."
+        )
+
+    # ─── Gate 2: Structural Validation ───────────────────────────────────────
     required_modules = [
         "Module 0", "Module 1", "Module 2", "Module 3",
         "Module 4", "Module 5", "Module 6", "Module 7", "Module 8"
@@ -580,7 +599,33 @@ def submit_mdt_report(patient_id: str, report_content: str, config: Any = None) 
             f"All 9 modules (0-8) must be present in the final report."
         )
 
-    # Save report
+    # ─── Gate 3: v7.0 WS-5 Safety Invariants Check ───────────────────────────
+    safety_result = run_safety_check(report_content)
+    if not safety_result["passed"]:
+        critical_summary = "; ".join(
+            f"{v['rule_id']} ({v['rule_name']}): {v['description'][:80]}"
+            for v in safety_result["critical_violations"]
+        )
+        remediation_hints = "; ".join(
+            v.get("remediation", "")[:60]
+            for v in safety_result["critical_violations"]
+        )
+        return (
+            f"❌ SUBMISSION BLOCKED (Safety Invariants): {safety_result['summary']}\n"
+            f"Critical violations: {critical_summary}\n"
+            f"Required actions: {remediation_hints}\n"
+            f"Fix the above issues in the report and resubmit."
+        )
+
+    # Major violations → warn but allow (clinician responsibility)
+    major_warn = ""
+    if safety_result["major_violations"]:
+        major_warn = (
+            f"\n⚠️  Safety Warnings ({len(safety_result['major_violations'])} Major): "
+            f"{safety_result['summary'].split('|')[1].strip() if '|' in safety_result['summary'] else ''}"
+        )
+
+    # ─── Save Report ──────────────────────────────────────────────────────────
     patient_dir = os.path.join(ANALYSIS_OUTPUT_DIR, "patients", patient_id, "reports")
     os.makedirs(patient_dir, exist_ok=True)
 
@@ -589,18 +634,31 @@ def submit_mdt_report(patient_id: str, report_content: str, config: Any = None) 
     with open(file_path, "w", encoding="utf-8") as f:
         f.write(report_content)
 
+    # Save safety audit log alongside report
+    safety_log_path = file_path.replace(".md", "_safety_audit.json")
+    with open(safety_log_path, "w", encoding="utf-8") as f:
+        import json as _json
+        _json.dump(safety_result, f, indent=2, ensure_ascii=False)
+
     duration_ms = int((time.time() - start_time) * 1000)
 
-    result_msg = f"✅ REPORT SUBMITTED SUCCESSFULLY (v6.0 Hierarchical MDT)\nPath: {file_path}"
+    result_msg = (
+        f"✅ REPORT SUBMITTED SUCCESSFULLY (v7.0 Adaptive MDT){major_warn}\n"
+        f"Path: {file_path}\n"
+        f"Safety: {safety_result['summary']}"
+    )
     if get_logger():
         get_logger().log_tool_call(
             "submit_mdt_report",
             {"patient_id": patient_id},
-            {"status": "success", "file_path": file_path},
+            {"status": "success", "file_path": file_path,
+             "safety_violations": safety_result["total_violations"]},
             duration_ms
         )
 
     return result_msg
+
+
 
 
 # =============================================================================
@@ -717,21 +775,45 @@ evidence_auditor_sa = {
 # 组装 Orchestrator Deep Agent (v6.0 Dispatcher)
 # =============================================================================
 
-print(f"🚀 正在初始化天坛医疗大脑 v6.0 (Hierarchical Agentic MDT Dispatcher)...")
-print(f"   架构     ：Orchestrator + 6 SubAgents")
+# =============================================================================
+# v7.0 Triage Gate SubAgent (WS-1)
+# =============================================================================
+
+triage_sa = {
+    "name": "triage-gate",
+    "description": (
+        "Lightweight triage agent that classifies case complexity (simple/moderate/complex) "
+        "and determines which specialist SubAgents to invoke. "
+        "MUST be called FIRST before any specialist delegation. "
+        "Returns TriageOutput JSON with required_subagents list and activate_debate flag."
+    ),
+    "system_prompt": TRIAGE_SYSTEM_PROMPT,
+    "tools": [read_file],               # 只需读取患者文件，不需要 execute 或 analyze_image
+    "response_format": TriageOutput,
+    "model": SUBAGENT_MODEL_NAME,
+}
+
+print(f"🚀 正在初始化天坛医疗大脑 v7.0 (Adaptive MDT with Triage + Conflict Quantification)...")
+print(f"   架构     ：Orchestrator + Triage Gate + 5 专科 SA + Evidence Auditor")
 print(f"   模型     ：{SUBAGENT_MODEL_NAME} (统一)")
-print(f"   SubAgents：影像 / 原发内科 / 神外 / 放疗 / 分子病理 / Evidence Auditor")
+print(f"   SubAgents：分诊门 / 影像 / 原发内科 / 神外 / 放疗 / 分子病理 / Evidence Auditor")
 print(f"   EGR阈值  ：{AUDITOR_EGR_THRESHOLD} (最大重试 {AUDITOR_MAX_RETRY} 次)")
+print(f"   v7.0新增 ：Triage Gate / KDP Conflict κ/W / Safety Invariants / Experience Library")
 print(f"   Sandbox  ：{SANDBOX_DIR}")
+
+# 初始化进化模块
+_arb_weights = load_weights()  # 加载或初始化仲裁权重
+print(f"   仲裁权重 ：{_arb_weights['version']}")
 
 store = InMemoryStore()
 checkpointer = MemorySaver()
 
 agent = create_deep_agent(
     model=model,
-    system_prompt=get_orchestrator_prompt(),
+    system_prompt=ORCHESTRATOR_SYSTEM_PROMPT,
     tools=[submit_mdt_report],          # Zero-execution Policy: Orchestrator only submits
     subagents=[
+        triage_sa,                      # v7.0: Triage Gate (FIRST — MANDATORY)
         imaging_sa,
         primary_oncology_sa,
         neurosurgery_sa,
@@ -744,9 +826,9 @@ agent = create_deep_agent(
     store=store,
     checkpointer=checkpointer,
     interrupt_on={
-        "submit_mdt_report": False,     # 已经有 Auditor 关卡
+        "submit_mdt_report": False,     # 已经有 Auditor + Safety Invariant 关卡
     },
-    name="mdt-orchestrator",
+    name="mdt-orchestrator-v7",
 )
 
 
