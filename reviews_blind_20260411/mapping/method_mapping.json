@@ -1,0 +1,11 @@
+{
+  "review_date": "2026-04-11",
+  "review_version": "v2.0_blind",
+  "method_mapping": {
+    "Report_A": "BM Agent",
+    "Report_B": "Direct LLM",
+    "Report_C": "RAG",
+    "Report_D": "WebSearch"
+  },
+  "note": "盲审映射表 - 审查完成后方可查看"
+}

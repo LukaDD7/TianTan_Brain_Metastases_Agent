@@ -151,66 +151,88 @@ When citing content obtained through VLM analysis:
 
 ---
 
-## ⚠️ DUAL-TRACK MANDATORY VERIFICATION (v6.0 新增，MANDATORY)
 
-**触发条件**：当你的推理涉及以下任何关键词时，**必须**同时使用 Track 1（文本）和 Track 3（VLM视觉）：
+## Track 0: 知识缓存检查（MANDATORY — 渲染 PDF 之前必须执行）
 
-### 强制触发词集合（Trigger Keywords）
+在调用 `render_pdf_page.py` 或 `analyze_image` 之前，你**必须**先查询离线知识缓存：
 
-| 类别 | 触发词 |
-|:-----|:------|
-| **剂量单位** | `Gy`, `cGy`, `mg`, `mg/m²`, `mg/kg`, `AUC`, `μg` |
-| **放疗参数** | `fraction`, `分割`, `分次`, `dose`, `剂量`, `SRS`, `SRT`, `WBRT` |
-| **决策节点** | `decision tree`, `决策树`, `pathway`, `flowchart`, `流程图`, `criteria` |
-| **安全阈值** | `禁忌`, `contraindication`, `停药`, `hold`, `resume`, `washout` |
-| **数值标准** | `≤`, `≥`, `<`, `>`, `threshold`, `cutoff` |
-| **时间窗口** | `days`, `weeks`, `天`, `周`, `before surgery`, `after surgery` |
-
-### 双轨执行步骤（MANDATORY Protocol）
-
-**Step 1: 文本轨道（Track 1）**
-```bash
-grep -n -A 5 "<TRIGGER_KEYWORD>" /workspace/sandbox/Guidelines/<FILE>.md
-```
-记录：文件名、行号、文本内容。
-
-**Step 2: 视觉轨道（Track 2 + 3）**
-1. 从 `<!-- Page X -->` 标签或 `_image_page_map.json` 确定页码
-2. 使用 Track 2 渲染该页：
-```bash
-conda run -n mineru_env python \
-    /skills/pdf-inspector/scripts/render_pdf_page.py \
-    /workspace/sandbox/Guidelines/<FILE>.pdf \
-    --pages <PAGE_NUMBER>
-```
-3. 使用 Track 3 VLM 分析：
 ```python
-analyze_image(
-    image_path="/workspace/sandbox/<FILE>_page_<N>.jpg",
-    query="精确提取所有剂量参数、数值标准和时间窗口（包含单位）。验证以下数字是否准确：<CLAIM_FROM_TEXT>"
-)
+# 步骤 1: 查询缓存
+check_guideline_cache(pdf_name="NCCN_CNS.pdf", query="<你的查询内容>")
 ```
 
-**Step 3: 比对与决策**
-| 结果 | 处理方式 |
-|:-----|:--------|
-| 文本 = 视觉（完全一致） | ✅ 使用文本值，引用标注 `[Dual-Track Verified ✓]` |
-| 文本 ≠ 视觉（存在差异） | 🔴 以视觉为准（OCR可能有误），注明差异，引用标注 `[Dual-Track: Visual Override]` |
-| 视觉无法识别 | ⚠️ 标注 `[Dual-Track: Visual Unreadable, Text Only]`，降低置信度 |
+- 如果返回结构化数据（非 "CACHE_MISS"）：**直接使用，禁止继续渲染 PDF**
+- 如果返回 "CACHE_MISS"：检查是否符合以下 5 个触发场景再决定是否进入 Track 2+3
 
-**Step 4: 引用格式（Dual-Track 专用）**
+---
+
+## ⚠️ 视觉核实触发条件（精确版 v7.1 — 仅以下 5 种情况触发）
+
+**默认行为**：使用文本（Track 1 Markdown）回答，不调用视觉核实。
+**视觉核实**（Track 2+3）仅在以下 5 种场景触发，且每次触发前必须通过 Track 0 检查。
+
+### 场景 1：需要遍历决策树分支路径
+你的推理需要判断"如果[条件A]，则[选项X]，否则[选项Y]"的治疗分支逻辑。
+
+**触发判断**：你的问题包含条件性判断（患者满足 X → 选择 A，否则 B），而非单纯查找某个数值。
+**原因**：NCCN 决策树的箭头和条件关系在 Markdown 中已全部丢失，必须视觉还原逻辑。
+**示例**：确定一个 3.5cm 病灶、2个转移灶的患者应该 SRS 还是手术+SRS。
+
+### 场景 2：数值来自已知复杂合并单元格表格
+你要提取的数值对应"按肿瘤大小分层的剂量表"或"多条件交叉的推荐矩阵"。
+
+**触发判断**：查询的是"在条件 A 且条件 B 的情况下，参数 X 是多少"（两个或以上并列条件）。
+**原因**：合并单元格在 Markdown 里会导致条件-值对应错误（如 2-3cm→18Gy 误读为 <2cm→18Gy）。
+**注意**：如果已通过 Track 0 缓存获取，跳过此场景。
+
+### 场景 3：提取结果出现可检测的 OCR 异常特征
+从 Markdown 提取的数值满足以下任意一条：
+- 数字序列中间出现字母（如 `1524Gy`、`2OGy`、`1f8`）
+- 单位格式粘连异常（如 `20Gy1fx`、`24Gyx1`）
+- 数值严重超出正常临床范围（单次 SRS > 30Gy，WBRT 分次 > 5Gy，属于异常）
+
+**触发判断**：对提取的数值使用正则检测：`re.search(r'\d[a-zA-Z]\d', value)` 或 `re.search(r'[a-zA-Z]{2,}Gy', value)`
+
+### 场景 4：需要解析带临床决策意义的上标脚注
+**背景**：MinerU 1.3.0 已确认不检测上标类型（所有 span 均为 "text" 类型）。
+`Surgery^c` 会被输出为 `Surgeryc`，`WBRT^e,f` 会被输出为 `WBRTef`。
+`parse_pdf_to_md.py` 会自动插入 `<!--SUPERSCRIPT?:c-->` 标记来标识可疑位置。
+
+**触发判断**（满足任意一条）：
+1. Markdown 中出现 `<!--SUPERSCRIPT?:` 标记（自动检测到的上标粘连）
+2. 医学词汇后紧跟 1-3 个小写字母且不是已知英语词缀（`WBRTef`、`Surgeryc`）
+3. 你看到 `^[a-z]` 或类似的上标标记格式
+
+**渲染策略**：只渲染脚注区域（**页面底部 30%**），不需要整页。
+**查询方式**：`analyze_image(image_path=..., query="列出本页所有脚注字母及其完整含义，如 c=xxx, e=xxx")`
+
+### 场景 5：跨页交叉引用无法在文本中定位
+Markdown 中出现 `see BRAIN-C`、`see footnote a`、`see page X` 等跳转引用，你无法在当前文本中找到目标内容。
+
+**触发判断**：包含引用标记且无法在 grep 结果中定位目标文本。
+
+---
+
+### ⛔ 以下情况禁止触发视觉核实
+
 ```
-[Local: <FILENAME>.pdf, Page <N>, Dual-Track Verified ✓]
+❌ 叙述性文字中出现 Gy、fraction、SRS（非直接引用的数值）
+❌ 患者病历中的数值（如 KPS ≥ 70 — 这不是从指南提取的）
+❌ 数值文本清晰、无 OCR 异常特征
+❌ 已通过 Track 0 缓存获取了答案
+❌ 已经渲染过同一页面（本 session 内不重复渲染同一页）
 ```
-此格式表示该数值已经过文本+视觉双重确认，可直接写入报告。
-未经双轨验证的剂量参数**不得**写入正式报告中。
 
-### ⛔ 违禁行为（Dual-Track 红线）
+### 渲染约束（进入 Track 2+3 后的规则）
 
-- **严禁**：仅凭 Markdown 文本直接引用剂量（如 `[Local: NCCN.md, Line 280]`），
-  如果被引用的内容是剂量/停药天数/安全阈值，则必须额外完成视觉验证
-- **严禁**：视觉验证失败时仍使用文本数值而不标注差异
-- **严禁**：估算行号（`Line 约 380`）—— 必须实际 grep 定位
+```
+1. 每次只渲染 1-2 页，不允许批量渲染（>3 页需要特殊理由）
+2. 如果渲染目的是"找脚注"：只取页面底部区域（约 30% 高度）
+3. 如果渲染目的是"找表格"：优先使用 crop 参数定位表格区域
+4. 渲染完成后，将成功提取的结果写入进化缓存（使用 write_evolution_cache）
+```
+
+---
 
 ---
 

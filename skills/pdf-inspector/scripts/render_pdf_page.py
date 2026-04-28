@@ -94,25 +94,31 @@ def render_pdf_pages(
     pdf_path: str,
     page_numbers: Union[int, List[int]],
     output_dir: Optional[str] = None,
-    dpi: int = 200,
+    dpi: int = 120,
     zoom: Optional[float] = None,
-    max_size_mb: float = 5.0
+    max_size_mb: float = 3.0,
+    region: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
-    将 PDF 指定页面渲染为高分辨率 PNG 图片。
-
-    适用于医学文献中的视觉元素：
-    - 决策树 / 流程图
-    - Kaplan-Meier 生存曲线
-    - 影像学图像
-    - 复杂表格和图表
+    将 PDF 指定页面渲染为 JPG 图片。支持区域裁剪以降低 vision token 消耗。
 
     Args:
         pdf_path: PDF 文件的绝对路径
         page_numbers: 页码或页码列表 (1-indexed)
         output_dir: 输出目录 (默认使用 SANDBOX_ROOT)
-        dpi: 渲染分辨率 (默认 200 DPI，医学图像建议 300+)
-        zoom: 缩放因子 (覆盖 DPI 设置，例如 2.0 = 2倍放大)
+        dpi: 渲染分辨率 (默认 120 DPI，满足大多数 VLM 任务)
+             - 120 DPI: 流程图/表格/文本理解（推荐）
+             - 150 DPI: 小字连成 OCR，脚注区域
+             - 200 DPI: 印刷品质 / 高密度表格
+        zoom: 缩放因子 (覆盖 DPI 设置)
+        max_size_mb: 单张图片最大 MB (默认 3MB)
+        region: 页面区域裁剪，格式 “预设名” 或 “x0,y0,x1,y1”（比例 0.0-1.0）
+               预设名可选：
+               - "top70"    页面上新 70%（流程图区域）
+               - "bottom30" 页面下新 30%（脚注区域）
+               - "left50"   左半页
+               - "right50"  右半页
+               - "0.0,0.7,1.0,1.0" 自定义比例裁剪 (x0,y0,x1,y1)
 
     Returns:
         Dict 包含以下字段:
@@ -186,12 +192,34 @@ def render_pdf_pages(
     warnings = []
 
     # 计算缩放矩阵
-    # 默认使用 1.5x 缩放以平衡清晰度和大小
-    effective_zoom = zoom if zoom is not None else 1.5
-    if zoom is None and dpi != 200:
-        # 如果指定了 DPI 但没有指定 zoom，使用 DPI 计算
-        scale = dpi / 72.0
-        effective_zoom = scale
+    # v7.1: 默认降低到 120 DPI，节省 VLM token
+    # VLM 对 >150 DPI 没有明显收益，但文件大小和车载时间显著增加
+    effective_zoom = zoom if zoom is not None else (dpi / 72.0)
+
+    # 解析 region 参数
+    REGION_PRESETS = {
+        "top70":    (0.0, 0.0, 1.0, 0.70),
+        "top50":    (0.0, 0.0, 1.0, 0.50),
+        "bottom30": (0.0, 0.70, 1.0, 1.0),
+        "bottom40": (0.0, 0.60, 1.0, 1.0),
+        "bottom50": (0.0, 0.50, 1.0, 1.0),
+        "left50":   (0.0, 0.0, 0.50, 1.0),
+        "right50":  (0.50, 0.0, 1.0, 1.0),
+    }
+
+    crop_ratio = None  # (x0, y0, x1, y1) 在 0-1 范围内
+    if region:
+        if region in REGION_PRESETS:
+            crop_ratio = REGION_PRESETS[region]
+        else:
+            try:
+                parts = [float(x) for x in region.split(',')]
+                if len(parts) == 4 and all(0.0 <= p <= 1.0 for p in parts):
+                    crop_ratio = tuple(parts)
+                else:
+                    warnings.append(f"region 参数无效，使用全页渲染: {region}")
+            except ValueError:
+                warnings.append(f"region 参数解析失败，使用全页渲染: {region}")
 
     mat = fitz.Matrix(effective_zoom, effective_zoom)
 
@@ -207,8 +235,19 @@ def render_pdf_pages(
         try:
             page = doc[page_idx]
 
+            # 应用区域裁剪（如果指定）
+            clip = None
+            if crop_ratio:
+                pw = page.rect.width
+                ph = page.rect.height
+                x0 = crop_ratio[0] * pw
+                y0 = crop_ratio[1] * ph
+                x1 = crop_ratio[2] * pw
+                y1 = crop_ratio[3] * ph
+                clip = fitz.Rect(x0, y0, x1, y1)
+
             # 渲染为 pixmap
-            pix = page.get_pixmap(matrix=mat)
+            pix = page.get_pixmap(matrix=mat, clip=clip)
 
             # 转换为 PIL Image
             img_data = pix.tobytes("png")

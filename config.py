@@ -7,8 +7,9 @@ BRAIN_API_KEY = os.getenv("DASHSCOPE_API_KEY")
 BRAIN_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 
 # --- 2. THE EYES (Tongyi Qwen-VL) ---
-# 视觉轨道同步升级，用于 Dual-Track 强制双轨验证中的 PDF 页面分析
-VLM_MODEL_NAME = "qwen3.6-plus"
+# v7.1 升级：使用专用 VLM 模型（qwen-vl-plus），成本更低，视觉能力更强
+# 仅用于 Dual-Track 双轨验证中的 PDF 页面分析，不参与文本推理
+VLM_MODEL_NAME = "qwen-vl-plus"   # 替代 qwen3.6-plus，专用 VLM，降低成本 50-70%
 VLM_API_KEY = os.getenv("DASHSCOPE_API_KEY")
 VLM_BASE_URL = "https://dashscope.aliyuncs.com/compatible-mode/v1"
 

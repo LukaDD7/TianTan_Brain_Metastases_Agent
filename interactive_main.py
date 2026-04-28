@@ -30,7 +30,7 @@ from langgraph.store.memory import InMemoryStore
 from langchain.tools import tool
 
 from utils.llm_factory import get_brain_client_langchain, get_subagent_client_langchain
-from config import SUBAGENT_MODEL_NAME, AUDITOR_EGR_THRESHOLD, AUDITOR_MAX_RETRY
+from config import SUBAGENT_MODEL_NAME, AUDITOR_EGR_THRESHOLD, AUDITOR_MAX_RETRY, VLM_MODEL_NAME
 
 # SubAgent全量日志支持
 from utils.subagent_full_logging import (
@@ -103,6 +103,10 @@ os.environ["SANDBOX_ROOT"] = SANDBOX_DIR
 # 每个 execute tool call 都会计数，达到上限后拒绝执行并返回错误
 MAX_TOOL_CALLS_PER_RUN = 200   # 建议值，可根据 Case 复杂度调整
 _tool_call_count = 0           # 当前 run 的累计计数（Session级别）
+
+# --- VLM 调用次数上限（昂贵的视觉调用）---
+MAX_VLM_CALLS_PER_RUN = 15     # 限制每个病例的 VLM 调用次数，防止烧钱
+_vlm_call_count = 0
 
 # Skills 路径常量（用于 SubAgent skills 分配）
 _S = lambda name: os.path.join(SKILLS_DIR, name)
@@ -235,6 +239,18 @@ class ExecutionLogger:
             "result": result,
             "duration_ms": duration_ms
         })
+        # 实时输出子智能体的工具调用，增强透明度 (Obsability)
+        if tool_name in ["execute", "analyze_image", "read_file"]:
+            prefix = "  ↳ [SubAgent Tool]"
+            if tool_name == "execute":
+                cmd = arguments.get("command", "")[:60].replace("\n", " ")
+                print(f"{prefix} ⚙️  execute: {cmd}...", flush=True)
+            elif tool_name == "analyze_image":
+                query = arguments.get("query", "")[:60]
+                print(f"{prefix} 👁️  analyze_image: {query}...", flush=True)
+            elif tool_name == "read_file":
+                path = arguments.get("path", "")
+                print(f"{prefix} 📖 read_file: {path}", flush=True)
 
     def log_agent_thinking(self, content: str, thinking_type: str = "general"):
         self._write_log({
@@ -299,6 +315,18 @@ def analyze_image(image_path: str, query: str = "Analyze this image and describe
     """
     import base64
 
+    # VLM 调用次数上限检查
+    global _vlm_call_count
+    _vlm_call_count += 1
+    if _vlm_call_count > MAX_VLM_CALLS_PER_RUN:
+        error_msg = (
+            f"Error: Maximum VLM calls ({MAX_VLM_CALLS_PER_RUN}) reached. "
+            "To prevent excessive cost, no further VLM analysis is allowed in this session."
+        )
+        if get_logger():
+            get_logger().log_tool_call("analyze_image", {"image_path": image_path}, {"error": error_msg}, 0)
+        return error_msg
+
     try:
         actual_path = image_path
         if image_path.startswith("/workspace/sandbox/"):
@@ -323,7 +351,7 @@ def analyze_image(image_path: str, query: str = "Analyze this image and describe
         client = get_vlm_client()
 
         completion = client.chat.completions.create(
-            model=SUBAGENT_MODEL_NAME,  # v6.0: 统一使用 qwen3.6-plus
+            model=VLM_MODEL_NAME,  # v7.1: 使用专用 VLM 模型（qwen-vl-plus），降低成本
             messages=[{
                 "role": "user",
                 "content": [
@@ -361,6 +389,165 @@ def analyze_image(image_path: str, query: str = "Analyze this image and describe
         if get_logger():
             get_logger().log_error(error_msg, "image_analysis_error")
         return error_msg
+
+
+
+# =============================================================================
+# 自进化知识缓存工具（v7.1 新增）
+# =============================================================================
+
+# 缓存文件路径
+_EVOLUTION_CACHE_PATH = os.path.join(
+    os.environ.get("SANDBOX_ROOT", ""),
+    "Guidelines",
+    "evolution_cache.jsonl"
+) if os.environ.get("SANDBOX_ROOT") else None
+
+
+@tool
+def check_guideline_cache(pdf_name: str, query: str, page_hint: Optional[int] = None) -> str:
+    """查询离线知识缓存。在渲染 PDF 页面或调用 analyze_image 之前必须先调用此工具。
+
+    如果缓存命中，直接返回结构化数据，无需渲染 PDF 或调用 VLM，节省大量成本。
+    缓存覆盖率随系统运行逐步提高（自进化机制）。
+
+    Args:
+        pdf_name: PDF 文件名（如 "NCCN_CNS.pdf"）
+        query: 查询内容描述（如 "SRS dose for lesion <3cm" 或 "treatment algorithm for 2 brain mets"）
+        page_hint: 可选的页面号提示（若已知在哪一页附近）
+
+    Returns:
+        命中时：JSON 格式的缓存数据（包含 extracted_data 或 flowchart_structure）
+        未命中时：字符串 "CACHE_MISS" — 可继续进行 Track 2+3 流程
+    """
+    try:
+        # 确定缓存文件路径
+        sandbox_root = os.environ.get("SANDBOX_ROOT", "")
+        if not sandbox_root:
+            return "CACHE_MISS"
+
+        cache_path = os.path.join(sandbox_root, "Guidelines", "evolution_cache.jsonl")
+        if not os.path.exists(cache_path):
+            return "CACHE_MISS"
+
+        # 构建查询关键词
+        query_lower = query.lower()
+        query_words = set(query_lower.split())
+
+        best_match = None
+        best_score = 0
+
+        with open(cache_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    entry = json.loads(line)
+                    # 过滤 PDF 名称
+                    if entry.get("source_pdf", "").lower() != pdf_name.lower():
+                        continue
+                    # 如果有 page_hint，过滤页面范围（±5页）
+                    if page_hint and entry.get("page"):
+                        if abs(entry["page"] - page_hint) > 5:
+                            continue
+                    # 关键词匹配得分
+                    entry_query = entry.get("query", "").lower()
+                    entry_words = set(entry_query.split())
+                    overlap = len(query_words & entry_words)
+                    if overlap > best_score:
+                        best_score = overlap
+                        best_match = entry
+                except json.JSONDecodeError:
+                    continue
+
+        # 要求至少 2 个关键词匹配（避免误匹配）
+        if best_match and best_score >= 2:
+            confidence = best_match.get("confidence", 0.0)
+            result = {
+                "cache_hit": True,
+                "source_pdf": best_match.get("source_pdf"),
+                "page": best_match.get("page"),
+                "confidence": confidence,
+                "content_type": best_match.get("content_type", "unknown"),
+                "extracted_data": best_match.get("extracted_data"),
+                "flowchart_structure": best_match.get("flowchart_structure"),
+                "cached_at": best_match.get("timestamp"),
+                "note": f"来自进化缓存（匹配度：{best_score} 关键词），可直接使用，无需渲染 PDF"
+            }
+            return json.dumps(result, ensure_ascii=False, indent=2)
+
+        return "CACHE_MISS"
+
+    except Exception as e:
+        return f"CACHE_MISS (error: {str(e)})"
+
+
+@tool
+def write_evolution_cache(
+    source_pdf: str,
+    page: int,
+    query: str,
+    content_type: str,
+    extracted_data: str,
+    confidence: float = 0.9
+) -> str:
+    """将 VLM 成功提取的结果写入进化缓存，供后续查询复用。
+
+    每次 analyze_image 成功提取到有用信息后，应调用此工具记录结果。
+    这是系统自进化的核心机制——缓存积累越多，后续查询越便宜。
+
+    Args:
+        source_pdf: PDF 文件名（如 "NCCN_CNS.pdf"）
+        page: 源页面号
+        query: 本次提取的查询内容描述
+        content_type: 内容类型："dose_table" | "flowchart" | "text_reference" | "footnote"
+        extracted_data: JSON 字符串，包含提取到的结构化数据
+            - 对于剂量表：{"condition": "...", "dose": "...", "fractions": N}
+            - 对于流程图：{"nodes": [...], "edges": [...], "footnotes": {...}}
+            - 对于文本引用：{"claim": "...", "citation": "..."}
+        confidence: 提取置信度 (0.0-1.0)，低于 0.7 建议不写入缓存
+
+    Returns:
+        写入成功或失败的状态消息
+    """
+    try:
+        if confidence < 0.7:
+            return f"跳过写入：置信度 {confidence:.2f} 过低（需 ≥ 0.7）"
+
+        sandbox_root = os.environ.get("SANDBOX_ROOT", "")
+        if not sandbox_root:
+            return "跳过写入：SANDBOX_ROOT 未配置"
+
+        cache_dir = os.path.join(sandbox_root, "Guidelines")
+        os.makedirs(cache_dir, exist_ok=True)
+        cache_path = os.path.join(cache_dir, "evolution_cache.jsonl")
+
+        # 尝试解析 extracted_data
+        try:
+            data = json.loads(extracted_data) if isinstance(extracted_data, str) else extracted_data
+        except json.JSONDecodeError:
+            data = {"raw_text": extracted_data}
+
+        entry = {
+            "cache_id": f"{source_pdf.replace('.pdf','')}_p{page}_{content_type}_{datetime.now().strftime('%Y%m%d%H%M%S')}",
+            "source_pdf": source_pdf,
+            "page": page,
+            "query": query,
+            "content_type": content_type,
+            "extracted_data": data if content_type != "flowchart" else None,
+            "flowchart_structure": data if content_type == "flowchart" else None,
+            "confidence": confidence,
+            "timestamp": datetime.now().isoformat(),
+        }
+
+        with open(cache_path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+        return f"✅ 已写入进化缓存：{source_pdf} 第{page}页 ({content_type})，置信度 {confidence:.2f}"
+
+    except Exception as e:
+        return f"❌ 写入缓存失败：{str(e)}"
 
 
 # =============================================================================
@@ -718,7 +905,7 @@ def make_backend(runtime):
 # 核心工具集（SubAgent 共享）
 # =============================================================================
 
-CORE_TOOLS = [execute, read_file, analyze_image]
+CORE_TOOLS = [execute, read_file, analyze_image, check_guideline_cache, write_evolution_cache]
 
 
 # =============================================================================
@@ -972,27 +1159,33 @@ if __name__ == "__main__":
 
             # 重置工具调用计数器（每个新 Case 从 0 开始）
             _tool_call_count = 0
+            _vlm_call_count = 0
             msgs_seen = set()  # Track seen message IDs across streaming chunks
+            _active_subagents = {}  # Track sub-agent lifecycle
 
-            # 使用 stream() 实时输出，替代 invoke() 阻塞式
-            # stream_mode="updates" = 每个 step 的节点更新
-            # stream_mode="messages" = LLM 输出的 token 级流
-            for stream_mode, chunk in agent.stream(
+            # 使用 stream() 实时输出
+            # subgraphs=True: 打开 sub-agent 黑盒，让内部事件浮现
+            # 注意：不使用 version="v2"，避免 DashScope 的 "empty output" 错误
+            # 稳定格式: (namespace, (stream_mode, chunk)) 元组解包
+            for namespace, (stream_mode, chunk) in agent.stream(
                 {"messages": [{"role": "user", "content": user_input}]},
                 config={"configurable": {"thread_id": patient_thread_id}},
-                stream_mode=["updates", "messages"]
+                stream_mode=["updates", "messages"],
+                subgraphs=True,
             ):
-                # === stream_mode="messages" : LLM token 级输出 ===
+                # namespace 是元组：() 表示主 Agent，("tools:call_xxx",) 表示 sub-agent
+                is_subagent = any(s.startswith("tools:") for s in namespace)
+
+                # === stream_mode="messages" : LLM token 级流 ===
                 if stream_mode == "messages":
                     for msg_chunk in chunk:
-                        if hasattr(msg_chunk, 'content') and msg_chunk.content:
-                            # LLM 思考内容（reasoning）
-                            if hasattr(msg_chunk, 'type') and msg_chunk.type == 'thinking':
-                                print(f"🧠 {msg_chunk.content}", end="", flush=True)
-                            # 普通文本 token 流
-                            else:
-                                print(msg_chunk.content, end="", flush=True)
-                    flush = True
+                        content = getattr(msg_chunk, "content", "")
+                        if not content:
+                            continue
+                        if is_subagent:
+                            print(content, end="", flush=True)
+                        else:
+                            print(content, end="", flush=True)
 
                 # === stream_mode="updates" : 每个 step 的节点更新 ===
                 elif stream_mode == "updates":
@@ -1000,7 +1193,6 @@ if __name__ == "__main__":
                         if not isinstance(node_data, dict):
                             continue
                         messages_in_node = node_data.get("messages", [])
-                        # messages_in_node 可能是 Overwrite 对象（直接写通道），跳过
                         if not isinstance(messages_in_node, list):
                             continue
                         for msg in messages_in_node:
@@ -1009,59 +1201,85 @@ if __name__ == "__main__":
                                 continue
                             msgs_seen.add(msg_id)
 
-                            msg_role = getattr(msg, 'role', 'unknown')
-                            msg_name = getattr(msg, 'name', '')
+                            msg_role = getattr(msg, "role", "unknown")
+                            msg_name = getattr(msg, "name", "")
 
-                            # 工具调用
-                            if hasattr(msg, 'tool_calls') and msg.tool_calls:
+                            # 工具调用（包含 sub-agent 内部的工具）
+                            if hasattr(msg, "tool_calls") and msg.tool_calls:
                                 for tc in msg.tool_calls:
-                                    tool_name = tc.get('name', 'unknown')
-                                    tool_args = tc.get('args', {})
-                                    if tool_name == "task":
-                                        sa_name = tool_args.get('subagent_type', tool_args.get('name', '?'))
-                                        print(f"\n\n🔀 ═══ [委派] ═══ → {sa_name}")
-                                        execution_logger.log_agent_thinking(f"已委派给 SubAgent: {sa_name}", "delegate")
-                                    elif tool_name == "submit_mdt_report":
-                                        print(f"\n\n📋 ═══ [提交报告] ═══")
-                                        execution_logger.log_agent_thinking("Orchestrator 提交最终报告", "submit")
-                                    elif tool_name == "execute":
-                                        cmd = tool_args.get('command', '')[:80]
-                                        print(f"\n⚙️  ═══ [执行] ═══ {cmd}")
+                                    tool_name = tc.get("name", "unknown")
+                                    tool_args = tc.get("args", {})
+                                    if is_subagent:
+                                        # Sub-agent 内部工具调用，带缩进显示
+                                        if tool_name == "execute":
+                                            cmd = tool_args.get("command", "")[:60].replace("\n", " ")
+                                            print(f"\n  ↳ ⚙️ [{node_name}] execute: {cmd}...", flush=True)
+                                        elif tool_name == "analyze_image":
+                                            q = tool_args.get("query", "")[:60]
+                                            print(f"\n  ↳ 👁️ [{node_name}] analyze_image: {q}...", flush=True)
+                                        elif tool_name == "check_guideline_cache":
+                                            pdf = tool_args.get("pdf_name", "")
+                                            print(f"\n  ↳ 🗄️ [{node_name}] check_cache: {pdf}", flush=True)
+                                        elif tool_name == "write_evolution_cache":
+                                            print(f"\n  ↳ 💾 [{node_name}] write_cache: 写入进化缓存", flush=True)
+                                        elif tool_name == "read_file":
+                                            path = tool_args.get("path", "")
+                                            print(f"\n  ↳ 📖 [{node_name}] read_file: {path}", flush=True)
+                                        else:
+                                            print(f"\n  ↳ 🔧 [{node_name}] {tool_name}", flush=True)
                                     else:
-                                        print(f"\n⚙️  ═══ [{msg_name or msg_role}] ═══ {tool_name}")
+                                        # Orchestrator 的工具调用
+                                        if tool_name == "task":
+                                            sa_name = tool_args.get("subagent_type", tool_args.get("name", "?"))
+                                            print(f"\n\n🔀 ═══ [委派] ═══ → {sa_name}")
+                                            execution_logger.log_agent_thinking(f"已委派给 SubAgent: {sa_name}", "delegate")
+                                        elif tool_name == "submit_mdt_report":
+                                            print(f"\n\n📋 ═══ [提交报告] ═══")
+                                            execution_logger.log_agent_thinking("Orchestrator 提交最终报告", "submit")
+                                        elif tool_name == "execute":
+                                            cmd = tool_args.get("command", "")[:80]
+                                            print(f"\n⚙️  ═══ [执行] ═══ {cmd}")
+                                        else:
+                                            print(f"\n⚙️  ═══ [{msg_name or msg_role}] ═══ {tool_name}")
                                     execution_logger.log_tool_call(tool_name, tool_args, None, 0)
 
                             # 工具返回结果
-                            if msg_role == 'tool':
-                                content = getattr(msg, 'content', '')
+                            if msg_role == "tool":
+                                content = getattr(msg, "content", "")
                                 if content:
-                                    preview = content[:200].replace('\n', ' ')
-                                    print(f"   ↩ {preview}{'...' if len(content) > 200 else ''}")
+                                    if is_subagent:
+                                        preview = content[:150].replace("\n", " ")
+                                        print(f"\n  ↩ [SA Result] {preview}{'...' if len(content) > 150 else ''}", flush=True)
+                                    else:
+                                        preview = content[:200].replace("\n", " ")
+                                        print(f"   ↩ {preview}{'...' if len(content) > 200 else ''}")
 
                             # LLM 文本回复
-                            content = getattr(msg, 'content', '')
-                            if content and msg_role not in ('tool', 'system'):
-                                if msg_name:
+                            content = getattr(msg, "content", "")
+                            if content and msg_role not in ("tool", "system"):
+                                if is_subagent:
+                                    print(f"\n📥 [{msg_name or 'SA'}] {content[:300]}{'...' if len(content) > 300 else ''}")
+                                elif msg_name:
                                     print(f"\n📥 [{msg_name}] {content[:300]}{'...' if len(content) > 300 else ''}")
                                 else:
                                     print(f"\n🤖 [{msg_role}] {content[:300]}{'...' if len(content) > 300 else ''}")
 
                             # reasoning_content（深度思考）
-                            if hasattr(msg, 'additional_kwargs') and \
-                               'reasoning_content' in msg.additional_kwargs:
-                                reasoning = msg.additional_kwargs['reasoning_content']
+                            if hasattr(msg, "additional_kwargs") and \
+                               "reasoning_content" in msg.additional_kwargs:
+                                reasoning = msg.additional_kwargs["reasoning_content"]
                                 if reasoning:
                                     print(f"\n🧠 [深度思考] {reasoning[:500]}{'...' if len(reasoning) > 500 else ''}")
 
                             # Token usage
                             usage = {}
-                            if hasattr(msg, 'response_metadata') and msg.response_metadata:
-                                token_usage = msg.response_metadata.get('token_usage', {})
+                            if hasattr(msg, "response_metadata") and msg.response_metadata:
+                                token_usage = msg.response_metadata.get("token_usage", {})
                                 if token_usage:
                                     usage = {
-                                        "input_tokens": token_usage.get('prompt_tokens', 0),
-                                        "output_tokens": token_usage.get('completion_tokens', 0),
-                                        "total_tokens": token_usage.get('total_tokens', 0)
+                                        "input_tokens": token_usage.get("prompt_tokens", 0),
+                                        "output_tokens": token_usage.get("completion_tokens", 0),
+                                        "total_tokens": token_usage.get("total_tokens", 0)
                                     }
                             if usage:
                                 execution_logger.log_llm_response(content, role=msg_role,

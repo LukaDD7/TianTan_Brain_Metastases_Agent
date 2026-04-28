@@ -128,6 +128,8 @@ def lightweight_clean(text: str) -> str:
     1. 修复 NCCN 特殊字体导致的大小写问题（如 cLINICAL -> CLINICAL）
     2. 修复明显的粘连问题（如 braFAND -> braF AND）
     3. 医学术语字典映射修复
+    4. 上标粘连检测（MinerU 1.3.0 不检测上标，Surgery^c 会被输出为 Surgeryc）
+       → 检测到可疑上标粘连时，插入 <!--SUPERSCRIPT?--> 标记供 Agent 识别
     """
     # 步骤 1: 修复 NCCN 特殊字体问题
     # 模式：单个小写字母后跟多个大写字母（如 cLINICAL, nERVOUS）
@@ -145,7 +147,83 @@ def lightweight_clean(text: str) -> str:
     # 步骤 3: 修复明显的粘连（小写+大写+小写）如 "braFAND" -> "braF AND"
     text = re.sub(r'([a-z])([A-Z])([a-z])', r'\1 \2\3', text)
 
+    # 步骤 4: 上标检测（MinerU 1.3.0 不检测上标类型，使用 bbox 坐标检测）
+    # 注意：此步骤只是在 Markdown 文本中插入标记，需要配合 raw_json 坐标分析
+    # 不在此处使用正则（误报率过高），而是在 parse_pdf_to_markdown() 里用 JSON 分析
+    # 参见 detect_superscripts_from_raw_json()
+
     return text
+
+
+def detect_superscripts_from_raw_json(raw_data: dict, md_content: str) -> str:
+    """
+    从 MinerU 原始 JSON 的 span bbox 坐标检测上标。
+
+    MinerU 不标注 superscript 类型，但上标 span 在 y 坐标上明显偏高。
+    判断标准：span 的 y_min 比同行其他 span 的 y_min 低（坐标系从上向下，y 越小位置越高）
+
+    参数:
+        raw_data: parse_pdf_to_md.py 保存的 _raw.json 内容
+        md_content: 已生成的 Markdown 文本
+
+    返回:
+        插入了 <!--SUPERSCRIPT?:xxx--> 标记的 Markdown
+    """
+    if not raw_data or 'pdf_info' not in raw_data:
+        return md_content
+
+    superscript_words = []  # 收集检测到的上标词
+
+    try:
+        for page in raw_data.get('pdf_info', []):
+            for block in page.get('para_blocks', []):
+                for line in block.get('lines', []):
+                    spans = line.get('spans', [])
+                    if len(spans) < 2:
+                        continue
+
+                    # 计算同行 span 的 y_min 中位数（作为基线）
+                    y_mins = [s['bbox'][1] for s in spans if 'bbox' in s and len(s['bbox']) >= 4]
+                    if not y_mins:
+                        continue
+
+                    y_mins_sorted = sorted(y_mins)
+                    baseline_y = y_mins_sorted[len(y_mins_sorted) // 2]  # 中位数
+
+                    for span in spans:
+                        bbox = span.get('bbox', [])
+                        content = span.get('content', '').strip()
+                        if not bbox or len(bbox) < 4 or not content:
+                            continue
+
+                        span_y = bbox[1]  # y_min（越小 = 位置越高）
+                        span_height = bbox[3] - bbox[1]  # span 高度
+
+                        # 上标判断：span 的 y_min 比基线高出超过 30% 的行高
+                        # 且内容是 1-3 个字母/数字（典型上标格式）
+                        y_offset = baseline_y - span_y
+                        if (y_offset > span_height * 0.3
+                                and len(content) <= 3
+                                and re.match(r'^[a-zA-Z0-9,]+$', content)):
+                            superscript_words.append(content)
+
+    except Exception:
+        return md_content  # 检测失败时安全回退，不影响 markdown
+
+    # 在 markdown 中标记检测到的上标内容
+    # 仅标记那些与前一个词粘连的情况
+    for sup in set(superscript_words):
+        if len(sup) > 0:
+            # 在 markdown 里找可能的粘连位置并插入标记
+            # 例如：WBRTef → WBRT<!--SUPERSCRIPT?:ef-->
+            pattern = rf'\b([A-Z]{{2,}}(?:[A-Z][a-z]*){{0,2}})({re.escape(sup)})\b'
+            md_content = re.sub(
+                pattern,
+                lambda m: f"{m.group(1)}<!--SUPERSCRIPT?:{m.group(2)}-->",
+                md_content
+            )
+
+    return md_content
 
 
 def parse_pdf_to_markdown(

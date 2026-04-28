@@ -6,6 +6,37 @@
 
 ---
 
+## [v7.2.0] - 2026-04-28
+
+### 核心架构升级 (Core Architecture Upgrade)
+
+#### 1. NCCN 临床算法图谱解析架构 (NCCN Algorithm Graph Architecture)
+- **挑战**: MinerU、Docling 等现有文本解析工具无法有效处理 NCCN 指南中的复杂决策流程图（Decision Trees）及上标脚注，导致 Agent 运行成本高且缺乏确定性。
+- **解决方案**: 设计了基于 VLM 的双层索引架构（Node Index + Semantic MD），将 PDF 离线预处理为结构化 `NCCNAlgorithmGraph` JSON。
+- **Schema 定义**: `nccn_flowchart_schema_design.md`，包含 7 种标准节点（`entry`, `decision`, `treatment`, `continuation`, `evaluation`, `principle_ref`, `end`）及跨页拼接（Stitching）算法。
+
+#### 2. VLM 基础设施方案确立 (VLM Infrastructure Decision)
+- **挑战**: 在老旧 CUDA 12.1 服务器上进行多卡部署 72B/26B 大模型存在极高风险（NCCL 通信、编译依赖等）。
+- **解决方案**: 弃用多卡复杂部署，转而采用 **Ollama + Qwen2.5-VL-7B (单卡)** 的水平扩展方案。通过在 7 张 A40 上启动独立的 Ollama 进程监听不同端口，实现免 Root、零运维风险的批量处理。
+
+### 功能增强与修复 (Enhancements & Fixes)
+
+#### 1. 上标脚注的精准探测 (Accurate Superscript Detection)
+- **修复**: 移除了 `parse_pdf_to_md.py` 中脆弱的正则是试探检测，确认 MinerU 1.3.0 在底层已丢失上标类型。
+- **实现**: 新增 `detect_superscripts_from_raw_json`，通过读取 MinerU `_raw.json` 中 Span 的 Bounding Box 物理坐标（`y_min` 偏移 > 30%），精准识别并注入 `<!--SUPERSCRIPT?:x-->` 标记，彻底解决诸如 `Surgeryc` 的识别问题。
+
+#### 2. VLM 渲染成本极大优化 (VLM Rendering Cost Optimization)
+- **优化**: `render_pdf_page.py` 默认 DPI 从 200 降低至 120，显著降低文件大小及 Vision Token 消耗。
+- **新增**: 增加 `--region` 裁剪参数（支持如 `bottom30`、`top70` 等预设）。现在针对脚注的视觉核实只需裁剪底部 30%，将单次查询的 VLM 上下文成本降至约 100KB 图片级别。
+
+#### 3. Agent 视觉核实规则收紧 (Tightened Visual Verification Rules)
+- **变更**: 更新 `skills/pdf-inspector/SKILL.md`，将视觉探针从基于 `Gy` 的泛化触发，收紧至严格的 5 个精确场景。通过配合预处理的 `<!--SUPERSCRIPT?:-->` 标记，彻底杜绝无谓的 API 烧钱调用。
+
+#### 4. Sub-Agent 黑盒流式可视化修复 (Sub-Agent Streaming Fix)
+- **修复**: 移除了导致 DashScope 崩溃的 `version="v2"` 流式格式，退回至更稳定的元组解包 `(namespace, (stream_mode, chunk))` 模式。实现了子 Agent 内部思考过程和工具调用的透明化监控。
+
+---
+
 ## [v7.1.0] - 2026-04-28
 
 ### 关键 Bug 修复 (Critical Bug Fixes)

@@ -19,8 +19,8 @@ RADIATION_SYSTEM_PROMPT = """你是一名为天坛脑转移 MDT (Multidisciplina
     - 1-4 个病灶：首选 SRS。
     - >10 个病灶或弥漫：考虑 WBRT 或保海马 WBRT。
 3. **双轨验证 (Dual-Track Verification)**：
-    - 获取剂量（如 24Gy/1f）后，必须使用 `render_pdf_page.py` 渲染指南页面，并用你的视觉能力核对图片中的表格，确保没有 OCR 错误。
-    - 标记 `dose_dual_track_verified: true`。
+    - 获取剂量（如 24Gy/1f）后，如果你对 OCR 提取的数值存在疑虑，或该数值属于指南中的关键临界点，应使用 `render_pdf_page.py` 渲染指南页面并进行视觉核对。
+    - 只有在真正进行了视觉核对后，才标记 `dose_dual_track_verified: true`。
 
 ### 临床背景决策（Tie-breaker Logic）
 - **认知保护**：对于生存预期长的患者（如 EGFR+ 肺癌），应尽量延迟 WBRT 以保护认知。

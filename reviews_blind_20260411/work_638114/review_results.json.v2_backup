@@ -1,0 +1,547 @@
+{
+  "patient_id": "638114",
+  "review_date": "2026-04-11",
+  "review_version": "v2.0_strict",
+  "method_mapping": {
+    "Report_A": "BM Agent",
+    "Report_B": "Direct LLM",
+    "Report_C": "RAG",
+    "Report_D": "WebSearch"
+  },
+  "reviews": {
+    "Report_A": {
+      "method": "BM Agent",
+      "scores": {
+        "CCR": {
+          "total": 4.0,
+          "S_line": 4,
+          "S_scheme": 4,
+          "S_dose": 4,
+          "S_reject": 4,
+          "S_align": 4
+        },
+        "MQR": {
+          "total": 4.0,
+          "S_complete": 4,
+          "S_applicable": 4,
+          "S_format": 4,
+          "S_citation": 4,
+          "S_uncertainty": 4
+        },
+        "CER": 0.0,
+        "PTR": 0.622,
+        "CPI": 0.905,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.622,
+          "tier_1a": {
+            "count": 22,
+            "weight": 1.0,
+            "score": 22.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 6,
+                "score": 6.0
+              },
+              "oncokb": {
+                "count": 0,
+                "score": 0.0
+              },
+              "local": {
+                "count": 16,
+                "score": 16.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 11,
+            "weight": 1.0,
+            "score": 11.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 2,
+            "weight": 0.3,
+            "score": 0.6
+          },
+          "tier_3": {
+            "count": 0,
+            "weight": 0.1,
+            "score": 0.0
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 33.6,
+            "total_statements": 54,
+            "formula": "33.6 / 54",
+            "ptr_final": 0.622
+          }
+        }
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 6,
+          "weight": 1.0,
+          "score": 6.0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 16,
+          "weight": 1.0,
+          "score": 16.0
+        },
+        "Tier_2_Guideline": {
+          "count": 2,
+          "weight": 0.3,
+          "score": 0.6
+        },
+        "Tier_3_Web_Official": {
+          "count": 0,
+          "weight": 0.1,
+          "score": 0
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 0,
+          "weight": -0.5,
+          "score": 0
+        },
+        "Invalid_Parametric": {
+          "count": 0,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 54
+      },
+      "errors": [],
+      "notes": "标杆报告，22处Tier 1引用，奥西替尼耐药后处理路径清晰，SRS再程放疗剂量有物理锚点"
+    },
+    "Report_B": {
+      "method": "Direct LLM",
+      "scores": {
+        "CCR": {
+          "total": 2.6,
+          "S_line": 3,
+          "S_scheme": 3,
+          "S_dose": 2,
+          "S_reject": 3,
+          "S_align": 2
+        },
+        "MQR": {
+          "total": 2.0,
+          "S_complete": 2,
+          "S_applicable": 3,
+          "S_format": 2,
+          "S_citation": 0,
+          "S_uncertainty": 2
+        },
+        "CER": 0.0,
+        "PTR": 0.1,
+        "CPI": 0.527,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.1,
+          "tier_1a": {
+            "count": 0,
+            "weight": 1.0,
+            "score": 0.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 0,
+                "score": 0.0
+              },
+              "oncokb": {
+                "count": 0,
+                "score": 0.0
+              },
+              "local": {
+                "count": 0,
+                "score": 0.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 4,
+            "weight": 1.0,
+            "score": 4.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 0,
+            "weight": 0.3,
+            "score": 0.0
+          },
+          "tier_3": {
+            "count": 0,
+            "weight": 0.1,
+            "score": 0.0
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 18,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 4.0,
+            "total_statements": 40,
+            "formula": "4.0 / 40",
+            "ptr_final": 0.1
+          }
+        }
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_2_Guideline": {
+          "count": 0,
+          "weight": 0.3,
+          "score": 0
+        },
+        "Tier_3_Web_Official": {
+          "count": 0,
+          "weight": 0.1,
+          "score": 0
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 0,
+          "weight": -0.5,
+          "score": 0
+        },
+        "Invalid_Parametric": {
+          "count": 18,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 40
+      },
+      "errors": [],
+      "notes": "完全依赖Parametric Knowledge，无物理可追溯引用"
+    },
+    "Report_C": {
+      "method": "RAG",
+      "scores": {
+        "CCR": {
+          "total": 3.0,
+          "S_line": 4,
+          "S_scheme": 3,
+          "S_dose": 2,
+          "S_reject": 3,
+          "S_align": 3
+        },
+        "MQR": {
+          "total": 3.2,
+          "S_complete": 4,
+          "S_applicable": 4,
+          "S_format": 3,
+          "S_citation": 2,
+          "S_uncertainty": 3
+        },
+        "CER": 0.0,
+        "PTR": 0.286,
+        "CPI": 0.684,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.286,
+          "tier_1a": {
+            "count": 6,
+            "weight": 1.0,
+            "score": 6.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 0,
+                "score": 0.0
+              },
+              "oncokb": {
+                "count": 0,
+                "score": 0.0
+              },
+              "local": {
+                "count": 6,
+                "score": 6.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 6,
+            "weight": 1.0,
+            "score": 6.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 0,
+            "weight": 0.3,
+            "score": 0.0
+          },
+          "tier_3": {
+            "count": 0,
+            "weight": 0.1,
+            "score": 0.0
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 10,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 12.0,
+            "total_statements": 42,
+            "formula": "12.0 / 42",
+            "ptr_final": 0.286
+          }
+        }
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 6,
+          "weight": 1.0,
+          "score": 6.0
+        },
+        "Tier_2_Guideline": {
+          "count": 0,
+          "weight": 0.3,
+          "score": 0
+        },
+        "Tier_3_Web_Official": {
+          "count": 0,
+          "weight": 0.1,
+          "score": 0
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 0,
+          "weight": -0.5,
+          "score": 0
+        },
+        "Invalid_Parametric": {
+          "count": 10,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 42
+      },
+      "errors": [],
+      "notes": "6处Local引用，Parametric Knowledge占比仍高"
+    },
+    "Report_D": {
+      "method": "WebSearch",
+      "scores": {
+        "CCR": {
+          "total": 3.6,
+          "S_line": 4,
+          "S_scheme": 4,
+          "S_dose": 3,
+          "S_reject": 4,
+          "S_align": 3
+        },
+        "MQR": {
+          "total": 3.6,
+          "S_complete": 4,
+          "S_applicable": 4,
+          "S_format": 4,
+          "S_citation": 3,
+          "S_uncertainty": 3
+        },
+        "CER": 0.0,
+        "PTR": 0.352,
+        "CPI": 0.778,
+        "PTR_V3_DETAIL": {
+          "ptr_v3": 0.352,
+          "tier_1a": {
+            "count": 7,
+            "weight": 1.0,
+            "score": 7.0,
+            "breakdown": {
+              "pubmed": {
+                "count": 7,
+                "score": 7.0
+              },
+              "oncokb": {
+                "count": 0,
+                "score": 0.0
+              },
+              "local": {
+                "count": 0,
+                "score": 0.0
+              }
+            }
+          },
+          "tier_1b": {
+            "count": 8,
+            "weight": 1.0,
+            "score": 8.0,
+            "note": "患者输入事实（年龄、既往史、症状等）"
+          },
+          "tier_2": {
+            "count": 6,
+            "weight": 0.3,
+            "score": 1.7999999999999998
+          },
+          "tier_3": {
+            "count": 1,
+            "weight": 0.1,
+            "score": 0.1
+          },
+          "tier_3c": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "cer_penalty": 0.0,
+            "note": "商业网站引用，CER追加Major Error"
+          },
+          "exemptions": {
+            "count": 0,
+            "weight": 0.0,
+            "score": 0.0,
+            "statements": [],
+            "note": "安全拒答：分母计入，分子0分"
+          },
+          "invalid": {
+            "count": 2,
+            "weight": 0.0,
+            "score": 0.0
+          },
+          "calculation": {
+            "total_weighted": 16.9,
+            "total_statements": 48,
+            "formula": "16.9 / 48",
+            "ptr_final": 0.352
+          }
+        }
+      },
+      "citation_breakdown": {
+        "Tier_1_PubMed": {
+          "count": 7,
+          "weight": 1.0,
+          "score": 7.0
+        },
+        "Tier_1_OncoKB": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_1_Local": {
+          "count": 0,
+          "weight": 1.0,
+          "score": 0
+        },
+        "Tier_2_Guideline": {
+          "count": 6,
+          "weight": 0.3,
+          "score": 1.8
+        },
+        "Tier_3_Web_Official": {
+          "count": 1,
+          "weight": 0.1,
+          "score": 0.1
+        },
+        "Tier_3_Web_Commercial": {
+          "count": 0,
+          "weight": -0.5,
+          "score": 0
+        },
+        "Invalid_Parametric": {
+          "count": 2,
+          "weight": 0.0,
+          "score": 0
+        },
+        "total_statements": 48
+      },
+      "errors": [],
+      "notes": "7处PubMed引用，含ClinicalTrial引用，双倍剂量奥西替尼有BLOOM研究支持"
+    }
+  },
+  "ranking": [
+    {
+      "rank": 1,
+      "report": "Report_A",
+      "method": "BM Agent",
+      "CPI": 0.854
+    },
+    {
+      "rank": 2,
+      "report": "Report_D",
+      "method": "WebSearch",
+      "CPI": 0.749
+    },
+    {
+      "rank": 3,
+      "report": "Report_C",
+      "method": "RAG",
+      "CPI": 0.643
+    },
+    {
+      "rank": 4,
+      "report": "Report_B",
+      "method": "Direct LLM",
+      "CPI": 0.49
+    }
+  ]
+}
